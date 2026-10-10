@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Youth_Practice_Performance_Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "50278e65-ff0e-4443-91dd-b273e28724ef"
+  }
+}

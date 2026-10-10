@@ -1,0 +1,306 @@
+createOrReplace
+
+	table stg_peopleUnder25
+		lineageTag: e9df9e2a-18b9-4d1d-8267-c10e19590eac
+
+		column 'Person ID'
+			dataType: int64
+			formatString: 0
+			lineageTag: 84a29016-0692-4baf-bf1c-32bf4a44358e
+			summarizeBy: count
+			sourceColumn: Person ID
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Family ID'
+			dataType: string
+			lineageTag: c4b2bf32-3c77-4a75-a973-9e4f90c06ae2
+			summarizeBy: none
+			sourceColumn: Family ID
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'First Name'
+			dataType: string
+			lineageTag: 897401f3-b3d4-48a8-b190-ed18b9551c29
+			summarizeBy: none
+			sourceColumn: First Name
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Last Name'
+			dataType: string
+			lineageTag: e85eea7e-b0ae-4f92-a2a3-eed229596ea8
+			summarizeBy: none
+			sourceColumn: Last Name
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Teams Involved'
+			dataType: string
+			lineageTag: 347901cf-78b4-4762-b390-95911dacbe92
+			summarizeBy: none
+			sourceColumn: Teams Involved
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Active Workflows'
+			dataType: string
+			lineageTag: b7fdf248-07dc-4aa7-9ab7-b01e949b4bfe
+			summarizeBy: none
+			sourceColumn: Active Workflows
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Events Attended'
+			dataType: string
+			lineageTag: 6730b0e8-50d4-460d-901e-c6de6adcecfc
+			summarizeBy: none
+			sourceColumn: Events Attended
+
+			annotation SummarizationSetBy = Automatic
+
+		column Context
+			dataType: string
+			lineageTag: 65eaff50-ac0e-40f0-9239-59bec2d71065
+			summarizeBy: none
+			sourceColumn: Context
+
+			annotation SummarizationSetBy = Automatic
+
+		column Disability
+			dataType: string
+			lineageTag: cf599d2f-3d15-4eb4-8b1b-3bda9d269105
+			summarizeBy: none
+			sourceColumn: Disability
+
+			annotation SummarizationSetBy = Automatic
+
+		column Sex
+			dataType: string
+			lineageTag: c3308e9b-9487-44d7-aa91-feff6d538119
+			summarizeBy: none
+			sourceColumn: Sex
+
+			annotation SummarizationSetBy = Automatic
+
+		column Gender
+			dataType: string
+			lineageTag: ae8eafeb-b320-4985-b444-f583ce6d9f74
+			summarizeBy: none
+			sourceColumn: Gender
+
+			annotation SummarizationSetBy = Automatic
+
+		column Ethnicity
+			dataType: string
+			lineageTag: 12e7a3f5-08f4-4b08-a1cb-cfcbd7ff242e
+			summarizeBy: none
+			sourceColumn: Ethnicity
+
+			annotation SummarizationSetBy = Automatic
+
+		column Religion
+			dataType: string
+			lineageTag: 0267ccd0-441f-4aef-b0ee-86ecd81bbdc4
+			summarizeBy: none
+			sourceColumn: Religion
+
+			annotation SummarizationSetBy = Automatic
+
+		column DOB
+			dataType: dateTime
+			formatString: General Date
+			lineageTag: b5f151af-b01e-400e-a20d-cfe331279cf9
+			summarizeBy: none
+			sourceColumn: DOB
+
+			variation Variation
+				isDefault
+				relationship: 425f40ff-cd92-4c3a-b40d-31c64df348b6
+				defaultHierarchy: LocalDateTable_fc7ddd14-1793-4cf2-9b8e-f600e0a1ee3f.'Date Hierarchy'
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'First Language'
+			dataType: string
+			lineageTag: 147ff877-1e9f-4998-8c3b-e3758853daee
+			summarizeBy: none
+			sourceColumn: First Language
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Fluency in English'
+			dataType: string
+			lineageTag: cfa1a0fd-441b-4ef8-b6f6-50842e2d2718
+			summarizeBy: none
+			sourceColumn: Fluency in English
+
+			annotation SummarizationSetBy = Automatic
+
+		column Nationality
+			dataType: string
+			lineageTag: a085a468-3165-4c51-9229-fcdc78ed3253
+			summarizeBy: none
+			sourceColumn: Nationality
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Country of Birth'
+			dataType: string
+			lineageTag: 003113c1-1cda-445d-a4e6-3003d5e0779b
+			summarizeBy: none
+			sourceColumn: Country of Birth
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Age when work in period started'
+			dataType: int64
+			formatString: 0
+			lineageTag: 29461d1e-e9ba-4f2b-ad5c-5aec49ee6a84
+			summarizeBy: sum
+			sourceColumn: Age when work in period started
+
+			annotation SummarizationSetBy = Automatic
+
+		column Address
+			dataType: string
+			lineageTag: b7aecb0f-4175-4acf-a593-8bd17fa811be
+			summarizeBy: none
+			sourceColumn: Address
+
+			annotation SummarizationSetBy = Automatic
+
+		column District
+			dataType: string
+			lineageTag: 18ea43a4-bfd8-49e1-b25d-f9c4f48aa9d8
+			summarizeBy: none
+			sourceColumn: District
+
+			annotation SummarizationSetBy = Automatic
+
+		column Postcode
+			dataType: string
+			lineageTag: ca49615a-9c28-4929-803f-c89f9090a69a
+			summarizeBy: none
+			sourceColumn: Postcode
+
+			annotation SummarizationSetBy = Automatic
+
+		column Authority
+			dataType: string
+			lineageTag: f600586c-e8b5-413e-aca5-3388877fcee6
+			summarizeBy: none
+			sourceColumn: Authority
+
+			annotation SummarizationSetBy = Automatic
+
+		column Ward
+			dataType: string
+			lineageTag: cf27efdc-1f8c-433e-9ad0-0447a29f0808
+			summarizeBy: none
+			sourceColumn: Ward
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Household Structure'
+			dataType: string
+			lineageTag: f7aaecb8-868a-4985-b3ef-f8100242c594
+			summarizeBy: none
+			sourceColumn: Household Structure
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Tenure Type'
+			dataType: string
+			lineageTag: 4fc39746-59d4-4891-8c54-66a815a644a8
+			summarizeBy: none
+			sourceColumn: Tenure Type
+
+			annotation SummarizationSetBy = Automatic
+
+		column Telephone
+			dataType: string
+			lineageTag: f0fd73f2-776b-4c1f-9df6-6f5adaef9916
+			summarizeBy: none
+			sourceColumn: Telephone
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Email Address'
+			dataType: string
+			lineageTag: 37841bad-939b-46f8-b6a5-83397a19232a
+			summarizeBy: none
+			sourceColumn: Email Address
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Allocated Workers'
+			dataType: string
+			lineageTag: e87871bb-2d1c-4d47-954d-530a2f9bbb5d
+			summarizeBy: none
+			sourceColumn: Allocated Workers
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'CAF Category'
+			dataType: string
+			lineageTag: 0547b2ce-e3f6-455c-875a-c419917fab8f
+			summarizeBy: none
+			sourceColumn: CAF Category
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'CIN Plan'
+			dataType: string
+			lineageTag: 1c9ec441-e6ca-49bc-9da4-b435b52d4da9
+			summarizeBy: none
+			sourceColumn: CIN Plan
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'CP Plan'
+			dataType: string
+			lineageTag: 800e3db2-a7cf-49e4-a192-f1eed04a7639
+			summarizeBy: none
+			sourceColumn: CP Plan
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'LAC 20 '
+			dataType: string
+			lineageTag: 7c469225-0c54-47e6-b3c5-853a57d690fc
+			summarizeBy: none
+			sourceColumn: "LAC 20 "
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Looked After (Section 31)'
+			dataType: string
+			lineageTag: e32ade4a-566e-4fc0-a51a-8f3ce374de47
+			summarizeBy: none
+			sourceColumn: Looked After (Section 31)
+
+			annotation SummarizationSetBy = Automatic
+
+		column 'Care Leaver (Not Section 20 or 31)'
+			dataType: string
+			lineageTag: 6104c689-3e31-4e5c-91ce-12f3e793e662
+			summarizeBy: none
+			sourceColumn: Care Leaver (Not Section 20 or 31)
+
+			annotation SummarizationSetBy = Automatic
+
+		partition stg_peopleUnder25 = m
+			mode: import
+			source =
+					let
+					    Source = Excel.Workbook(File.Contents("C:\Users\Test\Downloads\insightdataanalysttaskbrief\People Worked With Report_Anon.xlsx"), null, true),
+					    Sheet2_Sheet = Source{[Item="Sheet2",Kind="Sheet"]}[Data],
+					    #"Promoted Headers" = Table.PromoteHeaders(Sheet2_Sheet, [PromoteAllScalars=true]),
+					    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Person ID", Int64.Type}, {"Family ID", type any}, {"First Name", type text}, {"Last Name", type text}, {"Teams Involved", type text}, {"Active Workflows", type text}, {"Events Attended", type text}, {"Context", type text}, {"Disability", type text}, {"Sex", type text}, {"Gender", type text}, {"Ethnicity", type text}, {"Religion", type text}, {"DOB", type datetime}, {"First Language", type text}, {"Fluency in English", type text}, {"Nationality", type text}, {"Country of Birth", type text}, {"Age when work in period started", Int64.Type}, {"Address", type text}, {"District", type any}, {"Postcode", type any}, {"Authority", type text}, {"Ward", type any}, {"Household Structure", type text}, {"Tenure Type", type text}, {"Telephone", type any}, {"Email Address", type any}, {"Allocated Workers", type text}, {"CAF Category", type text}, {"CIN Plan", type text}, {"CP Plan", type text}, {"LAC 20 ", type text}, {"Looked After (Section 31)", type text}, {"Care Leaver (Not Section 20 or 31)", type text}})
+					in
+					    #"Changed Type"
+
+		annotation PBI_ResultType = Table
+

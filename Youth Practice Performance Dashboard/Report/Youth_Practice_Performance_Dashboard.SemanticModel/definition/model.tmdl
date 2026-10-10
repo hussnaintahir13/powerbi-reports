@@ -1,0 +1,24 @@
+model Model
+	culture: en-GB
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-GB
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["stg_peopleSummary","stg_peopleUnder25","stg_peopleOver25"]
+
+annotation PBI_ProTooling = ["DevMode","TMDLView_Desktop"]
+
+ref table stg_peopleSummary
+ref table stg_peopleUnder25
+ref table DateTableTemplate_2e0b9754-6287-4ec2-bd45-f1283e67e352
+ref table LocalDateTable_fc7ddd14-1793-4cf2-9b8e-f600e0a1ee3f
+ref table stg_peopleOver25
+ref table LocalDateTable_99aad865-1fdc-4d12-b692-d6bbfdcf8be8
+
+ref cultureInfo en-GB
+
