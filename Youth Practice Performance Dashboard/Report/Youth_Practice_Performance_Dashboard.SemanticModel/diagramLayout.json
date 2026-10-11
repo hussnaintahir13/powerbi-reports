@@ -10,8 +10,8 @@
       "nodes": [
         {
           "location": {
-            "x": 907.231892981118,
-            "y": 648.61604364781488
+            "x": 897.83353759476847,
+            "y": 805.30951759054165
           },
           "nodeIndex": "dim_Teams",
           "nodeLineageTag": "29da717d-8d21-4dc5-83c5-3f90f6c90aa4",
@@ -24,8 +24,8 @@
         },
         {
           "location": {
-            "x": 1119.3578877436073,
-            "y": 340.98070749064129
+            "x": 1059.5248232054289,
+            "y": 428.82401864035177
           },
           "nodeIndex": "dim_People",
           "nodeLineageTag": "3835be87-3b4f-46fc-8d46-78ea86e6cde9",
@@ -38,8 +38,8 @@
         },
         {
           "location": {
-            "x": 1350.8876768698724,
-            "y": 1163.1829210410983
+            "x": 1946.7977065611519,
+            "y": 1588.1546155221304
           },
           "nodeIndex": "bridge_People_Workflow",
           "nodeLineageTag": "63656e1e-0ca8-4529-987f-1f73a26ad096",
@@ -52,8 +52,8 @@
         },
         {
           "location": {
-            "x": 1336.1616456222773,
-            "y": 633.97275321797474
+            "x": 1901.3292640988852,
+            "y": 1261.6073820439026
           },
           "nodeIndex": "dim_ActiveWorkflow",
           "nodeLineageTag": "b19e2570-ad38-4847-bcd4-2db46e83f69b",
@@ -66,8 +66,8 @@
         },
         {
           "location": {
-            "x": 914.04526466590653,
-            "y": 1169.3663909116451
+            "x": 878.433111497105,
+            "y": 1589.5897983035034
           },
           "nodeIndex": "bridge_People_Teams",
           "nodeLineageTag": "6c9b038f-6c7c-4824-a7a5-92e807f1a39b",
@@ -80,8 +80,8 @@
         },
         {
           "location": {
-            "x": 1709.3833521024746,
-            "y": 1184.5632296849774
+            "x": 1384.1256864940869,
+            "y": 1611.909067710596
           },
           "nodeIndex": "Bridge_AllocatedWorkers",
           "nodeLineageTag": "d3842c6c-c54f-48bc-b30d-d60bf8be858a",
@@ -94,8 +94,8 @@
         },
         {
           "location": {
-            "x": 498.8578178268981,
-            "y": 1169.2818270954692
+            "x": 463.24566465809653,
+            "y": 1589.5052344873275
           },
           "nodeIndex": "Bridge_EventsAttended",
           "nodeLineageTag": "979f9915-e824-4537-9dd9-783b025311aa",
@@ -108,11 +108,25 @@
         },
         {
           "location": {
-            "x": 1679.3762872007624,
-            "y": 637.07726307529617
+            "x": 1290.028363925011,
+            "y": 1277.9112005662087
           },
           "nodeIndex": "dim_AllocatedWorkers",
           "nodeLineageTag": "593c47e8-9b19-4f26-bad6-13bddc360df7",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 15,
+          "expandedHeight": 128
+        },
+        {
+          "location": {
+            "x": 453.92370311038894,
+            "y": 1025.6300112614847
+          },
+          "nodeIndex": "dim_EventsAttended",
+          "nodeLineageTag": "ab58f450-520f-4c92-8d24-84a2eb79943f",
           "size": {
             "height": 104,
             "width": 234
@@ -122,22 +136,8 @@
         },
         {
           "location": {
-            "x": 513.27729172505815,
-            "y": 643.39290058301469
-          },
-          "nodeIndex": "dim_EventsAttended",
-          "nodeLineageTag": "ab58f450-520f-4c92-8d24-84a2eb79943f",
-          "size": {
-            "height": 104,
-            "width": 234
-          },
-          "zIndex": 14,
-          "expandedHeight": 128
-        },
-        {
-          "location": {
-            "x": 2138.1790741433147,
-            "y": 558.64336857737783
+            "x": 551.27534197569128,
+            "y": 0
           },
           "nodeIndex": "dim_date",
           "nodeLineageTag": "0fa5862d-b221-46c1-bf41-e1bf3b503218",
@@ -150,8 +150,8 @@
         },
         {
           "location": {
-            "x": 197.05391420070214,
-            "y": 1184.6976287487985
+            "x": 161.44176103190057,
+            "y": 1604.9210361406567
           },
           "nodeIndex": "dim_Workers",
           "nodeLineageTag": "050b1bb7-b3b0-4cc7-8e94-3fc8068e9b47",
@@ -159,13 +159,13 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 15,
+          "zIndex": 14,
           "expandedHeight": 152
         },
         {
           "location": {
-            "x": 181.74773566081458,
-            "y": 202.44526797637337
+            "x": 127.90494839834167,
+            "y": 619.63023635261993
           },
           "nodeIndex": "fact_CaseNote",
           "nodeLineageTag": "ed98aef3-b64a-4743-a580-94da1f4737d7",
@@ -178,8 +178,8 @@
         },
         {
           "location": {
-            "x": 1684.5156057657869,
-            "y": 412.66579115268627
+            "x": 1651.9418916125971,
+            "y": 784.2741742947544
           },
           "nodeIndex": "fact_GoalForm",
           "nodeLineageTag": "3e4f6287-bc9e-432c-a6cd-017748bcca4a",
@@ -192,8 +192,8 @@
         },
         {
           "location": {
-            "x": 452.613110545906,
-            "y": 304.94821246441751
+            "x": 897.86007217976476,
+            "y": 568.12012485499633
           },
           "nodeIndex": "fact_GoalProgress",
           "nodeLineageTag": "dee7592e-7df6-43b3-9a5e-2ec8cff5fa4e",
@@ -206,8 +206,8 @@
         },
         {
           "location": {
-            "x": 1453.1200692753046,
-            "y": 0
+            "x": 1702.3935234204357,
+            "y": 344.262432001561
           },
           "nodeIndex": "fact_GoalSession",
           "nodeLineageTag": "6850cf16-f95e-494c-ba6a-1de888735706",
@@ -220,8 +220,8 @@
         },
         {
           "location": {
-            "x": 774.38261344935586,
-            "y": 0
+            "x": 546.46483316902584,
+            "y": 420.22340739185836
           },
           "nodeIndex": "fact_Workflow",
           "nodeLineageTag": "44f1a8de-f24b-4d20-a93f-b8cee8e7192d",
@@ -231,10 +231,22 @@
           },
           "zIndex": 5,
           "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 2102.8927581628104,
+            "y": 769.954533855298
+          },
+          "nodeIndex": "Measure",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "All tables",
-      "zoomValue": 42.120452332382207,
+      "zoomValue": 32.911636365313612,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,

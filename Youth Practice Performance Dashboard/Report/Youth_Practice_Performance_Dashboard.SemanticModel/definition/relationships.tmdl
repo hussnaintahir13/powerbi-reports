@@ -35,11 +35,6 @@ relationship 0ab3e028-4e7e-4fae-a69f-9c4ab9449a24
 	fromColumn: dim_People.DOB
 	toColumn: LocalDateTable_cb2fe19f-0197-478f-82a1-316b94a1289a.Date
 
-relationship 7cc4d505-5264-4ad4-ab0b-37364949c8f7
-	joinOnDateBehavior: datePartOnly
-	fromColumn: fact_Workflow.'Referral Date'
-	toColumn: LocalDateTable_51739859-d1af-4b4c-9b9d-902a11598db8.Date
-
 relationship 9a8d7e04-b501-4dcf-a412-bd20db083910
 	joinOnDateBehavior: datePartOnly
 	fromColumn: fact_Workflow.'Active From'
@@ -65,11 +60,6 @@ relationship d37ce998-c472-42ca-b45a-d5ba2f8d23aa
 	fromColumn: fact_CaseNote.CaseNoteDateTime
 	toColumn: LocalDateTable_ee3af2eb-a89f-4b77-b352-94e5c9943ce8.Date
 
-relationship 055b7e0f-54f8-44fb-ae3d-cbe77060fe3e
-	joinOnDateBehavior: datePartOnly
-	fromColumn: fact_CaseNote.CaseNoteDate
-	toColumn: LocalDateTable_03280785-2512-413c-bd29-220203af4f02.Date
-
 relationship b38641c4-4d18-4f89-a8c3-12483718f1bd
 	joinOnDateBehavior: datePartOnly
 	fromColumn: fact_GoalForm.LatestAssessmentDate
@@ -79,16 +69,6 @@ relationship ab1937c2-774f-494a-b4d5-e00ec485035a
 	joinOnDateBehavior: datePartOnly
 	fromColumn: fact_GoalProgress.FirstSessionDate
 	toColumn: LocalDateTable_d35c2517-1940-4e7c-bdd1-24b552251770.Date
-
-relationship c8b030db-9ef9-4468-a7dd-39b779497d50
-	joinOnDateBehavior: datePartOnly
-	fromColumn: fact_GoalProgress.LastSessionDate
-	toColumn: LocalDateTable_1452cf11-a18e-4bcf-a949-a8c6185cb075.Date
-
-relationship e660c8f0-2609-461c-ad42-96f91ef997b2
-	joinOnDateBehavior: datePartOnly
-	fromColumn: fact_GoalSession.SessionDate
-	toColumn: LocalDateTable_3ba9a928-3a41-491e-9b50-08ce691da507.Date
 
 relationship f73e67cb-829a-4900-80d5-13992a246f3b
 	joinOnDateBehavior: datePartOnly
@@ -134,4 +114,20 @@ relationship AutoDetected_1d8ab976-e1d1-473a-953f-cb2492abc49e
 relationship AutoDetected_6a0d1ed0-7a49-4a96-a0de-b277c8f037ce
 	fromColumn: fact_CaseNote.'Worker ID'
 	toColumn: dim_Workers.'Worker ID'
+
+relationship 563011c6-009c-b4c4-f7af-f2bf37d73a8a
+	fromColumn: fact_CaseNote.CaseNoteDate
+	toColumn: dim_date.Date
+
+relationship 52f42625-faf6-13bc-f2e3-0895eed4f3dc
+	fromColumn: fact_GoalProgress.LastSessionDate
+	toColumn: dim_date.Date
+
+relationship 7383b756-3eb9-8fcd-8bef-2207b79e4183
+	fromColumn: fact_GoalSession.SessionDate
+	toColumn: dim_date.Date
+
+relationship 3e0a6916-b658-2215-26af-f8b47b3ba9ac
+	fromColumn: fact_Workflow.'Referral Date'
+	toColumn: dim_date.Date
 

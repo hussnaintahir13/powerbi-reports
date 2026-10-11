@@ -1,0 +1,44 @@
+table Measure
+	lineageTag: ea10c613-7da5-4329-8c30-8b4cc5809be5
+
+	measure 'Total Workflows' =
+			
+			COUNTROWS(fact_Workflow)
+		formatString: 0
+		lineageTag: 679717d3-c6f5-4a76-a95f-84ed1ca1b320
+
+	measure 'Total Case Notes' =
+			
+			COUNTROWS(fact_CaseNote)
+		formatString: 0
+		lineageTag: b703786f-432c-4dc3-9ce3-d3183abcbbe0
+
+	measure 'Total Goals' =
+			
+			COUNTROWS(fact_GoalProgress)
+		formatString: 0
+		lineageTag: d5e99d58-b62d-459d-9ea4-e0001e678b4f
+
+	measure 'Total Scored Sessions' =
+			
+			COUNTROWS(fact_GoalSession)
+		formatString: 0
+		lineageTag: a1bd27d2-c6ed-4483-ba3c-40edf86a8520
+
+	column Column
+		formatString: 0
+		lineageTag: d6156735-dc7d-42a5-baed-97929a880c9e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Measure = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = 802ca204d10c470a82894c0969c9384a
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

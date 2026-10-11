@@ -65,11 +65,6 @@ table fact_Workflow
 		summarizeBy: none
 		sourceColumn: Referral Date
 
-		variation Variation
-			isDefault
-			relationship: 7cc4d505-5264-4ad4-ab0b-37364949c8f7
-			defaultHierarchy: LocalDateTable_51739859-d1af-4b4c-9b9d-902a11598db8.'Date Hierarchy'
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date

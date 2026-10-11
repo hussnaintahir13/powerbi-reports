@@ -104,11 +104,6 @@ table fact_GoalProgress
 		summarizeBy: none
 		sourceColumn: LastSessionDate
 
-		variation Variation
-			isDefault
-			relationship: c8b030db-9ef9-4468-a7dd-39b779497d50
-			defaultHierarchy: LocalDateTable_1452cf11-a18e-4bcf-a949-a8c6185cb075.'Date Hierarchy'
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date

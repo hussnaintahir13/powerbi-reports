@@ -69,11 +69,6 @@ table fact_CaseNote
 		summarizeBy: none
 		sourceColumn: CaseNoteDate
 
-		variation Variation
-			isDefault
-			relationship: 055b7e0f-54f8-44fb-ae3d-cbe77060fe3e
-			defaultHierarchy: LocalDateTable_03280785-2512-413c-bd29-220203af4f02.'Date Hierarchy'
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date

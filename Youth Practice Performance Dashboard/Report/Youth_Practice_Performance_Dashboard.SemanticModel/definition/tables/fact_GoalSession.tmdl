@@ -60,11 +60,6 @@ table fact_GoalSession
 		summarizeBy: none
 		sourceColumn: SessionDate
 
-		variation Variation
-			isDefault
-			relationship: e660c8f0-2609-461c-ad42-96f91ef997b2
-			defaultHierarchy: LocalDateTable_3ba9a928-3a41-491e-9b50-08ce691da507.'Date Hierarchy'
-
 		annotation SummarizationSetBy = Automatic
 
 		annotation UnderlyingDateTimeDataType = Date

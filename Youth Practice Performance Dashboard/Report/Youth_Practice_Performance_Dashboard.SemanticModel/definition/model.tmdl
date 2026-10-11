@@ -66,23 +66,20 @@ ref table DateTableTemplate_b997299a-fc91-4a83-bd5c-130c99a56049
 ref table LocalDateTable_cb2fe19f-0197-478f-82a1-316b94a1289a
 ref table dim_Workers
 ref table fact_Workflow
-ref table LocalDateTable_51739859-d1af-4b4c-9b9d-902a11598db8
 ref table LocalDateTable_b443184e-4e51-4b50-88d0-61eba66eb0cb
 ref table LocalDateTable_c2172d3a-5a53-4bcb-8339-f13ca7ff7260
 ref table LocalDateTable_b3e9411a-8679-4e62-b30b-f4fd1e3e47e0
 ref table LocalDateTable_f2d0b22f-2318-4546-87da-35905758a813
 ref table fact_CaseNote
 ref table LocalDateTable_ee3af2eb-a89f-4b77-b352-94e5c9943ce8
-ref table LocalDateTable_03280785-2512-413c-bd29-220203af4f02
 ref table fact_GoalForm
 ref table LocalDateTable_78698f54-5e2f-4412-8e16-51e540d3b936
 ref table fact_GoalProgress
 ref table LocalDateTable_d35c2517-1940-4e7c-bdd1-24b552251770
-ref table LocalDateTable_1452cf11-a18e-4bcf-a949-a8c6185cb075
 ref table fact_GoalSession
-ref table LocalDateTable_3ba9a928-3a41-491e-9b50-08ce691da507
 ref table dim_date
 ref table LocalDateTable_e7d109ee-fba4-4482-82a8-36974a79dc1b
+ref table Measure
 
 ref cultureInfo en-GB
 
