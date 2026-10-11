@@ -1,0 +1,95 @@
+table Bridge_AllocatedWorkers
+	lineageTag: d3842c6c-c54f-48bc-b30d-d60bf8be858a
+
+	column 'Person ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: caec3226-761f-47e4-a56e-3412a1196a69
+		summarizeBy: none
+		sourceColumn: Person ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Worker_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: a5b5d983-4e4b-4bba-9960-a4bcdd11bf54
+		summarizeBy: none
+		sourceColumn: Worker_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Bridge_AllocatedWorkers = m
+		mode: import
+		source =
+				let
+				    Source = silver_People,
+				
+				    SelectedColumns = Table.SelectColumns(
+				        Source,
+				        {"Person ID", "Allocated Workers"}
+				    ),
+				
+				    SplitWorkers = Table.ExpandListColumn(
+				        Table.TransformColumns(
+				            SelectedColumns,
+				            {{"Allocated Workers",
+				                each if _ = null then {}
+				                else Text.Split(Text.From(_), ";"),
+				                type list}}
+				        ),
+				        "Allocated Workers"
+				    ),
+				
+				    Cleaned = Table.TransformColumns(
+				        SplitWorkers,
+				        {{"Allocated Workers",
+				            each if _ = null then null
+				            else Text.Trim(Text.Clean(_)),
+				            type nullable text}}
+				    ),
+				
+				    ValidRows = Table.SelectRows(
+				        Cleaned,
+				        each [Person ID] <> null
+				        and [Allocated Workers] <> null
+				        and [Allocated Workers] <> ""
+				    ),
+				
+				    UniquePairs = Table.Distinct(
+				        ValidRows,
+				        {"Person ID", "Allocated Workers"}
+				    ),
+				
+				    Merged = Table.NestedJoin(
+				        UniquePairs,
+				        {"Allocated Workers"},
+				        dim_AllocatedWorkers,
+				        {"Allocated Workers"},
+				        "WorkerLookup",
+				        JoinKind.LeftOuter
+				    ),
+				
+				    Expanded = Table.ExpandTableColumn(
+				        Merged,
+				        "WorkerLookup",
+				        {"Worker_ID"},
+				        {"Worker_ID"}
+				    ),
+				
+				    Validated =
+				        if List.Contains(Expanded[Worker_ID], null)
+				        then error "Unmatched workers in dim_AllocatedWorkers"
+				        else Expanded,
+				
+				    Result = Table.SelectColumns(
+				        Validated,
+				        {"Person ID", "Worker_ID"}
+				    )
+				in
+				    Result
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

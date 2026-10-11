@@ -1,68 +1,3 @@
-expression dim_AllocatedWorkers =
-		let
-		    Source = Table.Combine({bronze_stg_peopleUnder25, bronze_stg_peopleOver25}),
-		    #"Removed Columns" = Table.RemoveColumns(Source,{"Family ID"}),
-		    #"Removed Duplicates" = Table.Distinct(#"Removed Columns", {"Person ID"}),
-		    #"Removed Other Columns" = Table.SelectColumns(#"Removed Duplicates",{"Person ID", "Allocated Workers"})
-		in
-		    #"Removed Other Columns"
-	lineageTag: 0209b264-4d64-4837-9c06-51d6634d4105
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
-
-expression dim_EventsAttended =
-		let
-		    Source = Table.Combine({bronze_stg_peopleUnder25, bronze_stg_peopleOver25}),
-		    #"Removed Columns" = Table.RemoveColumns(Source,{"Person ID"}),
-		    #"Split Column by Delimiter" = Table.ExpandListColumn(Table.TransformColumns(#"Removed Columns", {{"Events Attended", Splitter.SplitTextByDelimiter(";", QuoteStyle.Csv), let itemType = (type nullable text) meta [Serialized.Text = true] in type {itemType}}}), "Events Attended"),
-		    #"Trimmed Text" = Table.TransformColumns(#"Split Column by Delimiter",{{"Events Attended", Text.Trim, type text}}),
-		    #"Cleaned Text" = Table.TransformColumns(#"Trimmed Text",{{"Events Attended", Text.Clean, type text}}),
-		    #"Removed Blank Rows" = Table.SelectRows(#"Cleaned Text", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
-		    #"Removed Duplicates" = Table.Distinct(#"Removed Blank Rows"),
-		    #"Added Index" = Table.AddIndexColumn(#"Removed Duplicates", "Index", 0, 1, Int64.Type),
-		    #"Renamed Columns" = Table.RenameColumns(#"Added Index",{{"Index", "Event_ID"}})
-		in
-		    #"Renamed Columns"
-	lineageTag: 81b69c22-38ae-4656-a784-9946e4945ccc
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
-
-expression Bridge_EventsAttended =
-		let
-		    Source = Table.Combine({bronze_stg_peopleUnder25, bronze_stg_peopleOver25}),
-		    #"Removed Columns" = Table.RemoveColumns(Source,{"Family ID"}),
-		    #"Removed Duplicates" = Table.Distinct(#"Removed Columns", {"Person ID"}),
-		    #"Removed Other Columns" = Table.SelectColumns(#"Removed Duplicates",{"Person ID", "Events Attended"}),
-		    #"Filtered Rows" = Table.SelectRows(#"Removed Other Columns", each ([Events Attended] <> null)),
-		    #"Split Column by Delimiter" = Table.ExpandListColumn(Table.TransformColumns(#"Filtered Rows", {{"Events Attended", Splitter.SplitTextByDelimiter(";", QuoteStyle.Csv), let itemType = (type nullable text) meta [Serialized.Text = true] in type {itemType}}}), "Events Attended"),
-		    #"Changed Type" = Table.TransformColumnTypes(#"Split Column by Delimiter",{{"Events Attended", type text}})
-		in
-		    #"Changed Type"
-	lineageTag: d9acbd25-ed5b-4aa8-a15c-dbe025b0f640
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
-
-expression bronze_stg_peopleSummary =
-		let
-		    Source = Excel.Workbook(File.Contents("C:\Users\Test\Downloads\insightdataanalysttaskbrief\People Worked With Report_Anon.xlsx"), null, true),
-		    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
-		    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
-		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"CYP Worked With", Int64.Type}, {"Adults Worked With", Int64.Type}, {"CYP Case Work", Int64.Type}, {"CYP Receiving AIG", Int64.Type}, {"Adults Case Work#(lf)", Int64.Type}, {"Adults Receiving AIG", Int64.Type}, {"Total Individuals Worked With", Int64.Type}, {"Column8", type any}}),
-		    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column8"})
-		in
-		    #"Removed Columns"
-	lineageTag: 42dd0f0d-f19d-4c9d-8757-4dc50e2e94dd
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
-
 expression bronze_stg_peopleUnder25 =
 		let
 		    Source = Excel.Workbook(File.Contents("C:\Users\Test\Downloads\insightdataanalysttaskbrief\People Worked With Report_Anon.xlsx"), null, true),
@@ -97,9 +32,12 @@ expression silver_People =
 		    Source = Table.Combine({bronze_stg_peopleUnder25, bronze_stg_peopleOver25}),
 		    #"Removed Columns" = Table.RemoveColumns(Source,{"Family ID"}),
 		    #"Removed Duplicates" = Table.Distinct(#"Removed Columns", {"Person ID"}),
-		    #"Removed Blank Rows" = Table.SelectRows(#"Removed Duplicates", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null})))
+		    #"Removed Blank Rows" = Table.SelectRows(#"Removed Duplicates", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
+		    #"Renamed Columns" = Table.RenameColumns(#"Removed Blank Rows",{{"Sex", "Sex - By Birth"}}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"DOB", type date}}),
+		    #"Removed Columns1" = Table.RemoveColumns(#"Changed Type",{"Email Address", "Telephone", "Ward", "District", "Postcode"})
 		in
-		    #"Removed Blank Rows"
+		    #"Removed Columns1"
 	lineageTag: 278ef538-1cdb-4241-baa8-3c29c355e730
 
 	annotation PBI_NavigationStepName = Navigation

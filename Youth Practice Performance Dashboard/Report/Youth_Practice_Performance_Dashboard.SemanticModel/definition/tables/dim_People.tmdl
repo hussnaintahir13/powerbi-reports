@@ -42,11 +42,11 @@ table dim_People
 
 		annotation SummarizationSetBy = Automatic
 
-	column Sex
+	column 'Sex - By Birth'
 		dataType: string
 		lineageTag: b8208ddf-4399-4bf4-a754-abef1e6b2caf
 		summarizeBy: none
-		sourceColumn: Sex
+		sourceColumn: Sex - By Birth
 
 		annotation SummarizationSetBy = Automatic
 
@@ -75,12 +75,20 @@ table dim_People
 		annotation SummarizationSetBy = Automatic
 
 	column DOB
-		dataType: string
+		dataType: dateTime
+		formatString: Long Date
 		lineageTag: db317529-8cc7-485e-8c1d-300ced6dc82e
 		summarizeBy: none
 		sourceColumn: DOB
 
+		variation Variation
+			isDefault
+			relationship: 0ab3e028-4e7e-4fae-a69f-9c4ab9449a24
+			defaultHierarchy: LocalDateTable_cb2fe19f-0197-478f-82a1-316b94a1289a.'Date Hierarchy'
+
 		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	column 'First Language'
 		dataType: string
@@ -131,35 +139,11 @@ table dim_People
 
 		annotation SummarizationSetBy = Automatic
 
-	column District
-		dataType: string
-		lineageTag: 97184ce7-153a-472c-a0d6-cc7c6eaa7bab
-		summarizeBy: none
-		sourceColumn: District
-
-		annotation SummarizationSetBy = Automatic
-
-	column Postcode
-		dataType: string
-		lineageTag: 53d179e8-2136-44bf-8146-9983dd1a2981
-		summarizeBy: none
-		sourceColumn: Postcode
-
-		annotation SummarizationSetBy = Automatic
-
 	column Authority
 		dataType: string
 		lineageTag: baeb9828-bba7-4540-a7e5-29789ff7a264
 		summarizeBy: none
 		sourceColumn: Authority
-
-		annotation SummarizationSetBy = Automatic
-
-	column Ward
-		dataType: string
-		lineageTag: 17c36499-9624-4f49-8b11-96bef79f8242
-		summarizeBy: none
-		sourceColumn: Ward
 
 		annotation SummarizationSetBy = Automatic
 
@@ -176,22 +160,6 @@ table dim_People
 		lineageTag: 1fd46eb5-24c8-4fa1-b61b-e860b4a58301
 		summarizeBy: none
 		sourceColumn: Tenure Type
-
-		annotation SummarizationSetBy = Automatic
-
-	column Telephone
-		dataType: string
-		lineageTag: 155f4003-9ef5-4ae7-b963-63a9ebd06cc0
-		summarizeBy: none
-		sourceColumn: Telephone
-
-		annotation SummarizationSetBy = Automatic
-
-	column 'Email Address'
-		dataType: string
-		lineageTag: 55dce666-22c4-473c-804d-8a87eb92a27e
-		summarizeBy: none
-		sourceColumn: Email Address
 
 		annotation SummarizationSetBy = Automatic
 

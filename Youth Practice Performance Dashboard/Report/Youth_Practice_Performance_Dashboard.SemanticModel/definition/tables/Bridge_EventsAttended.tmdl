@@ -1,0 +1,95 @@
+table Bridge_EventsAttended
+	lineageTag: 979f9915-e824-4537-9dd9-783b025311aa
+
+	column 'Person ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 7e39df91-27f6-432a-93cb-c7fa5da2c06b
+		summarizeBy: none
+		sourceColumn: Person ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Event_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: fc0709b2-19af-436a-93b6-c9421969bb09
+		summarizeBy: none
+		sourceColumn: Event_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Bridge_EventsAttended = m
+		mode: import
+		source =
+				let
+				    Source = silver_People,
+				
+				    SelectedColumns = Table.SelectColumns(
+				        Source,
+				        {"Person ID", "Events Attended"}
+				    ),
+				
+				    SplitEvents = Table.ExpandListColumn(
+				        Table.TransformColumns(
+				            SelectedColumns,
+				            {{"Events Attended",
+				                each if _ = null then {}
+				                else Text.Split(Text.From(_), ";"),
+				                type list}}
+				        ),
+				        "Events Attended"
+				    ),
+				
+				    Cleaned = Table.TransformColumns(
+				        SplitEvents,
+				        {{"Events Attended",
+				            each if _ = null then null
+				            else Text.Trim(Text.Clean(_)),
+				            type nullable text}}
+				    ),
+				
+				    ValidRows = Table.SelectRows(
+				        Cleaned,
+				        each [Person ID] <> null
+				        and [Events Attended] <> null
+				        and [Events Attended] <> ""
+				    ),
+				
+				    UniquePairs = Table.Distinct(
+				        ValidRows,
+				        {"Person ID", "Events Attended"}
+				    ),
+				
+				    Merged = Table.NestedJoin(
+				        UniquePairs,
+				        {"Events Attended"},
+				        dim_EventsAttended,
+				        {"Events Attended"},
+				        "EventLookup",
+				        JoinKind.LeftOuter
+				    ),
+				
+				    Expanded = Table.ExpandTableColumn(
+				        Merged,
+				        "EventLookup",
+				        {"Event_ID"},
+				        {"Event_ID"}
+				    ),
+				
+				    Validated =
+				        if List.Contains(Expanded[Event_ID], null)
+				        then error "Unmatched event names in dim_EventsAttended"
+				        else Expanded,
+				
+				    Result = Table.SelectColumns(
+				        Validated,
+				        {"Person ID", "Event_ID"}
+				    )
+				in
+				    Result
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,9 +1,9 @@
 relationship AutoDetected_d5620bbb-6a55-4121-8c7e-5bae56e5206b
-	fromColumn: bridge_PeopleTeams.Team_ID
+	fromColumn: bridge_People_Teams.Team_ID
 	toColumn: dim_Teams.Team_ID
 
 relationship 999993a0-c28c-457b-ad9f-847a228f92e4
-	fromColumn: bridge_PeopleTeams.'Person ID'
+	fromColumn: bridge_People_Teams.'Person ID'
 	toColumn: dim_People.'Person ID'
 
 relationship AutoDetected_dcca0472-39d4-42ea-9197-8850038404cb
@@ -13,4 +13,25 @@ relationship AutoDetected_dcca0472-39d4-42ea-9197-8850038404cb
 relationship AutoDetected_9325fcd7-422d-4295-bec5-0122e36b5962
 	fromColumn: bridge_People_Workflow.'dim_ActiveWorkflow.Active Workflow ID'
 	toColumn: dim_ActiveWorkflow.'Active Workflow ID'
+
+relationship AutoDetected_5d7bf0e2-4fec-4adc-9d77-09d47f95f524
+	fromColumn: Bridge_AllocatedWorkers.'Person ID'
+	toColumn: dim_People.'Person ID'
+
+relationship AutoDetected_cab0b237-d388-4476-815e-6a59fa784279
+	fromColumn: Bridge_EventsAttended.'Person ID'
+	toColumn: dim_People.'Person ID'
+
+relationship AutoDetected_d2fcd337-c7bb-4acc-8992-e86549f66f7c
+	fromColumn: Bridge_AllocatedWorkers.Worker_ID
+	toColumn: dim_AllocatedWorkers.Worker_ID
+
+relationship AutoDetected_7358216b-9660-4eb2-86ad-0ccc68f9f4c6
+	fromColumn: Bridge_EventsAttended.Event_ID
+	toColumn: dim_EventsAttended.Event_ID
+
+relationship 0ab3e028-4e7e-4fae-a69f-9c4ab9449a24
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_People.DOB
+	toColumn: LocalDateTable_cb2fe19f-0197-478f-82a1-316b94a1289a.Date
 

@@ -1,4 +1,4 @@
-table bridge_PeopleTeams
+table bridge_People_Teams
 	lineageTag: 6c9b038f-6c7c-4824-a7a5-92e807f1a39b
 
 	column 'Person ID'
@@ -27,7 +27,7 @@ table bridge_PeopleTeams
 
 		annotation SummarizationSetBy = Automatic
 
-	partition bridge_PeopleTeams = m
+	partition bridge_People_Teams = m
 		mode: import
 		source =
 				let
