@@ -136,8 +136,8 @@
         },
         {
           "location": {
-            "x": 551.27534197569128,
-            "y": 0
+            "x": 560.94404166046809,
+            "y": 229.63161751345103
           },
           "nodeIndex": "dim_date",
           "nodeLineageTag": "0fa5862d-b221-46c1-bf41-e1bf3b503218",
@@ -145,7 +145,7 @@
             "height": 72,
             "width": 234
           },
-          "zIndex": 1,
+          "zIndex": 17,
           "expandedHeight": 248
         },
         {
@@ -242,11 +242,11 @@
             "height": 200,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 1
         }
       ],
       "name": "All tables",
-      "zoomValue": 32.911636365313612,
+      "zoomValue": 29.354741056933008,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
