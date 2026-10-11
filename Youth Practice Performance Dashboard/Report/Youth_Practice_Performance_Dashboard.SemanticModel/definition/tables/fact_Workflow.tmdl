@@ -1,0 +1,247 @@
+table fact_Workflow
+	lineageTag: 44f1a8de-f24b-4d20-a93f-b8cee8e7192d
+
+	column 'Active Workflow Key'
+		dataType: string
+		lineageTag: b84be6ac-51b9-4605-9116-ee4c42a3e93f
+		summarizeBy: none
+		sourceColumn: Active Workflow Key
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Person ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 4baad3b4-59b5-4faa-87b9-d33873cedbd8
+		summarizeBy: none
+		sourceColumn: Person ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkflowType
+		dataType: string
+		lineageTag: 74f9e5c8-b064-48cd-8311-3ddeb1d6c69f
+		summarizeBy: none
+		sourceColumn: WorkflowType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Level 3 Responsible Team'
+		dataType: string
+		lineageTag: fc5b5997-0337-49bb-bfc0-12e45acbf766
+		summarizeBy: none
+		sourceColumn: Level 3 Responsible Team
+
+		annotation SummarizationSetBy = Automatic
+
+	column TeamName
+		dataType: string
+		lineageTag: 13e0cec7-c109-4c30-9ebc-c09a746c3043
+		summarizeBy: none
+		sourceColumn: TeamName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Owner
+		dataType: string
+		lineageTag: df4aacf1-4a15-497d-a454-5ca6b8ba87d4
+		summarizeBy: none
+		sourceColumn: Owner
+
+		annotation SummarizationSetBy = Automatic
+
+	column WorkflowStep
+		dataType: string
+		lineageTag: 477ee3d4-3c05-44b2-8943-fed758e32240
+		summarizeBy: none
+		sourceColumn: WorkflowStep
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Referral Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: cffbb075-3785-4f89-bb96-19f046a215ca
+		summarizeBy: none
+		sourceColumn: Referral Date
+
+		variation Variation
+			isDefault
+			relationship: 7cc4d505-5264-4ad4-ab0b-37364949c8f7
+			defaultHierarchy: LocalDateTable_51739859-d1af-4b4c-9b9d-902a11598db8.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Active From'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 05b20db9-0049-4c0a-8c60-93efade0072f
+		summarizeBy: none
+		sourceColumn: Active From
+
+		variation Variation
+			isDefault
+			relationship: 9a8d7e04-b501-4dcf-a412-bd20db083910
+			defaultHierarchy: LocalDateTable_b443184e-4e51-4b50-88d0-61eba66eb0cb.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Active To'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5ea60593-713b-4ebe-b564-4cf85b2b3f49
+		summarizeBy: none
+		sourceColumn: Active To
+
+		variation Variation
+			isDefault
+			relationship: 555ef510-f9af-4d11-91c4-394c7b645fa4
+			defaultHierarchy: LocalDateTable_c2172d3a-5a53-4bcb-8339-f13ca7ff7260.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Age at Referral'
+		dataType: int64
+		formatString: 0
+		lineageTag: d940826b-09a5-4e9e-bd63-067faa39ea4d
+		summarizeBy: sum
+		sourceColumn: Age at Referral
+
+		annotation SummarizationSetBy = Automatic
+
+	column AssessmentWaitDays
+		dataType: double
+		lineageTag: 4158c469-a4ee-447b-a4ef-acfed96af0b1
+		summarizeBy: sum
+		sourceColumn: AssessmentWaitDays
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LengthOfWorkDays
+		dataType: double
+		lineageTag: 7f747f02-c663-4bdd-9e18-7bdc688d929f
+		summarizeBy: sum
+		sourceColumn: LengthOfWorkDays
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Satisfaction Survey Response'
+		dataType: string
+		lineageTag: 5e83689d-8167-4c03-962b-75c847de8098
+		summarizeBy: none
+		sourceColumn: Satisfaction Survey Response
+
+		annotation SummarizationSetBy = Automatic
+
+	column ActiveFromDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 32ac8701-6dd3-4969-9409-34d27ddf6b0f
+		summarizeBy: none
+		sourceColumn: ActiveFromDate
+
+		variation Variation
+			isDefault
+			relationship: 088bdb86-3833-4786-baa5-4f0ced0d5302
+			defaultHierarchy: LocalDateTable_b3e9411a-8679-4e62-b30b-f4fd1e3e47e0.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ActiveToDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 29381e31-0476-4616-bba3-04eaa507190f
+		summarizeBy: none
+		sourceColumn: ActiveToDate
+
+		variation Variation
+			isDefault
+			relationship: b8b732d7-5687-4073-9bf9-b38948423ca8
+			defaultHierarchy: LocalDateTable_f2d0b22f-2318-4546-87da-35905758a813.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column IsFirstCase
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: c52c18ae-9063-4873-8cc3-75f39205b6cb
+		summarizeBy: none
+		sourceColumn: IsFirstCase
+
+		annotation SummarizationSetBy = Automatic
+
+	column SurveySent
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 37c3bd20-22c4-4ec4-8dc4-2f8a97c1abba
+		summarizeBy: none
+		sourceColumn: SurveySent
+
+		annotation SummarizationSetBy = Automatic
+
+	column Team_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 526d1592-99e7-4eee-b81d-5e949281ef19
+		summarizeBy: none
+		sourceColumn: Team_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_Workflow = m
+		mode: import
+		queryGroup: Gold\Facts
+		source =
+				let
+				    Source = silver_ActiveWorkflows,
+				    Selected = Table.SelectColumns(Source, {
+				        "Active Workflow Key", "Person ID", "Name of Workflow", "Level 3 Responsible Team",
+				        "Level 4 Team", "Owner", "Most Recent Step", "Referral Date", "Active From",
+				        "Active To", "Age at Referral", "Time from Referral to Assessment",
+				        "Length of Work (days)", "First Case for SU?", "Satisfaction Survey Response"
+				    }, MissingField.UseNull),
+				    Renamed = Table.RenameColumns(Selected, {
+				        {"Name of Workflow", "WorkflowType"},
+				        {"Level 4 Team", "TeamName"},
+				        {"Time from Referral to Assessment", "AssessmentWaitDays"},
+				        {"Length of Work (days)", "LengthOfWorkDays"},
+				        {"Most Recent Step", "WorkflowStep"}
+				    }),
+				    ToDate = Table.AddColumn(Renamed, "ActiveFromDate", each
+				        try Date.From([Active From]) otherwise null, type nullable date),
+				    ToDate2 = Table.AddColumn(ToDate, "ActiveToDate", each
+				        try Date.From([Active To]) otherwise null, type nullable date),
+				    FirstCase = Table.AddColumn(ToDate2, "IsFirstCase", each
+				        if [#"First Case for SU?"] = null then null
+				        else if Text.Upper(Text.From([#"First Case for SU?"])) = "Y"
+				             or Text.Upper(Text.From([#"First Case for SU?"])) = "YES" then true
+				        else if Text.Upper(Text.From([#"First Case for SU?"])) = "N"
+				             or Text.Upper(Text.From([#"First Case for SU?"])) = "NO" then false
+				        else null, type nullable logical),
+				    Survey = Table.AddColumn(FirstCase, "SurveySent", each
+				        if [Satisfaction Survey Response] = "Yes" then true
+				        else if [Satisfaction Survey Response] = "No" then false
+				        else null, type nullable logical),
+				    JoinTeams = Table.NestedJoin(Survey, {"TeamName"},
+				        dim_Teams, {"Teams Involved"}, "TeamMatch", JoinKind.LeftOuter),
+				    WithTeamID = Table.ExpandTableColumn(JoinTeams, "TeamMatch", {"Team_ID"}, {"Team_ID"}),
+				    Final = Table.RemoveColumns(WithTeamID, {"First Case for SU?"}),
+				    UniqueCheck = if Table.RowCount(Final) = List.Count(List.Distinct(Final[Active Workflow Key]))
+				        then Final else error "Workflow key is not unique. Check bronze_ActiveWorkflowsReport"
+				in
+				    UniqueCheck
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

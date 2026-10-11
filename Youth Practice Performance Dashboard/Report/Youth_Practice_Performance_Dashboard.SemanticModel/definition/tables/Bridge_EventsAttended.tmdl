@@ -21,9 +21,10 @@ table Bridge_EventsAttended
 
 	partition Bridge_EventsAttended = m
 		mode: import
+		queryGroup: Gold\Bridges
 		source =
 				let
-				    Source = silver_People,
+				    Source = silver_PeopleWorkedWith,
 				
 				    SelectedColumns = Table.SelectColumns(
 				        Source,

@@ -42,14 +42,6 @@ table dim_People
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Sex - By Birth'
-		dataType: string
-		lineageTag: b8208ddf-4399-4bf4-a754-abef1e6b2caf
-		summarizeBy: none
-		sourceColumn: Sex - By Birth
-
-		annotation SummarizationSetBy = Automatic
-
 	column Gender
 		dataType: string
 		lineageTag: ad8da5ac-37e6-441f-9c6e-8e4f96839687
@@ -122,23 +114,6 @@ table dim_People
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Age when work in period started'
-		dataType: int64
-		formatString: 0
-		lineageTag: 67e46222-1b7d-4365-91a9-e65672db8168
-		summarizeBy: sum
-		sourceColumn: Age when work in period started
-
-		annotation SummarizationSetBy = Automatic
-
-	column Address
-		dataType: string
-		lineageTag: a9fd2421-cc26-4849-8623-314d89edf0fa
-		summarizeBy: none
-		sourceColumn: Address
-
-		annotation SummarizationSetBy = Automatic
-
 	column Authority
 		dataType: string
 		lineageTag: baeb9828-bba7-4540-a7e5-29789ff7a264
@@ -187,14 +162,6 @@ table dim_People
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'LAC 20 '
-		dataType: string
-		lineageTag: a91a36c3-c6bf-4ca0-a07e-375ae8007dc0
-		summarizeBy: none
-		sourceColumn: "LAC 20 "
-
-		annotation SummarizationSetBy = Automatic
-
 	column 'Looked After (Section 31)'
 		dataType: string
 		lineageTag: 63306e75-de76-41bd-ad0f-d8ab803904e2
@@ -211,14 +178,127 @@ table dim_People
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Display Name'
+		dataType: string
+		lineageTag: 16520695-0c98-4276-a8ff-15dd87378f71
+		summarizeBy: none
+		sourceColumn: Display Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'DOB Estimated'
+		dataType: string
+		lineageTag: 4b039de6-0355-4836-aa70-8be0d877cad8
+		summarizeBy: none
+		sourceColumn: DOB Estimated
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sex - By Birth'
+		dataType: string
+		lineageTag: ab0b81f2-2a43-4859-b549-e569885ecfe1
+		summarizeBy: none
+		sourceColumn: Sex - By Birth
+
+		annotation SummarizationSetBy = Automatic
+
+	column District
+		dataType: string
+		lineageTag: 70db6589-8721-43e5-a0ef-5b976229939b
+		summarizeBy: none
+		sourceColumn: District
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ward
+		dataType: string
+		lineageTag: 99bf879d-dd02-43c1-806d-8cde3ef3926e
+		summarizeBy: none
+		sourceColumn: Ward
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'LAC 20'
+		dataType: string
+		lineageTag: bee303f5-c6a3-4d18-9859-3a727ae01898
+		summarizeBy: none
+		sourceColumn: LAC 20
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sources Present'
+		dataType: string
+		lineageTag: f9a85ee8-bb28-45de-ad4a-14c3b4b02a05
+		summarizeBy: none
+		sourceColumn: Sources Present
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Potential Conflicts'
+		dataType: string
+		lineageTag: 56320da7-7ec1-4372-8564-d4129096b44e
+		summarizeBy: none
+		sourceColumn: Potential Conflicts
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Age At Refresh'
+		dataType: int64
+		formatString: 0
+		lineageTag: 3941baed-d855-447f-832e-9b8b3a323fa5
+		summarizeBy: sum
+		sourceColumn: Age At Refresh
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Age Band At Refresh'
+		dataType: string
+		lineageTag: 4c10b506-3aeb-4771-96d5-6383db670046
+		summarizeBy: none
+		sourceColumn: Age Band At Refresh
+
+		annotation SummarizationSetBy = Automatic
+
 	partition dim_People = m
 		mode: import
-		source =
+		queryGroup: Gold\Dims
+		source = ```
 				let
-				    Source = silver_People,
-				    #"Removed Columns" = Table.RemoveColumns(Source,{"Teams Involved", "Active Workflows", "Events Attended", "Allocated Workers"})
+				    
+				    Source = gold_People_Master,
+				    Selected = Table.SelectColumns(Source, {
+				        "Person ID", "Display Name", "First Name", "Last Name", "DOB", "DOB Estimated",
+				        "Sex - By Birth", "Gender", "Ethnicity", "Religion", "Disability", "Context",
+				        "First Language", "Fluency in English", "Nationality", "Country of Birth",
+				        "Authority", "District", "Ward", "Household Structure", "Tenure Type",
+				        "CAF Category", "CIN Plan", "CP Plan", "LAC 20",
+				        "Looked After (Section 31)", "Care Leaver (Not Section 20 or 31)",
+				        "Sources Present", "Potential Conflicts"
+				    }, MissingField.UseNull),
+				    Typed = Table.TransformColumnTypes(Selected,
+				        {{"Person ID", Int64.Type}, {"DOB", type date}}),
+				    Valid = Table.SelectRows(Typed, each [Person ID] <> null),
+				    // DOB-based age is a refresh-date indicator, NOT age at referral or assessment.
+				    Today = Date.From(DateTime.FixedLocalNow()),
+				    AddAge = Table.AddColumn(Valid, "Age At Refresh", each
+				        if [DOB] = null then null else
+				        Date.Year(Today) - Date.Year([DOB]) -
+				        (if Date.Month(Today) < Date.Month([DOB]) or
+				            (Date.Month(Today) = Date.Month([DOB]) and Date.Day(Today) < Date.Day([DOB]))
+				         then 1 else 0), Int64.Type),
+				    AddBand = Table.AddColumn(AddAge, "Age Band At Refresh", each
+				        if [Age At Refresh] = null then "Unknown"
+				        else if [Age At Refresh] < 11 then "Under 11"
+				        else if [Age At Refresh] <= 15 then "11-15"
+				        else if [Age At Refresh] <= 17 then "16-17"
+				        else if [Age At Refresh] <= 20 then "18-20"
+				        else if [Age At Refresh] <= 25 then "21-25"
+				        else "Over 25", type text),
+				    UniqueCheck = if Table.RowCount(AddBand) = List.Count(List.Distinct(AddBand[Person ID]))
+				        then AddBand else error "dim_People has duplicate Person ID values; check silver_PeopleMaster"
 				in
-				    #"Removed Columns"
+				    UniqueCheck
+				```
 
 	annotation PBI_NavigationStepName = Navigation
 

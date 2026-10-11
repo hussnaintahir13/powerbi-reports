@@ -20,9 +20,10 @@ table dim_AllocatedWorkers
 
 	partition dim_AllocatedWorkers = m
 		mode: import
+		queryGroup: Gold\Dims
 		source =
 				let
-				    Source = silver_People,
+				    Source = silver_PeopleWorkedWith,
 				
 				    SelectedColumns = Table.SelectColumns(
 				        Source, {"Allocated Workers"}
@@ -70,5 +71,5 @@ table dim_AllocatedWorkers
 
 	annotation PBI_NavigationStepName = Navigation
 
-	annotation PBI_ResultType = Exception
+	annotation PBI_ResultType = Table
 

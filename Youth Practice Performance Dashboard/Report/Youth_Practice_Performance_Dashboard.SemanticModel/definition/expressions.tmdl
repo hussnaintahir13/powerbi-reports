@@ -1,4 +1,4 @@
-expression bronze_stg_peopleUnder25 =
+expression bronze_peopleUnder25 =
 		let
 		    Source = Excel.Workbook(File.Contents("C:\Users\Test\Downloads\insightdataanalysttaskbrief\People Worked With Report_Anon.xlsx"), null, true),
 		    Sheet2_Sheet = Source{[Item="Sheet2",Kind="Sheet"]}[Data],
@@ -7,12 +7,13 @@ expression bronze_stg_peopleUnder25 =
 		in
 		    #"Changed Type"
 	lineageTag: 1abe4089-53b6-41f9-b024-f5241271a591
+	queryGroup: 'Bronze\People Worked With'
 
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Table
 
-expression bronze_stg_peopleOver25 =
+expression bronze_peopleOver25 =
 		let
 		    Source = Excel.Workbook(File.Contents("C:\Users\Test\Downloads\insightdataanalysttaskbrief\People Worked With Report_Anon.xlsx"), null, true),
 		    Sheet3_Sheet = Source{[Item="Sheet3",Kind="Sheet"]}[Data],
@@ -22,23 +23,822 @@ expression bronze_stg_peopleOver25 =
 		in
 		    #"Removed Columns"
 	lineageTag: 9666da4f-f339-4385-b74d-d9f50bdffab3
+	queryGroup: 'Bronze\People Worked With'
 
 	annotation PBI_NavigationStepName = Navigation
 
 	annotation PBI_ResultType = Table
 
-expression silver_People =
+expression silver_PeopleWorkedWith =
 		let
-		    Source = Table.Combine({bronze_stg_peopleUnder25, bronze_stg_peopleOver25}),
-		    #"Removed Columns" = Table.RemoveColumns(Source,{"Family ID"}),
-		    #"Removed Duplicates" = Table.Distinct(#"Removed Columns", {"Person ID"}),
-		    #"Removed Blank Rows" = Table.SelectRows(#"Removed Duplicates", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null}))),
-		    #"Renamed Columns" = Table.RenameColumns(#"Removed Blank Rows",{{"Sex", "Sex - By Birth"}}),
-		    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"DOB", type date}}),
-		    #"Removed Columns1" = Table.RemoveColumns(#"Changed Type",{"Email Address", "Telephone", "Ward", "District", "Postcode"})
+		    // Combine both population extracts
+		    Source = Table.Combine({
+		        bronze_peopleUnder25,
+		        bronze_peopleOver25
+		    }),
+		
+		    // Keep only records with valid Person IDs
+		    #"Valid Person IDs" = Table.SelectRows(
+		        Source,
+		        each [Person ID] <> null
+		          and Text.Trim(Text.From([Person ID])) <> ""
+		    ),
+		
+		    // Remove unnecessary contact information
+		    #"Removed Contact Details" = Table.RemoveColumns(
+		        #"Valid Person IDs",
+		        {"Email Address", "Telephone"},
+		        MissingField.Ignore
+		    ),
+		
+		    // Preserve existing column naming
+		    #"Renamed Columns" = Table.RenameColumns(
+		        #"Removed Contact Details",
+		        {{"Sex", "Sex - By Birth"}}
+		    ),
+		
+		    // Convert date of birth
+		    #"Changed Type" = Table.TransformColumnTypes(
+		        #"Renamed Columns",
+		        {{"DOB", type date}}
+		    ),
+		
+		    // Ensure one row per Person ID in this extract
+		    #"Removed Duplicates" = Table.Distinct(
+		        #"Changed Type",
+		        {"Person ID"}
+		    )
+		
 		in
-		    #"Removed Columns1"
+		    #"Removed Duplicates"
 	lineageTag: 278ef538-1cdb-4241-baa8-3c29c355e730
+	queryGroup: Silver
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression bronze_ActiveWorkflowsReport =
+		let
+		    Source = Excel.Workbook(File.Contents("C:\PowerBI Report\Youth Practice Performance Dashboard\DataSources\Active Workflows Report_Anon.xlsx"), null, true),
+		    #"Active Workflows Report_Sheet" = Source{[Item="Active Workflows Report",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Active Workflows Report_Sheet", [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Active Workflow Key", type text}, {"Person ID", Int64.Type}, {"First Name", type text}, {"Surname", type text}, {"Family Group / Group Title", type any}, {"Class", type text}, {"Sex", type text}, {"Gender", type text}, {"Ethnicity", type text}, {"Religion", type text}, {"Country of Birth", type text}, {"First Language", type text}, {"Fluency in English", type text}, {"Nationality", type text}, {"Date of Birth", type date}, {"DOB is Estimated?", type text}, {"Age Now", Int64.Type}, {"Age at Referral", Int64.Type}, {"Address", type text}, {"District", type any}, {"Post Code", type any}, {"Authority", type text}, {"Ward", type any}, {"Household Structure", type text}, {"Tenure Type", type any}, {"Telephone", type any}, {"Email Address", type any}, {"Allocated Workers", type text}, {"Employement Status", type any}, {"CAF Category", type any}, {"CIN Plan", type text}, {"CP Plan", type text}, {"LAC 20", type any}, {"Looked After Section 31", type any}, {"Care Leaver Not Section 20 or 31", type text}, {"Referral Date", type any}, {"Active From", type any}, {"Active To", type any}, {"Time from Referral to Assessment", Int64.Type}, {"Review Dates", type text}, {"Length of Work (days)", Int64.Type}, {"First Case for SU?", type text}, {"Level 3 Responsible Team", type text}, {"Level 4 Team", type text}, {"Name of Workflow", type text}, {"Most Recent Step", type text}, {"Owner", type text}, {"Have you sent the CYP#(lf)the Satisfaction Survey?", type text}, {"Column49", type any}}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Family Group / Group Title", "Column49"})
+		in
+		    #"Removed Columns"
+	lineageTag: 822dd25f-4840-4c36-a88f-ea43f9cfa442
+	queryGroup: Bronze\Workflows
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression silver_CaseNotes =
+		let
+		    Source = bronze_case_notes,
+		    Headers = if Table.HasColumns(Source, "Person ID") then Source
+		              else Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    CleanHeaders = Table.TransformColumnNames(Headers, each Text.Trim(Text.Clean(_))),
+		    Types = Table.TransformColumnTypes(CleanHeaders, {
+		        {"Person ID", Int64.Type}, {"Worker ID", Int64.Type},
+		        {"Person Name", type text}, {"Person Last Name", type text},
+		        {"Worker Name", type text}, {"Type of Note", type text},
+		        {"Teams involved", type text}, {"DOB", type date},
+		        {"Date and Time", type datetime}, {"Age at Case Note", Int64.Type},
+		        {"Minutes Spent", type nullable number},
+		        {"Postcode", type text}, {"Authority", type text},
+		        {"Copied case note", type text}, {"Appended case note", type text},
+		        {"Significant event", type text}, {"Finished", type text}
+		    }),
+		    TextFields = {"Person Name", "Person Last Name", "Worker Name", "Type of Note",
+		        "Teams involved", "Sex", "Gender", "Ethnicity", "Religion", "Authority", "Postcode",
+		        "Title", "Copied case note", "Appended case note", "Significant event", "Finished"},
+		    CleanText = Table.TransformColumns(Types,
+		        List.Transform(List.Intersect({TextFields, Table.ColumnNames(Types)}),
+		            (c) => {c, (x) => if x = null then null else
+		                let v = Text.Trim(Text.Clean(Text.From(x))) in if v = "" then null else v, type nullable text})),
+		    Valid = Table.SelectRows(CleanText, each [Person ID] <> null and [Date and Time] <> null),
+		    #"Removed Columns" = Table.RemoveColumns(Valid,{"Family ID"}),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Removed Columns",{{"Date and Time", type date}})
+		in
+		    #"Changed Type"
+	lineageTag: 56bcacd3-182d-418b-bec8-9066ce110de9
+	queryGroup: Silver
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression bronze_peopleSummary =
+		let
+		    Source = Excel.Workbook(File.Contents("C:\Users\Test\Downloads\insightdataanalysttaskbrief\People Worked With Report_Anon.xlsx"), null, true),
+		    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"CYP Worked With", Int64.Type}, {"Adults Worked With", Int64.Type}, {"CYP Case Work", Int64.Type}, {"CYP Receiving AIG", Int64.Type}, {"Adults Case Work#(lf)", Int64.Type}, {"Adults Receiving AIG", Int64.Type}, {"Total Individuals Worked With", Int64.Type}, {"Column8", type any}}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column8"})
+		in
+		    #"Removed Columns"
+	lineageTag: b6509909-3027-4898-b94e-e36b34966edd
+	queryGroup: 'Bronze\People Worked With'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression bronze_Goals_GoalsPerPerson =
+		let
+		    Source = Excel.Workbook(File.Contents("C:\PowerBI Report\Youth Practice Performance Dashboard\DataSources\Goal Based Outomes Tool Report_Anon.xlsx"), null, true),
+		    Sheet2_Sheet = Source{[Item="Sheet2",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Sheet2_Sheet, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Person ID", Int64.Type}, {"Name", type text}, {"Form ID", Int64.Type}, {"Goal Number", Int64.Type}, {"Goal", type text}, {"Session 1 Date", type datetime}, {"Session 1 Progress", Int64.Type}, {"Session 2 Date", type datetime}, {"Session 2 Progress", Int64.Type}, {"Session 3 Date", type datetime}, {"Session 3 Progress", Int64.Type}, {"Session 4 Date", type any}, {"Session 4 Progress", type any}, {"Session 5 Date", type any}, {"Session 5 Progress", type any}, {"Session 6 Date", type any}, {"Session 6 Progress", type any}, {"Session 7 Date", type any}, {"Session 7 Progress", type any}, {"Session 8 Date", type any}, {"Session 8 Progress", type any}, {"Session 9 Date", type any}, {"Session 9 Progress", type any}, {"Session 10 Date", type any}, {"Session 10 Progress", type any}, {"Team", type text}, {"Person ID_1", Int64.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: 9d3e4c34-cd01-4ee6-bd4e-908b7c354d86
+	queryGroup: Bronze\Goals
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression bronze_Goals_incompleteGoals =
+		let
+		    Source = Excel.Workbook(File.Contents("C:\PowerBI Report\Youth Practice Performance Dashboard\DataSources\Goal Based Outomes Tool Report_Anon.xlsx"), null, true),
+		    Sheet3_Sheet = Source{[Item="Sheet3",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Sheet3_Sheet, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Person ID", Int64.Type}, {"Name", type text}, {"Age", Int64.Type}, {"Sex", type text}, {"Gender", type text}, {"Ethnicity", type text}, {"Form ID", Int64.Type}, {"Goal 1", type text}, {"Goal 2", type text}, {"Goal 3", type text}, {"Team", type text}, {"Person ID_1", Int64.Type}})
+		in
+		    #"Changed Type"
+	lineageTag: 613ca3fb-e888-42a2-ace8-31daa34d79bf
+	queryGroup: Bronze\Goals
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression bronze_Goals_AllGoalsAndChange =
+		let
+		    Source = Excel.Workbook(File.Contents("C:\PowerBI Report\Youth Practice Performance Dashboard\DataSources\Goal Based Outomes Tool Report_Anon.xlsx"), null, true),
+		    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Person ID", Int64.Type}, {"Name", type text}, {"Age", Int64.Type}, {"Sex", type text}, {"Gender", type text}, {"Ethnicity", type text}, {"Postcode", type any}, {"Form ID", Int64.Type}, {"Goal 1", type text}, {"Goal 1 Earliest session date", type datetime}, {"Goal 1 Earliest session progress", Int64.Type}, {"Goal 1 Latest session date", type datetime}, {"Goal 1 Latest session progress", Int64.Type}, {"Goal 1 Change", Int64.Type}, {"Goal 2", type text}, {"Goal 2 Earliest session date", type datetime}, {"Goal 2 Earliest session progress", Int64.Type}, {"Goal 2 Latest session date", type datetime}, {"Goal 2 Latest session progress", Int64.Type}, {"Goal 2 Change", Int64.Type}, {"Goal 3", type text}, {"Goal 3 Earliest session date", type datetime}, {"Goal 3 Earliest session progress", Int64.Type}, {"Goal 3 Latest session date", type datetime}, {"Goal 3 Latest session progress", Int64.Type}, {"Goal 3 Change", Int64.Type}, {"Team Involved", type text}, {"Total Earliest Progress Score", Int64.Type}, {"Total Latest Progress Score", Int64.Type}, {"Overall Change", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: 06942ba2-c55d-4523-8811-d3d6aa591cb6
+	queryGroup: Bronze\Goals
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression silver_ActiveWorkflows =
+		let
+		    Source = bronze_ActiveWorkflowsReport,
+		    Headers = if Table.HasColumns(Source, "Active Workflow Key") then Source
+		              else Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+		    CleanHeaders = Table.TransformColumnNames(Headers, each Text.Trim(Text.Clean(_))),
+		    // The source header contains an embedded line-break; locate it by words rather than literal bytes.
+		    SurveyColumns = List.Select(Table.ColumnNames(CleanHeaders),
+		        each Text.Contains(_, "Satisfaction Survey", Comparer.OrdinalIgnoreCase)),
+		    Renamed = if List.IsEmpty(SurveyColumns) then CleanHeaders else
+		        Table.RenameColumns(CleanHeaders, {{SurveyColumns{0}, "Satisfaction Survey Response"}}),
+		    Typed = Table.TransformColumns(Renamed, {
+		        {"Active Workflow Key", each if _ = null then null else Text.From(_), type nullable text},
+		        {"Person ID", each try Int64.From(_) otherwise null, Int64.Type},
+		        {"Referral Date", each try Date.From(_) otherwise null, type nullable date},
+		        {"Active From", each try DateTime.From(_) otherwise null, type nullable datetime},
+		        {"Active To", each try DateTime.From(_) otherwise null, type nullable datetime},
+		        {"Age at Referral", each try Int64.From(_) otherwise null, Int64.Type},
+		        {"Time from Referral to Assessment", each try Number.From(_) otherwise null, type nullable number},
+		        {"Length of Work (days)", each try Number.From(_) otherwise null, type nullable number}
+		    }),
+		    TextFields = {"Level 3 Responsible Team", "Level 4 Team", "Name of Workflow",
+		        "Most Recent Step", "Owner", "Satisfaction Survey Response", "First Case for SU?"},
+		    CleanText = Table.TransformColumns(Typed, List.Transform(
+		        List.Intersect({TextFields, Table.ColumnNames(Typed)}), (c) =>
+		            {c, (x) => if x = null then null else
+		                let v = Text.Trim(Text.Clean(Text.From(x))) in if v = "" then null else v, type nullable text})),
+		    Valid = Table.SelectRows(CleanText, each [Active Workflow Key] <> null and [Person ID] <> null)
+		in
+		    Valid
+	lineageTag: 61d8f71e-bc41-44aa-b823-77da53d8eab3
+	queryGroup: Silver
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression silver_GoalForms =
+		let
+		    // Sheet1 contains goal-form summaries; Sheet3 contains explicitly incomplete forms.
+		    Standardise = (t as table, status as text, teamColumn as text) as table =>
+		        let
+		            Columns = Table.SelectColumns(t, {"Person ID", "Form ID", teamColumn,
+		                "Goal 1", "Goal 2", "Goal 3", "Overall Change",
+		                "Total Earliest Progress Score", "Total Latest Progress Score",
+		                "Goal 1 Latest session date", "Goal 2 Latest session date", "Goal 3 Latest session date"},
+		                MissingField.UseNull),
+		            Renamed = Table.RenameColumns(Columns, {{teamColumn, "TeamName"}}),
+		            Typed = Table.TransformColumns(Renamed, {
+		                {"Person ID", each try Int64.From(_) otherwise null, Int64.Type},
+		                {"Form ID", each try Int64.From(_) otherwise null, Int64.Type},
+		                {"Total Earliest Progress Score", each try Number.From(_) otherwise null, type nullable number},
+		                {"Total Latest Progress Score", each try Number.From(_) otherwise null, type nullable number},
+		                {"Goal 1 Latest session date", each try Date.From(_) otherwise null, type nullable date},
+		                {"Goal 2 Latest session date", each try Date.From(_) otherwise null, type nullable date},
+		                {"Goal 3 Latest session date", each try Date.From(_) otherwise null, type nullable date}
+		            }),
+		            CleanTeam = Table.TransformColumns(Typed, {{"TeamName", each if _ = null then null else Text.Trim(Text.Clean(Text.From(_))), type nullable text}}),
+		            AddStatus = Table.AddColumn(CleanTeam, "FormSourceStatus", each status, type text),
+		            AddGoalCount = Table.AddColumn(AddStatus, "GoalsSpecified", each
+		                List.Count(List.Select({[#"Goal 1"], [#"Goal 2"], [#"Goal 3"]},
+		                    (g) => g <> null and Text.Trim(Text.From(g)) <> "")), Int64.Type),
+		            AddLatestDate = Table.AddColumn(AddGoalCount, "LatestAssessmentDate", each
+		                let dates = List.RemoveNulls({[#"Goal 1 Latest session date"], [#"Goal 2 Latest session date"], [#"Goal 3 Latest session date"]})
+		                in if List.IsEmpty(dates) then null else List.Max(dates), type nullable date),
+		            Valid = Table.SelectRows(AddLatestDate, each [Form ID] <> null and [Person ID] <> null)
+		        in Valid,
+		    Summary = Standardise(bronze_Goals_AllGoalsAndChange, "Goals summary", "Team Involved"),
+		    Incomplete = Standardise(bronze_Goals_incompleteGoals, "Incomplete", "Team"),
+		    Combined = Table.Combine({Summary, Incomplete})
+		in
+		    Combined
+	lineageTag: 9e2b05fd-df6c-43e3-a7c0-cf33a6d1be16
+	queryGroup: Silver
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression silver_GoalSessions =
+		let
+		    Source = silver_GoalRecords,
+		
+		    RequiredKeys = {
+		        "Person ID", "Form ID",
+		        "Goal Number", "GoalKey", "TeamName"
+		    },
+		
+		    SessionColumns = List.Combine(
+		        List.Transform({1..10}, (n) =>
+		            {
+		                "Session " & Text.From(n) & " Date",
+		                "Session " & Text.From(n) & " Progress"
+		            }
+		        )
+		    ),
+		
+		    MissingColumns = List.Difference(
+		        RequiredKeys & SessionColumns,
+		        Table.ColumnNames(Source)
+		    ),
+		
+		    Checked =
+		        if List.IsEmpty(MissingColumns) then Source
+		        else error
+		            "silver_GoalRecords is missing: " &
+		            Text.Combine(MissingColumns, ", "),
+		
+		    // Generate one record for every goal session
+		    AllSessionRecords = List.Combine(
+		        List.Transform(
+		            Table.ToRecords(Checked),
+		            (r as record) =>
+		                List.Transform(
+		                    {1..10},
+		                    (n as number) =>
+		                        let
+		                            SessionDateValue = Record.Field(
+		                                r,
+		                                "Session " & Text.From(n) & " Date"
+		                            ),
+		
+		                            SessionScoreValue = Record.Field(
+		                                r,
+		                                "Session " & Text.From(n) & " Progress"
+		                            )
+		                        in
+		                            [
+		                                #"Person ID" =
+		                                    Record.Field(r, "Person ID"),
+		                                #"Form ID" =
+		                                    Record.Field(r, "Form ID"),
+		                                #"Goal Number" =
+		                                    Record.Field(r, "Goal Number"),
+		                                GoalKey =
+		                                    Record.Field(r, "GoalKey"),
+		                                TeamName =
+		                                    Record.Field(r, "TeamName"),
+		                                SessionNumber = n,
+		                                SessionDate =
+		                                    try Date.From(SessionDateValue)
+		                                    otherwise null,
+		                                ProgressScore =
+		                                    try Number.From(SessionScoreValue)
+		                                    otherwise null
+		                            ]
+		                )
+		        )
+		    ),
+		
+		    Expanded = Table.FromRecords(
+		        AllSessionRecords,
+		        {
+		            "Person ID", "Form ID",
+		            "Goal Number", "GoalKey", "TeamName",
+		            "SessionNumber", "SessionDate",
+		            "ProgressScore"
+		        },
+		        MissingField.UseNull
+		    ),
+		
+		    ScoredSessions = Table.SelectRows(
+		        Expanded,
+		        each [SessionDate] <> null
+		            and [ProgressScore] <> null
+		    ),
+		
+		    Typed = Table.TransformColumnTypes(
+		        ScoredSessions,
+		        {
+		            {"Person ID", Int64.Type},
+		            {"Form ID", Int64.Type},
+		            {"Goal Number", Int64.Type},
+		            {"GoalKey", type text},
+		            {"TeamName", type text},
+		            {"SessionNumber", Int64.Type},
+		            {"SessionDate", type date},
+		            {"ProgressScore", type number}
+		        }
+		    )
+		in
+		    Typed
+	lineageTag: 64a1ddbc-8050-4bcc-a9bf-4acfabaabf46
+	queryGroup: Silver
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression silver_GoalRecords =
+		let
+		    Source = bronze_Goals_GoalsPerPerson,
+		    Required = {"Person ID", "Form ID", "Goal Number", "Goal", "Team"} &
+		        List.Combine(List.Transform({1..10}, (n) =>
+		            {"Session " & Text.From(n) & " Date", "Session " & Text.From(n) & " Progress"})),
+		    Selected = Table.SelectColumns(Source, Required, MissingField.UseNull),
+		    Renamed = Table.RenameColumns(Selected, {{"Team", "TeamName"}}),
+		    Typed = Table.TransformColumns(Renamed, {
+		        {"Person ID", each try Int64.From(_) otherwise null, Int64.Type},
+		        {"Form ID", each try Int64.From(_) otherwise null, Int64.Type},
+		        {"Goal Number", each try Int64.From(_) otherwise null, Int64.Type},
+		        {"TeamName", each if _ = null then null else Text.Trim(Text.Clean(Text.From(_))), type nullable text},
+		        {"Goal", each if _ = null then null else Text.Trim(Text.Clean(Text.From(_))), type nullable text}
+		    }),
+		    Valid = Table.SelectRows(Typed, each [Person ID] <> null and [Form ID] <> null and [Goal Number] <> null),
+		    AddGoalKey = Table.AddColumn(Valid, "GoalKey", each
+		        Text.From([Form ID]) & "|" & Text.From([Goal Number]), type text)
+		in
+		    AddGoalKey
+	lineageTag: 946a3fce-9da5-458d-9189-c633a61be672
+	queryGroup: Silver
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression bronze_case_notes =
+		let
+		    Source = Excel.Workbook(File.Contents("C:\PowerBI Report\Youth Practice Performance Dashboard\DataSources\Case Notes Report_Anon.xlsx"), null, true),
+		    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Person ID", Int64.Type}, {"Family ID", type any}, {"Person Name", type text}, {"Person Last Name", type text}, {"Sex", type text}, {"Gender", type text}, {"Ethnicity", type text}, {"Religion", type text}, {"DOB", type datetime}, {"DOB is estimated", type text}, {"Age at Case Note", Int64.Type}, {"Postcode", type any}, {"Authority", type any}, {"Teams involved", type text}, {"Worker ID", Int64.Type}, {"Worker Name", type text}, {"Title", type text}, {"Minutes Spent", Int64.Type}, {"Type of Note", type text}, {"Date and Time", type datetime}, {"Copied case note", type text}, {"Appended case note", type text}, {"Significant event", type text}, {"Finished", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: 79104600-92b1-4ee4-b414-5d56f8ceccf0
+	queryGroup: 'Bronze\Case Notes'
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression gold_People_Master =
+		let
+		    // =====================================================
+		    // 1. DEFINE MASTER PERSON COLUMNS
+		    // =====================================================
+		
+		    PersonColumns = {
+		        "Person ID",
+		        "First Name",
+		        "Last Name",
+		        "Full Name",
+		        "Family ID",
+		        "DOB",
+		        "DOB Estimated",
+		        "Sex - By Birth",
+		        "Gender",
+		        "Ethnicity",
+		        "Religion",
+		        "Disability",
+		        "Context",
+		        "First Language",
+		        "Fluency in English",
+		        "Nationality",
+		        "Country of Birth",
+		        "Authority",
+		        "District",
+		        "Ward",
+		        "Postcode",
+		        "Household Structure",
+		        "Tenure Type",
+		        "CAF Category",
+		        "CIN Plan",
+		        "CP Plan",
+		        "LAC 20",
+		        "Looked After (Section 31)",
+		        "Care Leaver (Not Section 20 or 31)"
+		    },
+		
+		    AttributeColumns =
+		        List.RemoveItems(
+		            PersonColumns,
+		            {"Person ID"}
+		        ),
+		
+		    // =====================================================
+		    // 2. FUNCTION TO STANDARDISE PERSON DATA
+		    // =====================================================
+		
+		    StandardisePeople = (
+		        SourceTable as table,
+		        RenamePairs as list,
+		        Priority as number,
+		        SourceName as text
+		    ) as table =>
+		    let
+		        CleanHeaders = Table.TransformColumnNames(
+		            SourceTable,
+		            each Text.Trim(_)
+		        ),
+		
+		        Renamed = List.Accumulate(
+		            RenamePairs,
+		            CleanHeaders,
+		            (CurrentTable as table, Pair as list) =>
+		                if Table.HasColumns(CurrentTable, Pair{0})
+		                    and not Table.HasColumns(CurrentTable, Pair{1})
+		                then
+		                    Table.RenameColumns(
+		                        CurrentTable,
+		                        {{Pair{0}, Pair{1}}}
+		                    )
+		                else
+		                    CurrentTable
+		        ),
+		
+		        Selected = Table.SelectColumns(
+		            Renamed,
+		            PersonColumns,
+		            MissingField.UseNull
+		        ),
+		
+		        CleanText = Table.TransformColumns(
+		            Selected,
+		            List.Transform(
+		                List.RemoveItems(
+		                    PersonColumns,
+		                    {"Person ID", "DOB"}
+		                ),
+		                (ColumnName as text) =>
+		                    {
+		                        ColumnName,
+		                        each
+		                            if _ is text then
+		                                let
+		                                    Value = Text.Trim(Text.Clean(_))
+		                                in
+		                                    if Value = "" then null else Value
+		                            else
+		                                _,
+		                        type any
+		                    }
+		            )
+		        ),
+		
+		        Typed = Table.TransformColumns(
+		            CleanText,
+		            {
+		                {
+		                    "Person ID",
+		                    each try Int64.From(_) otherwise null,
+		                    Int64.Type
+		                },
+		                {
+		                    "DOB",
+		                    each try Date.From(_) otherwise null,
+		                    type nullable date
+		                }
+		            }
+		        ),
+		
+		        ValidPeople = Table.SelectRows(
+		            Typed,
+		            each [Person ID] <> null
+		        ),
+		
+		        WithPriority = Table.AddColumn(
+		            ValidPeople,
+		            "_Priority",
+		            each Priority,
+		            Int64.Type
+		        ),
+		
+		        WithSource = Table.AddColumn(
+		            WithPriority,
+		            "_Source",
+		            each SourceName,
+		            type text
+		        ),
+		
+		        WithCompleteness = Table.AddColumn(
+		            WithSource,
+		            "_Completeness",
+		            each List.NonNullCount(
+		                Record.ToList(
+		                    Record.SelectFields(
+		                        _,
+		                        AttributeColumns
+		                    )
+		                )
+		            ),
+		            Int64.Type
+		        )
+		    in
+		        WithCompleteness,
+		
+		    // =====================================================
+		    // 3. PEOPLE WORKED WITH - PRIORITY 1
+		    // =====================================================
+		
+		    People = StandardisePeople(silver_PeopleWorkedWith, {}, 1, "People Worked With"),
+		
+		    // =====================================================
+		    // 4. ACTIVE WORKFLOWS - PRIORITY 2
+		    // =====================================================
+		
+		    Workflows = StandardisePeople(
+		        bronze_ActiveWorkflowsReport,
+		        {
+		            {"Surname", "Last Name"},
+		            {"Date of Birth", "DOB"},
+		            {"Sex", "Sex - By Birth"},
+		            {"Post Code", "Postcode"},
+		            {"DOB is Estimated?", "DOB Estimated"},
+		            {
+		                "Looked After Section 31",
+		                "Looked After (Section 31)"
+		            },
+		            {
+		                "Care Leaver Not Section 20 or 31",
+		                "Care Leaver (Not Section 20 or 31)"
+		            }
+		        },
+		        2,
+		        "Active Workflows"
+		    ),
+		
+		    // =====================================================
+		    // 5. CASE NOTES - PRIORITY 3
+		    // =====================================================
+		
+		    CaseNotes = StandardisePeople(
+		        silver_CaseNotes,
+		        {
+		            {"Person Name", "First Name"},
+		            {"Person Last Name", "Last Name"},
+		            {"Sex", "Sex - By Birth"},
+		            {"DOB is estimated", "DOB Estimated"}
+		        },
+		        3,
+		        "Case Notes"
+		    ),
+		
+		    // =====================================================
+		    // 6. GOALS SUMMARY - PRIORITY 4
+		    // =====================================================
+		
+		    GoalsSummary = StandardisePeople(
+		        bronze_Goals_AllGoalsAndChange,
+		        {
+		            {"Name", "Full Name"},
+		            {"Sex", "Sex - By Birth"}
+		        },
+		        4,
+		        "Goals Summary"
+		    ),
+		
+		    // =====================================================
+		    // 7. GOALS INCOMPLETE - PRIORITY 4
+		    // CORRECTED QUERY NAME
+		    // =====================================================
+		
+		    GoalsIncomplete = StandardisePeople(
+		        bronze_Goals_incompleteGoals,
+		        {
+		            {"Name", "Full Name"},
+		            {"Sex", "Sex - By Birth"}
+		        },
+		        4,
+		        "Goals Incomplete"
+		    ),
+		
+		    // =====================================================
+		    // 8. GOALS DETAIL - PRIORITY 4
+		    // =====================================================
+		
+		    GoalsDetail = StandardisePeople(
+		        bronze_Goals_GoalsPerPerson,
+		        {
+		            {"Name", "Full Name"}
+		        },
+		        4,
+		        "Goals Detail"
+		    ),
+		
+		    // =====================================================
+		    // 9. APPEND ALL PERSON RECORDS (UNION ALL)
+		    // =====================================================
+		
+		    Combined = Table.Combine({
+		        People,
+		        Workflows,
+		        CaseNotes,
+		        GoalsSummary,
+		        GoalsIncomplete,
+		        GoalsDetail
+		    }),
+		
+		    // =====================================================
+		    // 10. CONSOLIDATE TO ONE ROW PER PERSON ID
+		    // =====================================================
+		
+		    Grouped = Table.Group(
+		        Combined,
+		        {"Person ID"},
+		        {
+		            {
+		                "BestAttributes",
+		                (Rows as table) as record =>
+		                    let
+		                        Ordered = Table.Sort(
+		                            Rows,
+		                            {
+		                                {
+		                                    "_Priority",
+		                                    Order.Ascending
+		                                },
+		                                {
+		                                    "_Completeness",
+		                                    Order.Descending
+		                                }
+		                            }
+		                        ),
+		
+		                        Values = List.Transform(
+		                            AttributeColumns,
+		                            (ColumnName as text) =>
+		                                List.First(
+		                                    List.RemoveNulls(
+		                                        Table.Column(
+		                                            Ordered,
+		                                            ColumnName
+		                                        )
+		                                    ),
+		                                    null
+		                                )
+		                        )
+		                    in
+		                        Record.FromList(
+		                            Values,
+		                            AttributeColumns
+		                        ),
+		                type record
+		            },
+		
+		            {
+		                "Sources Present",
+		                (Rows as table) as text =>
+		                    Text.Combine(
+		                        List.Sort(
+		                            List.Distinct(Rows[_Source])
+		                        ),
+		                        "; "
+		                    ),
+		                type text
+		            },
+		
+		            {
+		                "Potential Conflicts",
+		                (Rows as table) as text =>
+		                    Text.Combine(
+		                        List.Select(
+		                            {
+		                                "DOB",
+		                                "Gender",
+		                                "Ethnicity",
+		                                "Authority"
+		                            },
+		                            (ColumnName as text) =>
+		                                List.Count(
+		                                    List.Distinct(
+		                                        List.RemoveNulls(
+		                                            Table.Column(
+		                                                Rows,
+		                                                ColumnName
+		                                            )
+		                                        )
+		                                    )
+		                                ) > 1
+		                        ),
+		                        ", "
+		                    ),
+		                type text
+		            }
+		        }
+		    ),
+		
+		    // =====================================================
+		    // 11. EXPAND CONSOLIDATED ATTRIBUTES
+		    // =====================================================
+		
+		    Expanded = Table.ExpandRecordColumn(
+		        Grouped,
+		        "BestAttributes",
+		        AttributeColumns,
+		        AttributeColumns
+		    ),
+		
+		    // =====================================================
+		    // 12. CREATE DISPLAY NAME
+		    // =====================================================
+		
+		    WithDisplayName = Table.AddColumn(
+		        Expanded,
+		        "Display Name",
+		        each
+		            let
+		                NameFromParts = Text.Combine(
+		                    List.RemoveNulls({
+		                        [First Name],
+		                        [Last Name]
+		                    }),
+		                    " "
+		                )
+		            in
+		                if NameFromParts <> "" then
+		                    NameFromParts
+		                else
+		                    [Full Name],
+		        type nullable text
+		    ),
+		
+		    // =====================================================
+		    // 13. FINAL COLUMN ORDER
+		    // =====================================================
+		
+		    Final = Table.ReorderColumns(
+		        WithDisplayName,
+		        {"Person ID", "Display Name"}
+		            & AttributeColumns
+		            & {
+		                "Sources Present",
+		                "Potential Conflicts"
+		            }
+		    ),
+		    #"Removed Columns" = Table.RemoveColumns(Final,{"Family ID", "Ward", "Postcode"}),
+		    #"Sorted Rows" = Table.Sort(#"Removed Columns",{{"Display Name", Order.Descending}})
+		
+		in
+		    #"Sorted Rows"
+	lineageTag: 16f5057d-d377-46d5-bb4f-aa0ecfa4a502
+	queryGroup: Gold
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression gold_people_worked_with_Summary =
+		let
+		    Source = Excel.Workbook(File.Contents("C:\Users\Test\Downloads\insightdataanalysttaskbrief\People Worked With Report_Anon.xlsx"), null, true),
+		    Sheet1_Sheet = Source{[Item="Sheet1",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(Sheet1_Sheet, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"CYP Worked With", Int64.Type}, {"Adults Worked With", Int64.Type}, {"CYP Case Work", Int64.Type}, {"CYP Receiving AIG", Int64.Type}, {"Adults Case Work#(lf)", Int64.Type}, {"Adults Receiving AIG", Int64.Type}, {"Total Individuals Worked With", Int64.Type}, {"Column8", type any}}),
+		    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column8"})
+		in
+		    #"Removed Columns"
+	lineageTag: cc4f6d07-efa9-4b6e-b3d4-76f6896fcc63
+	queryGroup: Gold
 
 	annotation PBI_NavigationStepName = Navigation
 

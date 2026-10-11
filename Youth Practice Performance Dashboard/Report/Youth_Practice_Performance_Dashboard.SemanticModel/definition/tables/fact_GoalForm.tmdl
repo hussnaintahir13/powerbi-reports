@@ -1,0 +1,142 @@
+table fact_GoalForm
+	lineageTag: 3e4f6287-bc9e-432c-a6cd-017748bcca4a
+
+	column 'Person ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 090e575c-64ac-40ab-be97-54eed7783f39
+		summarizeBy: none
+		sourceColumn: Person ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Form ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 8ac178aa-7a64-493d-88ad-8a900d72bdb6
+		summarizeBy: count
+		sourceColumn: Form ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column TeamName
+		dataType: string
+		lineageTag: 555a2c9f-a05e-47c7-9c8c-1a212fa0e504
+		summarizeBy: none
+		sourceColumn: TeamName
+
+		annotation SummarizationSetBy = Automatic
+
+	column FormSourceStatus
+		dataType: string
+		lineageTag: d14f52b3-4d1f-41ec-92b6-7cf8930db77b
+		summarizeBy: none
+		sourceColumn: FormSourceStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column GoalsSpecified
+		dataType: int64
+		formatString: 0
+		lineageTag: a9274907-3d04-4d40-ae97-de06278f6908
+		summarizeBy: sum
+		sourceColumn: GoalsSpecified
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportedOverallChange
+		dataType: string
+		lineageTag: d440f12b-7b69-4394-be98-78ded40edf38
+		summarizeBy: none
+		sourceColumn: ReportedOverallChange
+
+		annotation SummarizationSetBy = Automatic
+
+	column TotalEarliestScore
+		dataType: double
+		lineageTag: 449c4580-3921-46ac-8f16-07751b5a756b
+		summarizeBy: sum
+		sourceColumn: TotalEarliestScore
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TotalLatestScore
+		dataType: double
+		lineageTag: f3abad29-a78f-4cfa-8fc4-b36fba4ae8e8
+		summarizeBy: sum
+		sourceColumn: TotalLatestScore
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LatestAssessmentDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 297b6ffd-f8d2-4daf-bc13-590137c239d0
+		summarizeBy: none
+		sourceColumn: LatestAssessmentDate
+
+		variation Variation
+			isDefault
+			relationship: b38641c4-4d18-4f89-a8c3-12483718f1bd
+			defaultHierarchy: LocalDateTable_78698f54-5e2f-4412-8e16-51e540d3b936.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TotalScoreChange
+		dataType: double
+		lineageTag: f073b996-6ad8-47d9-b2a5-a276a5ddc8f6
+		summarizeBy: sum
+		sourceColumn: TotalScoreChange
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Team_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: c7dd1f8c-5794-4cc0-8a92-28722cda9871
+		summarizeBy: none
+		sourceColumn: Team_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_GoalForm = m
+		mode: import
+		queryGroup: Gold\Facts
+		source =
+				let
+				    Source = silver_GoalForms,
+				    Selected = Table.SelectColumns(Source, {
+				        "Person ID", "Form ID", "TeamName", "FormSourceStatus", "GoalsSpecified",
+				        "Overall Change", "Total Earliest Progress Score",
+				        "Total Latest Progress Score", "LatestAssessmentDate"
+				    }),
+				    Renamed = Table.RenameColumns(Selected, {
+				        {"Overall Change", "ReportedOverallChange"},
+				        {"Total Earliest Progress Score", "TotalEarliestScore"},
+				        {"Total Latest Progress Score", "TotalLatestScore"}
+				    }),
+				    NormalisedChange = Table.TransformColumns(Renamed, {{"ReportedOverallChange", each
+				        if _ = null then null else Text.Lower(Text.Trim(Text.From(_))), type nullable text}}),
+				    AddScoreChange = Table.AddColumn(NormalisedChange, "TotalScoreChange", each
+				        if [TotalEarliestScore] = null or [TotalLatestScore] = null then null
+				        else [TotalLatestScore] - [TotalEarliestScore], type nullable number),
+				    JoinTeams = Table.NestedJoin(AddScoreChange, {"TeamName"},
+				        dim_Teams, {"Teams Involved"}, "TeamMatch", JoinKind.LeftOuter),
+				    Expand = Table.ExpandTableColumn(JoinTeams, "TeamMatch", {"Team_ID"}, {"Team_ID"}),
+				    UniqueCheck = if Table.RowCount(Expand) = List.Count(List.Distinct(Expand[Form ID]))
+				        then Expand else error "Duplicate Form IDs in Goals Summary and Incomplete Goals sheets"
+				in
+				    UniqueCheck
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

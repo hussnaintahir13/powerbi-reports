@@ -20,9 +20,10 @@ table dim_ActiveWorkflow
 
 	partition dim_ActiveWorkflow = m
 		mode: import
+		queryGroup: Gold\Dims
 		source =
 				let
-				    Source = silver_People,
+				    Source = silver_PeopleWorkedWith,
 				    #"Removed Other Columns" = Table.SelectColumns(Source,{"Active Workflows"}),
 				    #"Filtered Rows" = Table.SelectRows(#"Removed Other Columns", each ([Active Workflows] <> null)),
 				    #"Split Column by Delimiter" = Table.ExpandListColumn(Table.TransformColumns(#"Filtered Rows", {{"Active Workflows", Splitter.SplitTextByDelimiter(";", QuoteStyle.Csv), let itemType = (type nullable text) meta [Serialized.Text = true] in type {itemType}}}), "Active Workflows"),
@@ -36,5 +37,5 @@ table dim_ActiveWorkflow
 
 	annotation PBI_NavigationStepName = Navigation
 
-	annotation PBI_ResultType = Exception
+	annotation PBI_ResultType = Table
 

@@ -1,0 +1,99 @@
+table dim_date
+	lineageTag: 0fa5862d-b221-46c1-bf41-e1bf3b503218
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 35b5ba16-0a97-4d62-a0d9-0782d1929db4
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: f73e67cb-829a-4900-80d5-13992a246f3b
+			defaultHierarchy: LocalDateTable_e7d109ee-fba4-4482-82a8-36974a79dc1b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 2b358c96-cf22-4d05-aafa-4a757dbc479a
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: string
+		lineageTag: ed5464b5-9570-4257-abfe-2761a8d28894
+		summarizeBy: none
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 5322bc5f-1aeb-46d8-b9e3-086b32f72c75
+		summarizeBy: sum
+		sourceColumn: Month Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: string
+		lineageTag: 697b52ae-2fc1-4aef-9e3f-3a211c02f6dd
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year Month'
+		dataType: string
+		lineageTag: 9ba879ca-5979-4b3f-b4c6-07960913b461
+		summarizeBy: none
+		sourceColumn: Year Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonthSort
+		dataType: int64
+		formatString: 0
+		lineageTag: cd6021d5-8c2f-4815-aa6d-a0a2b4934c07
+		summarizeBy: sum
+		sourceColumn: YearMonthSort
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_date = m
+		mode: import
+		queryGroup: Gold\Dims
+		source =
+				let
+				    // Calendar covers case-note dates, workflow referrals, and goal assessment sessions.
+				    Dates = List.RemoveNulls(
+				        Table.Column(fact_CaseNote, "CaseNoteDate") &
+				        Table.Column(fact_Workflow, "Referral Date") &
+				        Table.Column(fact_GoalSession, "SessionDate")
+				    ),
+				    StartDate = Date.StartOfYear(List.Min(Dates)),
+				    EndDate = Date.EndOfYear(List.Max(Dates)),
+				    Days = List.Dates(StartDate, Duration.Days(EndDate - StartDate) + 1, #duration(1,0,0,0)),
+				    Base = Table.FromList(Days, Splitter.SplitByNothing(), {"Date"}),
+				    Typed = Table.TransformColumnTypes(Base, {{"Date", type date}}),
+				    Year = Table.AddColumn(Typed, "Year", each Date.Year([Date]), Int64.Type),
+				    Quarter = Table.AddColumn(Year, "Quarter", each "Q" & Text.From(Date.QuarterOfYear([Date])), type text),
+				    MonthNum = Table.AddColumn(Quarter, "Month Number", each Date.Month([Date]), Int64.Type),
+				    Month = Table.AddColumn(MonthNum, "Month", each Date.MonthName([Date]), type text),
+				    YearMonth = Table.AddColumn(Month, "Year Month", each Date.ToText([Date], "yyyy-MM"), type text),
+				    MonthSort = Table.AddColumn(YearMonth, "YearMonthSort", each [Year] * 100 + [Month Number], Int64.Type)
+				in
+				    MonthSort
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -21,9 +21,10 @@ table bridge_People_Workflow
 
 	partition bridge_People_Workflow = m
 		mode: import
+		queryGroup: Gold\Bridges
 		source =
 				let
-				    Source = silver_People,
+				    Source = silver_PeopleWorkedWith,
 				    #"Removed Other Columns" = Table.SelectColumns(Source,{"Person ID", "Active Workflows"}),
 				    #"Filtered Rows" = Table.SelectRows(#"Removed Other Columns", each ([Active Workflows] <> null)),
 				    #"Split Column by Delimiter" = Table.ExpandListColumn(Table.TransformColumns(#"Filtered Rows", {{"Active Workflows", Splitter.SplitTextByDelimiter(";", QuoteStyle.Csv), let itemType = (type nullable text) meta [Serialized.Text = true] in type {itemType}}}), "Active Workflows"),

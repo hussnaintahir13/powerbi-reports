@@ -29,9 +29,10 @@ table bridge_People_Teams
 
 	partition bridge_People_Teams = m
 		mode: import
+		queryGroup: Gold\Bridges
 		source =
 				let
-				    Source = silver_People,
+				    Source = silver_PeopleWorkedWith,
 				
 				    SelectedColumns = Table.SelectColumns(
 				        Source,

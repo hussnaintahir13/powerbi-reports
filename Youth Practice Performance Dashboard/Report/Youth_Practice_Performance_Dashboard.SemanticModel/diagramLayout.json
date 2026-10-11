@@ -10,34 +10,36 @@
       "nodes": [
         {
           "location": {
-            "x": 68.5865749999999,
-            "y": 614.21420300000023
+            "x": 907.231892981118,
+            "y": 648.61604364781488
           },
           "nodeIndex": "dim_Teams",
           "nodeLineageTag": "29da717d-8d21-4dc5-83c5-3f90f6c90aa4",
           "size": {
-            "height": 145,
+            "height": 104,
             "width": 234
           },
-          "zIndex": 9
+          "zIndex": 10,
+          "expandedHeight": 145
         },
         {
           "location": {
-            "x": 713.1675220000003,
-            "y": 0
+            "x": 1119.3578877436073,
+            "y": 340.98070749064129
           },
           "nodeIndex": "dim_People",
           "nodeLineageTag": "3835be87-3b4f-46fc-8d46-78ea86e6cde9",
           "size": {
-            "height": 173,
+            "height": 104,
             "width": 306
           },
-          "zIndex": 7
+          "zIndex": 9,
+          "expandedHeight": 173
         },
         {
           "location": {
-            "x": 440.17248800000016,
-            "y": 318.94404900000012
+            "x": 1350.8876768698724,
+            "y": 1163.1829210410983
           },
           "nodeIndex": "bridge_People_Workflow",
           "nodeLineageTag": "63656e1e-0ca8-4529-987f-1f73a26ad096",
@@ -45,25 +47,27 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 6
+          "zIndex": 7,
+          "expandedHeight": 128
         },
         {
           "location": {
-            "x": 467.57589799999971,
-            "y": 627.454395
+            "x": 1336.1616456222773,
+            "y": 633.97275321797474
           },
           "nodeIndex": "dim_ActiveWorkflow",
           "nodeLineageTag": "b19e2570-ad38-4847-bcd4-2db46e83f69b",
           "size": {
-            "height": 145,
+            "height": 104,
             "width": 234
           },
-          "zIndex": 8
+          "zIndex": 13,
+          "expandedHeight": 145
         },
         {
           "location": {
-            "x": 67.319317999999981,
-            "y": 319.07912600000014
+            "x": 914.04526466590653,
+            "y": 1169.3663909116451
           },
           "nodeIndex": "bridge_People_Teams",
           "nodeLineageTag": "6c9b038f-6c7c-4824-a7a5-92e807f1a39b",
@@ -71,12 +75,13 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 2
+          "zIndex": 11,
+          "expandedHeight": 128
         },
         {
           "location": {
-            "x": 911.637229,
-            "y": 324.58732000000003
+            "x": 1709.3833521024746,
+            "y": 1184.5632296849774
           },
           "nodeIndex": "Bridge_AllocatedWorkers",
           "nodeLineageTag": "d3842c6c-c54f-48bc-b30d-d60bf8be858a",
@@ -84,12 +89,13 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 3
+          "zIndex": 6,
+          "expandedHeight": 128
         },
         {
           "location": {
-            "x": 1341.4554777579688,
-            "y": 352.932296
+            "x": 498.8578178268981,
+            "y": 1169.2818270954692
           },
           "nodeIndex": "Bridge_EventsAttended",
           "nodeLineageTag": "979f9915-e824-4537-9dd9-783b025311aa",
@@ -97,50 +103,138 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 10
+          "zIndex": 8,
+          "expandedHeight": 128
         },
         {
           "location": {
-            "x": 896.91450100000009,
-            "y": 643.46830000000011
+            "x": 1679.3762872007624,
+            "y": 637.07726307529617
           },
           "nodeIndex": "dim_AllocatedWorkers",
           "nodeLineageTag": "593c47e8-9b19-4f26-bad6-13bddc360df7",
           "size": {
-            "height": 128,
+            "height": 104,
             "width": 234
           },
-          "zIndex": 4
+          "zIndex": 16,
+          "expandedHeight": 128
         },
         {
           "location": {
-            "x": 1344.448353,
-            "y": 645.23986100000013
+            "x": 513.27729172505815,
+            "y": 643.39290058301469
           },
           "nodeIndex": "dim_EventsAttended",
           "nodeLineageTag": "ab58f450-520f-4c92-8d24-84a2eb79943f",
           "size": {
-            "height": 128,
+            "height": 104,
             "width": 234
           },
-          "zIndex": 5
+          "zIndex": 14,
+          "expandedHeight": 128
         },
         {
           "location": {
-            "x": 1883.5531369999999,
-            "y": 17.71561
+            "x": 2138.1790741433147,
+            "y": 558.64336857737783
           },
-          "nodeIndex": "bronze_stg_peopleSummary",
-          "nodeLineageTag": "d972fb94-83a7-4f55-a78f-1ec2e91fa2cb",
+          "nodeIndex": "dim_date",
+          "nodeLineageTag": "0fa5862d-b221-46c1-bf41-e1bf3b503218",
           "size": {
-            "height": 248,
+            "height": 72,
             "width": 234
           },
-          "zIndex": 1
+          "zIndex": 1,
+          "expandedHeight": 248
+        },
+        {
+          "location": {
+            "x": 197.05391420070214,
+            "y": 1184.6976287487985
+          },
+          "nodeIndex": "dim_Workers",
+          "nodeLineageTag": "050b1bb7-b3b0-4cc7-8e94-3fc8068e9b47",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 15,
+          "expandedHeight": 152
+        },
+        {
+          "location": {
+            "x": 181.74773566081458,
+            "y": 202.44526797637337
+          },
+          "nodeIndex": "fact_CaseNote",
+          "nodeLineageTag": "ed98aef3-b64a-4743-a580-94da1f4737d7",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 12,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 1684.5156057657869,
+            "y": 412.66579115268627
+          },
+          "nodeIndex": "fact_GoalForm",
+          "nodeLineageTag": "3e4f6287-bc9e-432c-a6cd-017748bcca4a",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 2,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 452.613110545906,
+            "y": 304.94821246441751
+          },
+          "nodeIndex": "fact_GoalProgress",
+          "nodeLineageTag": "dee7592e-7df6-43b3-9a5e-2ec8cff5fa4e",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 3,
+          "expandedHeight": 300
+        },
+        {
+          "location": {
+            "x": 1453.1200692753046,
+            "y": 0
+          },
+          "nodeIndex": "fact_GoalSession",
+          "nodeLineageTag": "6850cf16-f95e-494c-ba6a-1de888735706",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 4,
+          "expandedHeight": 296
+        },
+        {
+          "location": {
+            "x": 774.38261344935586,
+            "y": 0
+          },
+          "nodeIndex": "fact_Workflow",
+          "nodeLineageTag": "44f1a8de-f24b-4d20-a93f-b8cee8e7192d",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 5,
+          "expandedHeight": 300
         }
       ],
       "name": "All tables",
-      "zoomValue": 49.222041341597979,
+      "zoomValue": 42.120452332382207,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
@@ -181,8 +275,8 @@
         },
         {
           "location": {
-            "x": 266.15514486949888,
-            "y": 229.19898851447897
+            "x": 315.13828047461413,
+            "y": 275.02192182249007
           },
           "nodeIndex": "bridge_People_Workflow",
           "nodeLineageTag": "63656e1e-0ca8-4529-987f-1f73a26ad096",
@@ -220,8 +314,8 @@
         },
         {
           "location": {
-            "x": 1345.58177435202,
-            "y": 240.17200926438369
+            "x": 1405.6256179969998,
+            "y": 259.133223047009
           },
           "nodeIndex": "Bridge_AllocatedWorkers",
           "nodeLineageTag": "d3842c6c-c54f-48bc-b30d-d60bf8be858a",
@@ -233,8 +327,8 @@
         },
         {
           "location": {
-            "x": 1059.6559814712325,
-            "y": 232.76897480782046
+            "x": 1047.0151722828159,
+            "y": 278.59190811583153
           },
           "nodeIndex": "Bridge_EventsAttended",
           "nodeLineageTag": "979f9915-e824-4537-9dd9-783b025311aa",
@@ -269,29 +363,16 @@
             "width": 234
           },
           "zIndex": 9
-        },
-        {
-          "location": {
-            "x": 663.26813820608663,
-            "y": 504.05226638812189
-          },
-          "nodeIndex": "bronze_stg_peopleSummary",
-          "nodeLineageTag": "d972fb94-83a7-4f55-a78f-1ec2e91fa2cb",
-          "size": {
-            "height": 248,
-            "width": 234
-          },
-          "zIndex": 10
         }
       ],
       "name": "People Worked With",
-      "zoomValue": 63.287087723234038,
+      "zoomValue": 56.447393005377755,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
       "tablesLocked": false
     }
   ],
-  "selectedDiagram": "People Worked With",
+  "selectedDiagram": "All tables",
   "defaultDiagram": "All tables"
 }

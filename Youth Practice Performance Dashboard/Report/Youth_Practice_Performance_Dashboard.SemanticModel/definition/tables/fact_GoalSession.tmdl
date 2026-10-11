@@ -1,0 +1,110 @@
+table fact_GoalSession
+	lineageTag: 6850cf16-f95e-494c-ba6a-1de888735706
+
+	column 'Person ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: d57ab5b2-f211-4794-987e-5f199ed2f06c
+		summarizeBy: none
+		sourceColumn: Person ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Form ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: fbd0add0-609b-4d7b-b896-e7ddbbd89dbc
+		summarizeBy: count
+		sourceColumn: Form ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Goal Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 1f8ee9c7-41af-4df3-8e10-9565d80c40bb
+		summarizeBy: sum
+		sourceColumn: Goal Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column GoalKey
+		dataType: string
+		lineageTag: c047fd96-17d7-4614-937f-56726f0d2c38
+		summarizeBy: none
+		sourceColumn: GoalKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column TeamName
+		dataType: string
+		lineageTag: 85916fd2-6ffe-4494-9b39-3cf6685076f9
+		summarizeBy: none
+		sourceColumn: TeamName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SessionNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: 8462b90d-04e5-482d-8448-33766f49d477
+		summarizeBy: sum
+		sourceColumn: SessionNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column SessionDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 73081d06-07ba-4a6f-a8bf-3fd28716c27f
+		summarizeBy: none
+		sourceColumn: SessionDate
+
+		variation Variation
+			isDefault
+			relationship: e660c8f0-2609-461c-ad42-96f91ef997b2
+			defaultHierarchy: LocalDateTable_3ba9a928-3a41-491e-9b50-08ce691da507.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ProgressScore
+		dataType: double
+		lineageTag: da93dea4-4923-48c0-9647-205ecbd43634
+		summarizeBy: sum
+		sourceColumn: ProgressScore
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Team_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 6fdcda32-c943-4970-9aba-7e24322a9600
+		summarizeBy: none
+		sourceColumn: Team_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_GoalSession = m
+		mode: import
+		queryGroup: Gold\Facts
+		source =
+				let
+				    Source = silver_GoalSessions,
+				    Selected = Table.SelectColumns(Source, {
+				        "Person ID", "Form ID", "Goal Number", "GoalKey", "TeamName",
+				        "SessionNumber", "SessionDate", "ProgressScore"
+				    }),
+				    JoinTeams = Table.NestedJoin(Selected, {"TeamName"},
+				        dim_Teams, {"Teams Involved"}, "TeamMatch", JoinKind.LeftOuter),
+				    Final = Table.ExpandTableColumn(JoinTeams, "TeamMatch", {"Team_ID"}, {"Team_ID"})
+				in
+				    Final
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

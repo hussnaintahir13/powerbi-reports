@@ -1,0 +1,53 @@
+table dim_Workers
+	lineageTag: 050b1bb7-b3b0-4cc7-8e94-3fc8068e9b47
+
+	column 'Worker ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 546ab6e2-b50c-4b82-b6d9-608748ecca83
+		summarizeBy: none
+		sourceColumn: Worker ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Worker Name'
+		dataType: string
+		lineageTag: 9f7d5281-e28a-45d5-9832-f6ef6300cdfe
+		summarizeBy: none
+		sourceColumn: Worker Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Distinct Names For ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: b574d455-5113-4e67-9c7a-5c3d300a7891
+		summarizeBy: none
+		sourceColumn: Distinct Names For ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_Workers = m
+		mode: import
+		queryGroup: Gold\Dims
+		source = ```
+				let
+				   
+				    Source = silver_CaseNotes,
+				    Selected = Table.SelectColumns(Source, {"Worker ID", "Worker Name"}),
+				    Valid = Table.SelectRows(Selected, each [Worker ID] <> null),
+				    Grouped = Table.Group(Valid, {"Worker ID"}, {
+				        {"Worker Name", each
+				            let names = List.Sort(List.Distinct(List.RemoveNulls([Worker Name])))
+				            in if List.IsEmpty(names) then null else names{0}, type nullable text},
+				        {"Distinct Names For ID", each List.Count(List.Distinct(List.RemoveNulls([Worker Name]))), Int64.Type}
+				    }),
+				    Typed = Table.TransformColumnTypes(Grouped, {{"Worker ID", Int64.Type}})
+				in
+				    Typed
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

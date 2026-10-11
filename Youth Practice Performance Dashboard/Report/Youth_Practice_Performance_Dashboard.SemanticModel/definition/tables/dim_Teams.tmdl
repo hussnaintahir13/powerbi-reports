@@ -18,55 +18,48 @@ table dim_Teams
 
 		annotation SummarizationSetBy = Automatic
 
+	column TeamName
+		dataType: string
+		lineageTag: a4739e76-2cb5-41fd-a418-9f9f0d05106c
+		summarizeBy: none
+		sourceColumn: TeamName
+
+		annotation SummarizationSetBy = Automatic
+
 	partition dim_Teams = m
 		mode: import
-		source =
+		queryGroup: Gold\Dims
+		source = ```
 				let
-				    Source = silver_People,
-				
-				    SelectedColumns = Table.SelectColumns(
-				        Source, {"Teams Involved"}
-				    ),
-				
-				    SplitTeams = Table.ExpandListColumn(
-				        Table.TransformColumns(
-				            SelectedColumns,
-				            {{"Teams Involved",
-				              each if _ = null then {}
-				              else Text.Split(Text.From(_), ";"),
-				              type list}}
-				        ),
-				        "Teams Involved"
-				    ),
-				
-				    Cleaned = Table.TransformColumns(
-				        SplitTeams,
-				        {{"Teams Involved",
-				          each if _ = null then null
-				          else Text.Trim(Text.Clean(_)),
-				          type nullable text}}
-				    ),
-				
-				    ValidTeams = Table.SelectRows(
-				        Cleaned,
-				        each [Teams Involved] <> null
-				          and [Teams Involved] <> ""
-				    ),
-				
-				    UniqueTeams = Table.Distinct(
-				        ValidTeams, {"Teams Involved"}
-				    ),
-				
-				    Sorted = Table.Sort(
-				        UniqueTeams,
-				        {{"Teams Involved", Order.Ascending}}
-				    ),
-				
-				    AddedID = Table.AddIndexColumn(
-				        Sorted, "Team_ID", 0, 1, Int64.Type
-				    )
+				   
+				    PersonTeams = Table.SelectColumns(silver_PeopleWorkedWith, {"Teams Involved"}, MissingField.UseNull),
+				    WorkflowTeams = Table.RenameColumns(
+				        Table.SelectColumns(silver_ActiveWorkflows, {"Level 4 Team"}, MissingField.UseNull),
+				        {{"Level 4 Team", "Teams Involved"}}),
+				    NoteTeams = Table.RenameColumns(
+				        Table.SelectColumns(silver_CaseNotes, {"Teams involved"}, MissingField.UseNull),
+				        {{"Teams involved", "Teams Involved"}}),
+				    FormTeams = Table.RenameColumns(
+				        Table.SelectColumns(silver_GoalForms, {"TeamName"}, MissingField.UseNull),
+				        {{"TeamName", "Teams Involved"}}),
+				    GoalTeams = Table.RenameColumns(
+				        Table.SelectColumns(silver_GoalRecords, {"TeamName"}, MissingField.UseNull),
+				        {{"TeamName", "Teams Involved"}}),
+				    Combined = Table.Combine({PersonTeams, WorkflowTeams, NoteTeams, FormTeams, GoalTeams}),
+				    AsLists = Table.TransformColumns(Combined, {{"Teams Involved", each
+				        if _ = null then {} else
+				            List.Transform(Text.Split(Text.From(_), ";"), (v) => Text.Trim(Text.Clean(v))),
+				        type list}}),
+				    Expanded = Table.ExpandListColumn(AsLists, "Teams Involved"),
+				    NonBlank = Table.SelectRows(Expanded,
+				        each [Teams Involved] <> null and [Teams Involved] <> ""),
+				    Unique = Table.Distinct(NonBlank, {"Teams Involved"}),
+				    Sorted = Table.Sort(Unique, {{"Teams Involved", Order.Ascending}}),
+				    Indexed = Table.AddIndexColumn(Sorted, "Team_ID", 0, 1, Int64.Type),
+				    WithDisplay = Table.AddColumn(Indexed, "TeamName", each [Teams Involved], type text)
 				in
-				    AddedID
+				    WithDisplay
+				```
 
 	annotation PBI_NavigationStepName = Navigation
 

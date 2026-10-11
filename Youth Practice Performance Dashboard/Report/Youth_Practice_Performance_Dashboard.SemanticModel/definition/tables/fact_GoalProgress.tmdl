@@ -1,0 +1,182 @@
+table fact_GoalProgress
+	lineageTag: dee7592e-7df6-43b3-9a5e-2ec8cff5fa4e
+
+	column 'Person ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: c70476f2-9c60-4d82-8335-43753f26f890
+		summarizeBy: none
+		sourceColumn: Person ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Form ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 1836cf1e-12f3-4341-9e81-25830da21a8c
+		summarizeBy: count
+		sourceColumn: Form ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Goal Number'
+		dataType: int64
+		formatString: 0
+		lineageTag: 3f1525f9-7a29-4f1e-96f3-e07cf9baedd2
+		summarizeBy: sum
+		sourceColumn: Goal Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column GoalKey
+		dataType: string
+		lineageTag: ac284a55-58ed-496f-b68f-41147e5ab1a0
+		summarizeBy: none
+		sourceColumn: GoalKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column Goal
+		dataType: string
+		lineageTag: 1b7a53cd-d34a-448d-8c01-ff96bdd5c135
+		summarizeBy: none
+		sourceColumn: Goal
+
+		annotation SummarizationSetBy = Automatic
+
+	column TeamName
+		dataType: string
+		lineageTag: 18885e09-53df-4aa0-98d8-1339323c7c12
+		summarizeBy: none
+		sourceColumn: TeamName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ScoredSessions
+		dataType: int64
+		formatString: 0
+		lineageTag: 873dacef-fb81-4b55-9264-1d7f3328ab99
+		summarizeBy: sum
+		sourceColumn: ScoredSessions
+
+		annotation SummarizationSetBy = Automatic
+
+	column FirstScore
+		dataType: double
+		lineageTag: d76c6fb2-d4ca-4722-9d54-3ba1a2d7925f
+		summarizeBy: sum
+		sourceColumn: FirstScore
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LastScore
+		dataType: double
+		lineageTag: 4810a783-3e91-4bb6-9259-764ddb1989ec
+		summarizeBy: sum
+		sourceColumn: LastScore
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FirstSessionDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 85b151e0-abc0-4e80-9368-1bc1a76a216f
+		summarizeBy: none
+		sourceColumn: FirstSessionDate
+
+		variation Variation
+			isDefault
+			relationship: ab1937c2-774f-494a-b4d5-e00ec485035a
+			defaultHierarchy: LocalDateTable_d35c2517-1940-4e7c-bdd1-24b552251770.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column LastSessionDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d64c1a01-4183-40df-8fe2-20f0a8760663
+		summarizeBy: none
+		sourceColumn: LastSessionDate
+
+		variation Variation
+			isDefault
+			relationship: c8b030db-9ef9-4468-a7dd-39b779497d50
+			defaultHierarchy: LocalDateTable_1452cf11-a18e-4bcf-a949-a8c6185cb075.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ScoreChange
+		dataType: double
+		lineageTag: 35a7996e-f618-4c4e-b738-a3d1f60e51fa
+		summarizeBy: sum
+		sourceColumn: ScoreChange
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GoalChangeCategory
+		dataType: string
+		lineageTag: e5260312-e008-4a1a-b32b-a879feda58b5
+		summarizeBy: none
+		sourceColumn: GoalChangeCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column Team_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 4a9be75e-7cc7-4da0-93c6-f5383c3974a5
+		summarizeBy: none
+		sourceColumn: Team_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_GoalProgress = m
+		mode: import
+		queryGroup: Gold\Facts
+		source = ```
+				let
+				   
+				    Source = Table.SelectColumns(silver_GoalRecords,
+				        {"Person ID", "Form ID", "Goal Number", "GoalKey", "Goal", "TeamName"}),
+				    ByGoal = Table.Group(silver_GoalSessions, {"GoalKey"}, {
+				        {"ScoredSessions", each Table.RowCount(_), Int64.Type},
+				        {"FirstScore", each Table.Sort(_, {{"SessionNumber", Order.Ascending}}){0}[ProgressScore], type nullable number},
+				        {"LastScore", each Table.Sort(_, {{"SessionNumber", Order.Descending}}){0}[ProgressScore], type nullable number},
+				        {"FirstSessionDate", each Table.Sort(_, {{"SessionNumber", Order.Ascending}}){0}[SessionDate], type nullable date},
+				        {"LastSessionDate", each Table.Sort(_, {{"SessionNumber", Order.Descending}}){0}[SessionDate], type nullable date}
+				    }),
+				    MergeScores = Table.NestedJoin(Source, {"GoalKey"}, ByGoal, {"GoalKey"}, "ScoreData", JoinKind.LeftOuter),
+				    ExpandScores = Table.ExpandTableColumn(MergeScores, "ScoreData",
+				        {"ScoredSessions", "FirstScore", "LastScore", "FirstSessionDate", "LastSessionDate"},
+				        {"ScoredSessions", "FirstScore", "LastScore", "FirstSessionDate", "LastSessionDate"}),
+				    WithChange = Table.AddColumn(ExpandScores, "ScoreChange", each
+				        if [ScoredSessions] = null or [ScoredSessions] < 2 then null
+				        else [LastScore] - [FirstScore], type nullable number),
+				    WithStatus = Table.AddColumn(WithChange, "GoalChangeCategory", each
+				        if [ScoreChange] = null then "Insufficient assessments"
+				        else if [ScoreChange] > 0 then "Improved"
+				        else if [ScoreChange] < 0 then "Declined"
+				        else "No change", type text),
+				    JoinTeams = Table.NestedJoin(WithStatus, {"TeamName"},
+				        dim_Teams, {"Teams Involved"}, "TeamMatch", JoinKind.LeftOuter),
+				    Final = Table.ExpandTableColumn(JoinTeams, "TeamMatch", {"Team_ID"}, {"Team_ID"}),
+				    UniqueCheck = if Table.RowCount(Final) = List.Count(List.Distinct(Final[GoalKey]))
+				        then Final else error "GoalKey is not unique in silver_GoalRecords"
+				in
+				    UniqueCheck
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

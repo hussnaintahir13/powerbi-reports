@@ -20,9 +20,10 @@ table dim_EventsAttended
 
 	partition dim_EventsAttended = m
 		mode: import
+		queryGroup: Gold\Dims
 		source =
 				let
-				    Source = silver_People,
+				    Source = silver_PeopleWorkedWith,
 				
 				    SelectedColumns = Table.SelectColumns(
 				        Source, {"Events Attended"}

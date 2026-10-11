@@ -7,9 +7,49 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
+queryGroup Bronze\Goals
+
+	annotation PBI_QueryGroupOrder = 2
+
+queryGroup Bronze
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup Silver
+
+	annotation PBI_QueryGroupOrder = 2
+
+queryGroup Gold
+
+	annotation PBI_QueryGroupOrder = 3
+
+queryGroup 'Bronze\People Worked With'
+
+	annotation PBI_QueryGroupOrder = 1
+
+queryGroup Bronze\Workflows
+
+	annotation PBI_QueryGroupOrder = 3
+
+queryGroup 'Bronze\Case Notes'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup Gold\Dims
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup Gold\Facts
+
+	annotation PBI_QueryGroupOrder = 1
+
+queryGroup Gold\Bridges
+
+	annotation PBI_QueryGroupOrder = 2
+
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_QueryOrder = ["bronze_stg_peopleSummary","bronze_stg_peopleUnder25","bronze_stg_peopleOver25","silver_People","dim_People","dim_Teams","dim_EventsAttended","dim_AllocatedWorkers","dim_ActiveWorkflow","bridge_People_Workflow","bridge_People_Teams","Bridge_AllocatedWorkers","Bridge_EventsAttended"]
+annotation PBI_QueryOrder = ["bronze_peopleSummary","bronze_peopleUnder25","bronze_peopleOver25","bronze_ActiveWorkflowsReport","silver_PeopleWorkedWith","gold_People_Master","gold_people_worked_with_Summary","dim_People","dim_Teams","dim_EventsAttended","silver_CaseNotes","dim_AllocatedWorkers","dim_ActiveWorkflow","bridge_People_Workflow","bridge_People_Teams","Bridge_AllocatedWorkers","Bridge_EventsAttended","bronze_Goals_GoalsPerPerson","bronze_Goals_incompleteGoals","bronze_Goals_AllGoalsAndChange","bronze_case_notes","silver_ActiveWorkflows","silver_GoalForms","silver_GoalSessions","silver_GoalRecords","dim_Workers","fact_Workflow","fact_CaseNote","fact_GoalForm","fact_GoalProgress","fact_GoalSession","dim_date"]
 
 annotation PBI_ProTooling = ["DevMode","TMDLView_Desktop"]
 
@@ -22,9 +62,27 @@ ref table Bridge_AllocatedWorkers
 ref table dim_EventsAttended
 ref table dim_AllocatedWorkers
 ref table Bridge_EventsAttended
-ref table bronze_stg_peopleSummary
 ref table DateTableTemplate_b997299a-fc91-4a83-bd5c-130c99a56049
 ref table LocalDateTable_cb2fe19f-0197-478f-82a1-316b94a1289a
+ref table dim_Workers
+ref table fact_Workflow
+ref table LocalDateTable_51739859-d1af-4b4c-9b9d-902a11598db8
+ref table LocalDateTable_b443184e-4e51-4b50-88d0-61eba66eb0cb
+ref table LocalDateTable_c2172d3a-5a53-4bcb-8339-f13ca7ff7260
+ref table LocalDateTable_b3e9411a-8679-4e62-b30b-f4fd1e3e47e0
+ref table LocalDateTable_f2d0b22f-2318-4546-87da-35905758a813
+ref table fact_CaseNote
+ref table LocalDateTable_ee3af2eb-a89f-4b77-b352-94e5c9943ce8
+ref table LocalDateTable_03280785-2512-413c-bd29-220203af4f02
+ref table fact_GoalForm
+ref table LocalDateTable_78698f54-5e2f-4412-8e16-51e540d3b936
+ref table fact_GoalProgress
+ref table LocalDateTable_d35c2517-1940-4e7c-bdd1-24b552251770
+ref table LocalDateTable_1452cf11-a18e-4bcf-a949-a8c6185cb075
+ref table fact_GoalSession
+ref table LocalDateTable_3ba9a928-3a41-491e-9b50-08ce691da507
+ref table dim_date
+ref table LocalDateTable_e7d109ee-fba4-4482-82a8-36974a79dc1b
 
 ref cultureInfo en-GB
 

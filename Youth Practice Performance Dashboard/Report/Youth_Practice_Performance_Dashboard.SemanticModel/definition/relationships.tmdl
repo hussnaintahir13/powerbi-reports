@@ -35,3 +35,103 @@ relationship 0ab3e028-4e7e-4fae-a69f-9c4ab9449a24
 	fromColumn: dim_People.DOB
 	toColumn: LocalDateTable_cb2fe19f-0197-478f-82a1-316b94a1289a.Date
 
+relationship 7cc4d505-5264-4ad4-ab0b-37364949c8f7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_Workflow.'Referral Date'
+	toColumn: LocalDateTable_51739859-d1af-4b4c-9b9d-902a11598db8.Date
+
+relationship 9a8d7e04-b501-4dcf-a412-bd20db083910
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_Workflow.'Active From'
+	toColumn: LocalDateTable_b443184e-4e51-4b50-88d0-61eba66eb0cb.Date
+
+relationship 555ef510-f9af-4d11-91c4-394c7b645fa4
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_Workflow.'Active To'
+	toColumn: LocalDateTable_c2172d3a-5a53-4bcb-8339-f13ca7ff7260.Date
+
+relationship 088bdb86-3833-4786-baa5-4f0ced0d5302
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_Workflow.ActiveFromDate
+	toColumn: LocalDateTable_b3e9411a-8679-4e62-b30b-f4fd1e3e47e0.Date
+
+relationship b8b732d7-5687-4073-9bf9-b38948423ca8
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_Workflow.ActiveToDate
+	toColumn: LocalDateTable_f2d0b22f-2318-4546-87da-35905758a813.Date
+
+relationship d37ce998-c472-42ca-b45a-d5ba2f8d23aa
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_CaseNote.CaseNoteDateTime
+	toColumn: LocalDateTable_ee3af2eb-a89f-4b77-b352-94e5c9943ce8.Date
+
+relationship 055b7e0f-54f8-44fb-ae3d-cbe77060fe3e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_CaseNote.CaseNoteDate
+	toColumn: LocalDateTable_03280785-2512-413c-bd29-220203af4f02.Date
+
+relationship b38641c4-4d18-4f89-a8c3-12483718f1bd
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_GoalForm.LatestAssessmentDate
+	toColumn: LocalDateTable_78698f54-5e2f-4412-8e16-51e540d3b936.Date
+
+relationship ab1937c2-774f-494a-b4d5-e00ec485035a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_GoalProgress.FirstSessionDate
+	toColumn: LocalDateTable_d35c2517-1940-4e7c-bdd1-24b552251770.Date
+
+relationship c8b030db-9ef9-4468-a7dd-39b779497d50
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_GoalProgress.LastSessionDate
+	toColumn: LocalDateTable_1452cf11-a18e-4bcf-a949-a8c6185cb075.Date
+
+relationship e660c8f0-2609-461c-ad42-96f91ef997b2
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_GoalSession.SessionDate
+	toColumn: LocalDateTable_3ba9a928-3a41-491e-9b50-08ce691da507.Date
+
+relationship f73e67cb-829a-4900-80d5-13992a246f3b
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_date.Date
+	toColumn: LocalDateTable_e7d109ee-fba4-4482-82a8-36974a79dc1b.Date
+
+relationship AutoDetected_e988ec87-f6c3-40a1-9ca3-2dc17005516d
+	fromColumn: fact_Workflow.Team_ID
+	toColumn: dim_Teams.Team_ID
+
+relationship AutoDetected_42b4059f-52c6-494b-844c-a968c6f0adbe
+	fromColumn: fact_GoalForm.Team_ID
+	toColumn: dim_Teams.Team_ID
+
+relationship AutoDetected_7a46de74-d5c2-4d41-91df-fcaa5207c2e9
+	fromColumn: fact_GoalProgress.Team_ID
+	toColumn: dim_Teams.Team_ID
+
+relationship AutoDetected_d73e8fb4-8774-4ee5-89f7-6b775eae658f
+	fromColumn: fact_GoalSession.Team_ID
+	toColumn: dim_Teams.Team_ID
+
+relationship AutoDetected_bd7ea7c2-173d-4c98-8324-fd2331785eef
+	fromColumn: fact_Workflow.'Person ID'
+	toColumn: dim_People.'Person ID'
+
+relationship AutoDetected_83f4be20-37c5-4324-a6c0-88612ad62403
+	fromColumn: fact_CaseNote.'Person ID'
+	toColumn: dim_People.'Person ID'
+
+relationship AutoDetected_2aca6112-09d8-4ac1-a868-8faab8c46c1f
+	fromColumn: fact_GoalForm.'Person ID'
+	toColumn: dim_People.'Person ID'
+
+relationship AutoDetected_ec70584f-4db5-4dc2-9321-48ae43e6c511
+	fromColumn: fact_GoalProgress.'Person ID'
+	toColumn: dim_People.'Person ID'
+
+relationship AutoDetected_1d8ab976-e1d1-473a-953f-cb2492abc49e
+	fromColumn: fact_GoalSession.'Person ID'
+	toColumn: dim_People.'Person ID'
+
+relationship AutoDetected_6a0d1ed0-7a49-4a96-a0de-b277c8f037ce
+	fromColumn: fact_CaseNote.'Worker ID'
+	toColumn: dim_Workers.'Worker ID'
+
