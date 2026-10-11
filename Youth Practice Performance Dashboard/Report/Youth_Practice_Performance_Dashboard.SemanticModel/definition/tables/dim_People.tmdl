@@ -1,0 +1,258 @@
+table dim_People
+	lineageTag: 3835be87-3b4f-46fc-8d46-78ea86e6cde9
+
+	column 'Person ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: fe71fe80-6219-48cd-b317-6ccf97f00ba8
+		summarizeBy: none
+		sourceColumn: Person ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'First Name'
+		dataType: string
+		lineageTag: 4f25dd64-7d53-4995-a7ba-2bfce3b3b1ad
+		summarizeBy: none
+		sourceColumn: First Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Last Name'
+		dataType: string
+		lineageTag: 7f1dd62c-91ca-49a7-a159-85a37dc7b922
+		summarizeBy: none
+		sourceColumn: Last Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Context
+		dataType: string
+		lineageTag: 250dcd15-ace1-41a1-9fcc-a5a412a5ffcf
+		summarizeBy: none
+		sourceColumn: Context
+
+		annotation SummarizationSetBy = Automatic
+
+	column Disability
+		dataType: string
+		lineageTag: 85077d45-2bc5-4e60-97b4-19dbbd36c0e2
+		summarizeBy: none
+		sourceColumn: Disability
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sex
+		dataType: string
+		lineageTag: b8208ddf-4399-4bf4-a754-abef1e6b2caf
+		summarizeBy: none
+		sourceColumn: Sex
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: ad8da5ac-37e6-441f-9c6e-8e4f96839687
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ethnicity
+		dataType: string
+		lineageTag: 2de52356-b3fd-4317-8337-b7b924cb54a0
+		summarizeBy: none
+		sourceColumn: Ethnicity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Religion
+		dataType: string
+		lineageTag: 442b7e93-5586-40da-a4f9-38a43fcf8d56
+		summarizeBy: none
+		sourceColumn: Religion
+
+		annotation SummarizationSetBy = Automatic
+
+	column DOB
+		dataType: string
+		lineageTag: db317529-8cc7-485e-8c1d-300ced6dc82e
+		summarizeBy: none
+		sourceColumn: DOB
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'First Language'
+		dataType: string
+		lineageTag: a87e41c5-eda9-43db-ace1-79dddd9f931e
+		summarizeBy: none
+		sourceColumn: First Language
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Fluency in English'
+		dataType: string
+		lineageTag: 16beb4d4-1999-4f0a-a590-8e70f210331f
+		summarizeBy: none
+		sourceColumn: Fluency in English
+
+		annotation SummarizationSetBy = Automatic
+
+	column Nationality
+		dataType: string
+		lineageTag: 16f664d8-b9ac-4251-8bc1-34b2360b829e
+		summarizeBy: none
+		sourceColumn: Nationality
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Country of Birth'
+		dataType: string
+		lineageTag: d4a16980-7426-4070-8148-4f00c2065f87
+		summarizeBy: none
+		sourceColumn: Country of Birth
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Age when work in period started'
+		dataType: int64
+		formatString: 0
+		lineageTag: 67e46222-1b7d-4365-91a9-e65672db8168
+		summarizeBy: sum
+		sourceColumn: Age when work in period started
+
+		annotation SummarizationSetBy = Automatic
+
+	column Address
+		dataType: string
+		lineageTag: a9fd2421-cc26-4849-8623-314d89edf0fa
+		summarizeBy: none
+		sourceColumn: Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column District
+		dataType: string
+		lineageTag: 97184ce7-153a-472c-a0d6-cc7c6eaa7bab
+		summarizeBy: none
+		sourceColumn: District
+
+		annotation SummarizationSetBy = Automatic
+
+	column Postcode
+		dataType: string
+		lineageTag: 53d179e8-2136-44bf-8146-9983dd1a2981
+		summarizeBy: none
+		sourceColumn: Postcode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Authority
+		dataType: string
+		lineageTag: baeb9828-bba7-4540-a7e5-29789ff7a264
+		summarizeBy: none
+		sourceColumn: Authority
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ward
+		dataType: string
+		lineageTag: 17c36499-9624-4f49-8b11-96bef79f8242
+		summarizeBy: none
+		sourceColumn: Ward
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Household Structure'
+		dataType: string
+		lineageTag: 7f4860b5-f54f-4f9c-b62d-6ae9d675b1b8
+		summarizeBy: none
+		sourceColumn: Household Structure
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tenure Type'
+		dataType: string
+		lineageTag: 1fd46eb5-24c8-4fa1-b61b-e860b4a58301
+		summarizeBy: none
+		sourceColumn: Tenure Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Telephone
+		dataType: string
+		lineageTag: 155f4003-9ef5-4ae7-b963-63a9ebd06cc0
+		summarizeBy: none
+		sourceColumn: Telephone
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Email Address'
+		dataType: string
+		lineageTag: 55dce666-22c4-473c-804d-8a87eb92a27e
+		summarizeBy: none
+		sourceColumn: Email Address
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CAF Category'
+		dataType: string
+		lineageTag: 1d4ca366-fac4-4906-bb4a-c41ed58eeada
+		summarizeBy: none
+		sourceColumn: CAF Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CIN Plan'
+		dataType: string
+		lineageTag: feeae650-297d-4751-836e-b2ed29697765
+		summarizeBy: none
+		sourceColumn: CIN Plan
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CP Plan'
+		dataType: string
+		lineageTag: b7764b11-3f7b-4ec5-80fe-9837da415ffa
+		summarizeBy: none
+		sourceColumn: CP Plan
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'LAC 20 '
+		dataType: string
+		lineageTag: a91a36c3-c6bf-4ca0-a07e-375ae8007dc0
+		summarizeBy: none
+		sourceColumn: "LAC 20 "
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Looked After (Section 31)'
+		dataType: string
+		lineageTag: 63306e75-de76-41bd-ad0f-d8ab803904e2
+		summarizeBy: none
+		sourceColumn: Looked After (Section 31)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Care Leaver (Not Section 20 or 31)'
+		dataType: string
+		lineageTag: fef290f3-2048-480f-b21e-b4409037baae
+		summarizeBy: none
+		sourceColumn: Care Leaver (Not Section 20 or 31)
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_People = m
+		mode: import
+		source =
+				let
+				    Source = silver_People,
+				    #"Removed Columns" = Table.RemoveColumns(Source,{"Teams Involved", "Active Workflows", "Events Attended", "Allocated Workers"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

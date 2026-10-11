@@ -1,0 +1,40 @@
+table dim_ActiveWorkflow
+	lineageTag: b19e2570-ad38-4847-bcd4-2db46e83f69b
+
+	column 'Active Workflows'
+		dataType: string
+		lineageTag: 95b8d094-7c7a-497b-8098-9cdd18da4300
+		summarizeBy: none
+		sourceColumn: Active Workflows
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Active Workflow ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: 5b98335a-d556-412d-b67a-5562ec1e5def
+		summarizeBy: none
+		sourceColumn: Active Workflow ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_ActiveWorkflow = m
+		mode: import
+		source =
+				let
+				    Source = silver_People,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"Active Workflows"}),
+				    #"Filtered Rows" = Table.SelectRows(#"Removed Other Columns", each ([Active Workflows] <> null)),
+				    #"Split Column by Delimiter" = Table.ExpandListColumn(Table.TransformColumns(#"Filtered Rows", {{"Active Workflows", Splitter.SplitTextByDelimiter(";", QuoteStyle.Csv), let itemType = (type nullable text) meta [Serialized.Text = true] in type {itemType}}}), "Active Workflows"),
+				    #"Cleaned Text" = Table.TransformColumns(#"Split Column by Delimiter",{{"Active Workflows", Text.Clean, type text}}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Cleaned Text",{{"Active Workflows", Text.Trim, type text}}),
+				    #"Removed Duplicates" = Table.Distinct(#"Trimmed Text"),
+				    #"Added Index" = Table.AddIndexColumn(#"Removed Duplicates", "Index", 0, 1, Int64.Type),
+				    #"Renamed Columns" = Table.RenameColumns(#"Added Index",{{"Index", "Active Workflow ID"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

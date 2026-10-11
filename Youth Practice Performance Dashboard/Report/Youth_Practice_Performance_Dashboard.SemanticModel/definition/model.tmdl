@@ -9,16 +9,15 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
-annotation PBI_QueryOrder = ["stg_peopleSummary","stg_peopleUnder25","stg_peopleOver25"]
+annotation PBI_QueryOrder = ["bronze_stg_peopleSummary","bronze_stg_peopleUnder25","bronze_stg_peopleOver25","silver_People","dim_People","bridge_PeopleTeams","dim_Teams","dim_AllocatedWorkers","dim_EventsAttended","Bridge_EventsAttended","dim_ActiveWorkflow","bridge_People_Workflow"]
 
 annotation PBI_ProTooling = ["DevMode","TMDLView_Desktop"]
 
-ref table stg_peopleSummary
-ref table stg_peopleUnder25
-ref table DateTableTemplate_2e0b9754-6287-4ec2-bd45-f1283e67e352
-ref table LocalDateTable_fc7ddd14-1793-4cf2-9b8e-f600e0a1ee3f
-ref table stg_peopleOver25
-ref table LocalDateTable_99aad865-1fdc-4d12-b692-d6bbfdcf8be8
+ref table dim_Teams
+ref table bridge_PeopleTeams
+ref table dim_People
+ref table dim_ActiveWorkflow
+ref table bridge_People_Workflow
 
 ref cultureInfo en-GB
 

@@ -10,43 +10,72 @@
       "nodes": [
         {
           "location": {
-            "x": 0,
-            "y": 14
+            "x": 68.5865749999999,
+            "y": 589.21420300000023
           },
-          "nodeIndex": "stg_peopleSummary",
+          "nodeIndex": "dim_Teams",
+          "nodeLineageTag": "29da717d-8d21-4dc5-83c5-3f90f6c90aa4",
           "size": {
-            "height": 272,
+            "height": 145,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 2
         },
         {
           "location": {
-            "x": 568,
+            "x": 289.76444300000014,
             "y": 0
           },
-          "nodeIndex": "stg_peopleOver25",
+          "nodeIndex": "dim_People",
+          "nodeLineageTag": "3835be87-3b4f-46fc-8d46-78ea86e6cde9",
           "size": {
-            "height": 300,
-            "width": 234
+            "height": 173,
+            "width": 306
           },
-          "zIndex": 0
+          "zIndex": 4
         },
         {
           "location": {
-            "x": 284,
-            "y": 0
+            "x": 70.862439999999992,
+            "y": 265.73415000000011
           },
-          "nodeIndex": "stg_peopleUnder25",
+          "nodeIndex": "bridge_PeopleTeams",
+          "nodeLineageTag": "6c9b038f-6c7c-4824-a7a5-92e807f1a39b",
           "size": {
-            "height": 300,
+            "height": 128,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 535.83678200000008,
+            "y": 265.59907300000015
+          },
+          "nodeIndex": "bridge_People_Workflow",
+          "nodeLineageTag": "63656e1e-0ca8-4529-987f-1f73a26ad096",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 533.12365499999987,
+            "y": 590.053468
+          },
+          "nodeIndex": "dim_ActiveWorkflow",
+          "nodeLineageTag": "b19e2570-ad38-4847-bcd4-2db46e83f69b",
+          "size": {
+            "height": 145,
+            "width": 234
+          },
+          "zIndex": 5
         }
       ],
       "name": "All tables",
-      "zoomValue": 100,
+      "zoomValue": 56.447393005377734,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,

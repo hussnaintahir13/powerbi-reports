@@ -1,0 +1,100 @@
+table bridge_PeopleTeams
+	lineageTag: 6c9b038f-6c7c-4824-a7a5-92e807f1a39b
+
+	column 'Person ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: a497d806-218c-4a33-986e-2d8aaa30a982
+		summarizeBy: none
+		sourceColumn: Person ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Team_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 19c2d0cd-ca0f-4140-86b7-8878b1101a98
+		summarizeBy: none
+		sourceColumn: Team_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Teams Involved'
+		dataType: string
+		lineageTag: 79b6358f-c768-4d0e-b8c8-2657aed8721e
+		summarizeBy: none
+		sourceColumn: Teams Involved
+
+		annotation SummarizationSetBy = Automatic
+
+	partition bridge_PeopleTeams = m
+		mode: import
+		source =
+				let
+				    Source = silver_People,
+				
+				    SelectedColumns = Table.SelectColumns(
+				        Source,
+				        {"Person ID", "Teams Involved"}
+				    ),
+				
+				    SplitTeams = Table.ExpandListColumn(
+				        Table.TransformColumns(
+				            SelectedColumns,
+				            {{"Teams Involved",
+				              each if _ = null then {}
+				              else Text.Split(Text.From(_), ";"),
+				              type list}}
+				        ),
+				        "Teams Involved"
+				    ),
+				
+				    Cleaned = Table.TransformColumns(
+				        SplitTeams,
+				        {{"Teams Involved",
+				          each if _ = null then null
+				          else Text.Trim(Text.Clean(_)),
+				          type nullable text}}
+				    ),
+				
+				    ValidRows = Table.SelectRows(
+				        Cleaned,
+				        each [Person ID] <> null
+				          and [Teams Involved] <> null
+				          and [Teams Involved] <> ""
+				    ),
+				
+				    UniquePairs = Table.Distinct(
+				        ValidRows,
+				        {"Person ID", "Teams Involved"}
+				    ),
+				
+				    Merged = Table.NestedJoin(
+				        UniquePairs,
+				        {"Teams Involved"},
+				        dim_Teams,
+				        {"Teams Involved"},
+				        "TeamLookup",
+				        JoinKind.LeftOuter
+				    ),
+				
+				    Expanded = Table.ExpandTableColumn(
+				        Merged,
+				        "TeamLookup",
+				        {"Team_ID"},
+				        {"Team_ID"}
+				    ),
+				
+				    // Check that every team has a matching ID
+				    Validated = if List.Contains(Expanded[Team_ID], null)
+				        then error "Unmatched team names in dim_Teams"
+				        else Expanded,
+				    #"Reordered Columns" = Table.ReorderColumns(Validated,{"Person ID", "Team_ID", "Teams Involved"}),
+				    #"Removed Blank Rows" = Table.SelectRows(#"Reordered Columns", each not List.IsEmpty(List.RemoveMatchingItems(Record.FieldValues(_), {"", null})))
+				in
+				    #"Removed Blank Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

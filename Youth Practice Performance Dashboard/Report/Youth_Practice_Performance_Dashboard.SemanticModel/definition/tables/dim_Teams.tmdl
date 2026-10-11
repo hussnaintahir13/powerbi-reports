@@ -1,0 +1,74 @@
+table dim_Teams
+	lineageTag: 29da717d-8d21-4dc5-83c5-3f90f6c90aa4
+
+	column 'Teams Involved'
+		dataType: string
+		lineageTag: e2662873-f711-4d47-8c84-778f76011af6
+		summarizeBy: none
+		sourceColumn: Teams Involved
+
+		annotation SummarizationSetBy = Automatic
+
+	column Team_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 62f91243-b2fd-4759-98a4-b7285dd77627
+		summarizeBy: none
+		sourceColumn: Team_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_Teams = m
+		mode: import
+		source =
+				let
+				    Source = silver_People,
+				
+				    SelectedColumns = Table.SelectColumns(
+				        Source, {"Teams Involved"}
+				    ),
+				
+				    SplitTeams = Table.ExpandListColumn(
+				        Table.TransformColumns(
+				            SelectedColumns,
+				            {{"Teams Involved",
+				              each if _ = null then {}
+				              else Text.Split(Text.From(_), ";"),
+				              type list}}
+				        ),
+				        "Teams Involved"
+				    ),
+				
+				    Cleaned = Table.TransformColumns(
+				        SplitTeams,
+				        {{"Teams Involved",
+				          each if _ = null then null
+				          else Text.Trim(Text.Clean(_)),
+				          type nullable text}}
+				    ),
+				
+				    ValidTeams = Table.SelectRows(
+				        Cleaned,
+				        each [Teams Involved] <> null
+				          and [Teams Involved] <> ""
+				    ),
+				
+				    UniqueTeams = Table.Distinct(
+				        ValidTeams, {"Teams Involved"}
+				    ),
+				
+				    Sorted = Table.Sort(
+				        UniqueTeams,
+				        {{"Teams Involved", Order.Ascending}}
+				    ),
+				
+				    AddedID = Table.AddIndexColumn(
+				        Sorted, "Team_ID", 0, 1, Int64.Type
+				    )
+				in
+				    AddedID
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

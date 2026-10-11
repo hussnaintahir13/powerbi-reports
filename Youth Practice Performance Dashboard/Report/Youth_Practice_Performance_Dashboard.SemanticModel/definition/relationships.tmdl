@@ -1,10 +1,16 @@
-relationship 425f40ff-cd92-4c3a-b40d-31c64df348b6
-	joinOnDateBehavior: datePartOnly
-	fromColumn: stg_peopleUnder25.DOB
-	toColumn: LocalDateTable_fc7ddd14-1793-4cf2-9b8e-f600e0a1ee3f.Date
+relationship AutoDetected_d5620bbb-6a55-4121-8c7e-5bae56e5206b
+	fromColumn: bridge_PeopleTeams.Team_ID
+	toColumn: dim_Teams.Team_ID
 
-relationship 6f85fc40-e267-4637-a03b-0fac0e808ff0
-	joinOnDateBehavior: datePartOnly
-	fromColumn: stg_peopleOver25.DOB
-	toColumn: LocalDateTable_99aad865-1fdc-4d12-b692-d6bbfdcf8be8.Date
+relationship 999993a0-c28c-457b-ad9f-847a228f92e4
+	fromColumn: bridge_PeopleTeams.'Person ID'
+	toColumn: dim_People.'Person ID'
+
+relationship AutoDetected_dcca0472-39d4-42ea-9197-8850038404cb
+	fromColumn: bridge_People_Workflow.'Person ID'
+	toColumn: dim_People.'Person ID'
+
+relationship AutoDetected_9325fcd7-422d-4295-bec5-0122e36b5962
+	fromColumn: bridge_People_Workflow.'dim_ActiveWorkflow.Active Workflow ID'
+	toColumn: dim_ActiveWorkflow.'Active Workflow ID'
 
