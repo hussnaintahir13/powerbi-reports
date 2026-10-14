@@ -25,6 +25,93 @@ table Measure
 		formatString: 0
 		lineageTag: a1bd27d2-c6ed-4483-ba3c-40edf86a8520
 
+	measure 'Workflow Records' =
+			
+			DISTINCTCOUNT(fact_Workflow[Active Workflow Key])
+		formatString: 0
+		lineageTag: 1170c5ac-61e2-493b-ae83-fc19dbf0e43e
+
+	measure 'People with Workflow Records' =
+			
+			DISTINCTCOUNT(fact_Workflow[Person ID])
+		formatString: 0
+		lineageTag: c1cb6db4-659b-4d33-8c41-d1ab601c0ce4
+
+	measure 'People with Dated Activity' =
+			
+			VAR WorkflowPeople =
+			    SELECTCOLUMNS(
+			        VALUES(fact_Workflow[Person ID]),
+			        "PersonKey", fact_Workflow[Person ID]
+			    )
+			
+			VAR CaseNotePeople =
+			    SELECTCOLUMNS(
+			        VALUES(fact_CaseNote[Person ID]),
+			        "PersonKey", fact_CaseNote[Person ID]
+			    )
+			
+			VAR GoalSessionPeople =
+			    SELECTCOLUMNS(
+			        VALUES(fact_GoalSession[Person ID]),
+			        "PersonKey", fact_GoalSession[Person ID]
+			    )
+			
+			VAR UniquePeople =
+			    DISTINCT(
+			        UNION(
+			            WorkflowPeople,
+			            CaseNotePeople,
+			            GoalSessionPeople
+			        )
+			    )
+			
+			RETURN
+			    COUNTROWS(
+			        FILTER(
+			            UniquePeople,
+			            NOT ISBLANK([PersonKey])
+			        )
+			    )
+		formatString: 0
+		lineageTag: 56348b86-bd2b-4b85-bbd3-926d64b54f2f
+
+	measure 'People with Known Authority' =
+			
+			CALCULATE(
+			    [People with Dated Activity],
+			    FILTER(
+			        dim_People,
+			        NOT ISBLANK(dim_People[Authority])
+			            && TRIM(dim_People[Authority]) <> ""
+			    )
+			)
+		formatString: 0
+		lineageTag: 9d09b67b-3a84-4aed-8f4e-36270d46bda5
+
+	measure 'Known Authority Coverage %' =
+			
+			DIVIDE(
+			    [People with Known Authority],
+			    [People with Dated Activity]
+			)
+		lineageTag: b608f05c-6707-4df1-9f13-81a87ac0ae98
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Workflow Type Share %' =
+			
+			DIVIDE(
+			    [Workflow Records],
+			    CALCULATE(
+			        [Workflow Records],
+			        ALLSELECTED(fact_Workflow[WorkflowType])
+			    )
+			)
+		lineageTag: ef100aaa-d19c-4055-80ae-127a71b35232
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column Column
 		formatString: 0
 		lineageTag: d6156735-dc7d-42a5-baed-97929a880c9e

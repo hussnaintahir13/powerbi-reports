@@ -1,0 +1,75 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "5ce73ab67f38ca58c9d8",
+  "position": {
+    "x": 533.33333333333337,
+    "y": 680,
+    "z": 10002,
+    "height": 353.33333333333337,
+    "width": 545,
+    "tabOrder": 10002
+  },
+  "visual": {
+    "visualType": "barChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_Workflow"
+                    }
+                  },
+                  "Property": "WorkflowType"
+                }
+              },
+              "queryRef": "fact_Workflow.WorkflowType",
+              "nativeQueryRef": "WorkflowType",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure"
+                    }
+                  },
+                  "Property": "Workflow Records"
+                }
+              },
+              "queryRef": "Measure.Workflow Records",
+              "nativeQueryRef": "Workflow Records"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Measure"
+                  }
+                },
+                "Property": "Workflow Records"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
