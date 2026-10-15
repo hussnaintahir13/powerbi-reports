@@ -11,7 +11,7 @@ relationship AutoDetected_dcca0472-39d4-42ea-9197-8850038404cb
 	toColumn: dim_People.'Person ID'
 
 relationship AutoDetected_9325fcd7-422d-4295-bec5-0122e36b5962
-	fromColumn: bridge_People_Workflow.'dim_ActiveWorkflow.Active Workflow ID'
+	fromColumn: bridge_People_Workflow.'Active Workflow ID'
 	toColumn: dim_ActiveWorkflow.'Active Workflow ID'
 
 relationship AutoDetected_5d7bf0e2-4fec-4adc-9d77-09d47f95f524

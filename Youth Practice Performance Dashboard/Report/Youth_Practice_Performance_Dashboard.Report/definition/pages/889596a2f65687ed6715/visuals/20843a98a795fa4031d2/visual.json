@@ -2,51 +2,44 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "20843a98a795fa4031d2",
   "position": {
-    "x": 533.33333333333337,
-    "y": 290,
-    "z": 5000,
-    "height": 352,
-    "width": 916,
-    "tabOrder": 5000
+    "x": 30,
+    "y": 662.5,
+    "z": 2000,
+    "height": 352.5,
+    "width": 1852.5,
+    "tabOrder": 2000
   },
   "visual": {
-    "visualType": "areaChart",
+    "visualType": "lineChart",
     "query": {
       "queryState": {
         "Category": {
           "projections": [
             {
               "field": {
-                "Column": {
+                "HierarchyLevel": {
                   "Expression": {
-                    "SourceRef": {
-                      "Entity": "dim_People"
+                    "Hierarchy": {
+                      "Expression": {
+                        "PropertyVariationSource": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "dim_date"
+                            }
+                          },
+                          "Name": "Variation",
+                          "Property": "Date"
+                        }
+                      },
+                      "Hierarchy": "Date Hierarchy"
                     }
                   },
-                  "Property": "Age Band At Refresh"
+                  "Level": "Month"
                 }
               },
-              "queryRef": "dim_People.Age Band At Refresh",
-              "nativeQueryRef": "Age Band At Refresh",
+              "queryRef": "dim_date.Date.Variation.Date Hierarchy.Month",
+              "nativeQueryRef": "Date Month",
               "active": true
-            }
-          ]
-        },
-        "Series": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "dim_People"
-                    }
-                  },
-                  "Property": "Sex - By Birth"
-                }
-              },
-              "queryRef": "dim_People.Sex - By Birth",
-              "nativeQueryRef": "Sex - By Birth"
             }
           ]
         },
@@ -54,37 +47,25 @@
           "projections": [
             {
               "field": {
-                "Measure": {
+                "Aggregation": {
                   "Expression": {
-                    "SourceRef": {
-                      "Entity": "Measure"
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fact_CaseNote"
+                        }
+                      },
+                      "Property": "Person ID"
                     }
                   },
-                  "Property": "People with Dated Activity"
+                  "Function": 5
                 }
               },
-              "queryRef": "Measure.People with Dated Activity",
-              "nativeQueryRef": "People with Dated Activity"
+              "queryRef": "CountNonNull(fact_CaseNote.Person ID)",
+              "nativeQueryRef": "Count of Person ID"
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "dim_People"
-                  }
-                },
-                "Property": "Age Band At Refresh"
-              }
-            },
-            "direction": "Ascending"
-          }
-        ]
       }
     },
     "objects": {
@@ -149,54 +130,49 @@
             }
           }
         }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Recorded Case Activity Over Time'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "2e367a1c8e6488f8be1a",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_People"
-              }
-            },
-            "Property": "Age Band At Refresh"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "463dcc85a2dddf493855",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Measure"
-              }
-            },
-            "Property": "People with Dated Activity"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "b7706e296925ad277ac4",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_People"
-              }
-            },
-            "Property": "Sex - By Birth"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

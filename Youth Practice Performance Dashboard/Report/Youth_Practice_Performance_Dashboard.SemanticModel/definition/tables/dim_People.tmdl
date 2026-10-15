@@ -259,6 +259,47 @@ table dim_People
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Disability Status' =
+			
+			VAR DisabilityValue =
+			    LOWER(TRIM(dim_People[disability] & ""))
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        DisabilityValue = "", "Not Recorded",
+			        DisabilityValue IN {"unknown", "not known", "not recorded", "n/a"}, "Not Recorded",
+			        DisabilityValue IN {"no", "none", "no disability"}, "No",
+			        "Yes"
+			    )
+		lineageTag: bca9820f-1a60-41b9-8040-bc2cf8d2d244
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Participation Count Group' =
+			
+			VAR EventCount =
+			    COUNTROWS(
+			        FILTER(
+			            Bridge_EventsAttended,
+			            Bridge_EventsAttended[Person ID]
+			                = dim_People[Person ID]
+			        )
+			    )
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        EventCount = 0, "No Event Recorded",
+			        EventCount = 1, "1 Event Type",
+			        EventCount = 2, "2 Event Types",
+			        EventCount = 3, "3 Event Types",
+			        "4+ Event Types"
+			    )
+		lineageTag: c1e851ec-64f4-4308-a542-ac4174e2249c
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition dim_People = m
 		mode: import
 		queryGroup: Gold\Dims

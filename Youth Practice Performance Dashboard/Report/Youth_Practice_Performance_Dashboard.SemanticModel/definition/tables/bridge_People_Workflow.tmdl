@@ -10,12 +10,12 @@ table bridge_People_Workflow
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'dim_ActiveWorkflow.Active Workflow ID'
+	column 'Active Workflow ID'
 		dataType: int64
 		formatString: 0
 		lineageTag: eae09fcf-b3f1-41fa-9d01-5a409d4441ef
 		summarizeBy: none
-		sourceColumn: dim_ActiveWorkflow.Active Workflow ID
+		sourceColumn: Active Workflow ID
 
 		annotation SummarizationSetBy = Automatic
 
@@ -33,9 +33,10 @@ table bridge_People_Workflow
 				    #"Trimmed Text" = Table.TransformColumns(#"Cleaned Text",{{"Active Workflows", Text.Trim, type text}}),
 				    #"Merged Queries" = Table.NestedJoin(#"Trimmed Text", {"Active Workflows"}, dim_ActiveWorkflow, {"Active Workflows"}, "dim_ActiveWorkflow", JoinKind.LeftOuter),
 				    #"Expanded dim_ActiveWorkflow" = Table.ExpandTableColumn(#"Merged Queries", "dim_ActiveWorkflow", {"Active Workflow ID"}, {"dim_ActiveWorkflow.Active Workflow ID"}),
-				    #"Removed Columns" = Table.RemoveColumns(#"Expanded dim_ActiveWorkflow",{"Active Workflows"})
+				    #"Removed Columns" = Table.RemoveColumns(#"Expanded dim_ActiveWorkflow",{"Active Workflows"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Removed Columns",{{"dim_ActiveWorkflow.Active Workflow ID", "Active Workflow ID"}})
 				in
-				    #"Removed Columns"
+				    #"Renamed Columns"
 
 	annotation PBI_NavigationStepName = Navigation
 

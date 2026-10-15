@@ -10,8 +10,8 @@
       "nodes": [
         {
           "location": {
-            "x": 897.83353759476847,
-            "y": 805.30951759054165
+            "x": 445.95794773910586,
+            "y": 597.3680085141068
           },
           "nodeIndex": "dim_Teams",
           "nodeLineageTag": "29da717d-8d21-4dc5-83c5-3f90f6c90aa4",
@@ -19,13 +19,13 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 10,
+          "zIndex": 12,
           "expandedHeight": 145
         },
         {
           "location": {
-            "x": 1059.5248232054289,
-            "y": 428.82401864035177
+            "x": 721.56760723395575,
+            "y": 883.61062678128985
           },
           "nodeIndex": "dim_People",
           "nodeLineageTag": "3835be87-3b4f-46fc-8d46-78ea86e6cde9",
@@ -33,13 +33,13 @@
             "height": 104,
             "width": 306
           },
-          "zIndex": 9,
+          "zIndex": 6,
           "expandedHeight": 173
         },
         {
           "location": {
-            "x": 1946.7977065611519,
-            "y": 1588.1546155221304
+            "x": 2080.4760369842134,
+            "y": 1087.8157216529571
           },
           "nodeIndex": "bridge_People_Workflow",
           "nodeLineageTag": "63656e1e-0ca8-4529-987f-1f73a26ad096",
@@ -47,27 +47,26 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 7,
+          "zIndex": 14,
           "expandedHeight": 128
         },
         {
           "location": {
-            "x": 1901.3292640988852,
-            "y": 1261.6073820439026
+            "x": 2053.0701552115061,
+            "y": 1353.0637315090719
           },
           "nodeIndex": "dim_ActiveWorkflow",
           "nodeLineageTag": "b19e2570-ad38-4847-bcd4-2db46e83f69b",
           "size": {
-            "height": 104,
-            "width": 234
+            "height": 145,
+            "width": 295.31888530404444
           },
-          "zIndex": 13,
-          "expandedHeight": 145
+          "zIndex": 17
         },
         {
           "location": {
-            "x": 878.433111497105,
-            "y": 1589.5897983035034
+            "x": 413.26756877510735,
+            "y": 1146.5253026547548
           },
           "nodeIndex": "bridge_People_Teams",
           "nodeLineageTag": "6c9b038f-6c7c-4824-a7a5-92e807f1a39b",
@@ -75,13 +74,13 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 11,
+          "zIndex": 16,
           "expandedHeight": 128
         },
         {
           "location": {
-            "x": 1384.1256864940869,
-            "y": 1611.909067710596
+            "x": 1442.8939025026109,
+            "y": 1131.0389521266438
           },
           "nodeIndex": "Bridge_AllocatedWorkers",
           "nodeLineageTag": "d3842c6c-c54f-48bc-b30d-d60bf8be858a",
@@ -89,13 +88,13 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 6,
+          "zIndex": 15,
           "expandedHeight": 128
         },
         {
           "location": {
-            "x": 463.24566465809653,
-            "y": 1589.5052344873275
+            "x": 757.337991588832,
+            "y": 1134.9989110489184
           },
           "nodeIndex": "Bridge_EventsAttended",
           "nodeLineageTag": "979f9915-e824-4537-9dd9-783b025311aa",
@@ -103,13 +102,13 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 8,
+          "zIndex": 5,
           "expandedHeight": 128
         },
         {
           "location": {
-            "x": 1290.028363925011,
-            "y": 1277.9112005662087
+            "x": 1469.1374124811407,
+            "y": 1354.2135224598169
           },
           "nodeIndex": "dim_AllocatedWorkers",
           "nodeLineageTag": "593c47e8-9b19-4f26-bad6-13bddc360df7",
@@ -117,13 +116,13 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 15,
+          "zIndex": 9,
           "expandedHeight": 128
         },
         {
           "location": {
-            "x": 453.92370311038894,
-            "y": 1025.6300112614847
+            "x": 792.66848451466853,
+            "y": 1411.0335854588845
           },
           "nodeIndex": "dim_EventsAttended",
           "nodeLineageTag": "ab58f450-520f-4c92-8d24-84a2eb79943f",
@@ -131,13 +130,13 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 16,
+          "zIndex": 10,
           "expandedHeight": 128
         },
         {
           "location": {
-            "x": 560.94404166046809,
-            "y": 229.63161751345103
+            "x": 761.56956011958812,
+            "y": 212.7113930650915
           },
           "nodeIndex": "dim_date",
           "nodeLineageTag": "0fa5862d-b221-46c1-bf41-e1bf3b503218",
@@ -145,13 +144,13 @@
             "height": 72,
             "width": 234
           },
-          "zIndex": 17,
+          "zIndex": 11,
           "expandedHeight": 248
         },
         {
           "location": {
-            "x": 161.44176103190057,
-            "y": 1604.9210361406567
+            "x": 115.60919060113656,
+            "y": 1433.0488970252918
           },
           "nodeIndex": "dim_Workers",
           "nodeLineageTag": "050b1bb7-b3b0-4cc7-8e94-3fc8068e9b47",
@@ -159,13 +158,13 @@
             "height": 104,
             "width": 234
           },
-          "zIndex": 14,
+          "zIndex": 8,
           "expandedHeight": 152
         },
         {
           "location": {
-            "x": 127.90494839834167,
-            "y": 619.63023635261993
+            "x": 119.8697216600564,
+            "y": 341.9732974136071
           },
           "nodeIndex": "fact_CaseNote",
           "nodeLineageTag": "ed98aef3-b64a-4743-a580-94da1f4737d7",
@@ -173,13 +172,13 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 12,
+          "zIndex": 7,
           "expandedHeight": 300
         },
         {
           "location": {
-            "x": 1651.9418916125971,
-            "y": 784.2741742947544
+            "x": 1397.9051337051565,
+            "y": 325.8353147658313
           },
           "nodeIndex": "fact_GoalForm",
           "nodeLineageTag": "3e4f6287-bc9e-432c-a6cd-017748bcca4a",
@@ -187,13 +186,13 @@
             "height": 152,
             "width": 234
           },
-          "zIndex": 2,
+          "zIndex": 1,
           "expandedHeight": 300
         },
         {
           "location": {
-            "x": 897.86007217976476,
-            "y": 568.12012485499633
+            "x": 1078.6978762768365,
+            "y": 322.01859788568078
           },
           "nodeIndex": "fact_GoalProgress",
           "nodeLineageTag": "dee7592e-7df6-43b3-9a5e-2ec8cff5fa4e",
@@ -201,13 +200,13 @@
             "height": 176,
             "width": 234
           },
-          "zIndex": 3,
+          "zIndex": 2,
           "expandedHeight": 300
         },
         {
           "location": {
-            "x": 1702.3935234204357,
-            "y": 344.262432001561
+            "x": 1717.7433019226128,
+            "y": 326.69064357267115
           },
           "nodeIndex": "fact_GoalSession",
           "nodeLineageTag": "6850cf16-f95e-494c-ba6a-1de888735706",
@@ -215,13 +214,13 @@
             "height": 176,
             "width": 234
           },
-          "zIndex": 4,
+          "zIndex": 3,
           "expandedHeight": 296
         },
         {
           "location": {
-            "x": 546.46483316902584,
-            "y": 420.22340739185836
+            "x": 440.37037062804791,
+            "y": 352.73767459290161
           },
           "nodeIndex": "fact_Workflow",
           "nodeLineageTag": "44f1a8de-f24b-4d20-a93f-b8cee8e7192d",
@@ -229,24 +228,24 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 5,
+          "zIndex": 4,
           "expandedHeight": 300
         },
         {
           "location": {
-            "x": 2102.8927581628104,
-            "y": 769.954533855298
+            "x": 2235.75034298824,
+            "y": 184.01851872776297
           },
-          "nodeIndex": "Measure",
+          "nodeIndex": "measure",
           "size": {
             "height": 200,
             "width": 234
           },
-          "zIndex": 1
+          "zIndex": 0
         }
       ],
       "name": "All tables",
-      "zoomValue": 29.354741056933008,
+      "zoomValue": 26.182253989283794,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,

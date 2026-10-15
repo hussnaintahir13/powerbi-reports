@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "423eab4ea812e4bd8fbb",
   "position": {
-    "x": 362.5,
-    "y": 60,
-    "z": 3000,
+    "x": 805,
+    "y": 20,
+    "z": 1000,
     "height": 150,
-    "width": 300,
-    "tabOrder": 3000
+    "width": 368,
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -20,14 +20,15 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measure"
+                      "Entity": "measure"
                     }
                   },
-                  "Property": "Workflow Records"
+                  "Property": "Support Episodes Recorded"
                 }
               },
-              "queryRef": "Measure.Workflow Records",
-              "nativeQueryRef": "Workflow Records"
+              "queryRef": "Measure.Support Episodes Recorded",
+              "nativeQueryRef": "Total Support Episodes Recorded",
+              "displayName": "Total Support Episodes Recorded"
             }
           ]
         }
@@ -39,10 +40,10 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "Measure"
+                    "Entity": "measure"
                   }
                 },
-                "Property": "Workflow Records"
+                "Property": "Support Episodes Recorded"
               }
             },
             "direction": "Descending"
@@ -64,7 +65,7 @@
             }
           },
           "selector": {
-            "metadata": "Measure.Workflow Records"
+            "metadata": "Measure.Support Episodes Recorded"
           }
         }
       ]
