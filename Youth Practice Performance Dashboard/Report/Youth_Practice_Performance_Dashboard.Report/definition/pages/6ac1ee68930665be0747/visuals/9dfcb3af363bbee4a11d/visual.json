@@ -2,15 +2,14 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "9dfcb3af363bbee4a11d",
   "position": {
-    "x": 77.5,
-    "y": 640,
+    "x": 0,
+    "y": 611.54430379746839,
     "z": 3,
-    "height": 377.5,
-    "width": 850,
-    "tabOrder": 3
+    "height": 378.45569620253167,
+    "width": 481.94640338504939
   },
   "visual": {
-    "visualType": "barChart",
+    "visualType": "lineChart",
     "query": {
       "queryState": {
         "Category": {
@@ -115,6 +114,46 @@
             }
           }
         }
+      ],
+      "categoryAxis": [
+        {
+          "properties": {
+            "start": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "end": {
+              "expr": {
+                "Literal": {
+                  "Value": "26D"
+                }
+              }
+            },
+            "axisType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Categorical'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "seriesLabels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "visualContainerObjects": {
@@ -124,7 +163,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Goal Improvement by Team'"
+                  "Value": "'Goal Improvement by Age Group'"
                 }
               }
             }
@@ -134,10 +173,25 @@
     },
     "drillFilterOtherVisuals": true
   },
+  "parentGroupName": "3d46bdaad0748f9f0afa",
   "filterConfig": {
     "filters": [
       {
-        "name": "7559d8bd2ffb17f59120",
+        "name": "b20366092e7a96336ea0",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_People"
+              }
+            },
+            "Property": "Age Band At Refresh"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "2280b0edfb2ab12e8487",
         "field": {
           "Measure": {
             "Expression": {
@@ -151,7 +205,7 @@
         "type": "Advanced"
       },
       {
-        "name": "c3aa3d5f6621b1f13423",
+        "name": "201903520ee963e6bb1d",
         "field": {
           "Measure": {
             "Expression": {
@@ -163,20 +217,6 @@
           }
         },
         "type": "Advanced"
-      },
-      {
-        "name": "cc3eb9c5deddd2de4802",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_People"
-              }
-            },
-            "Property": "Age Band At Refresh"
-          }
-        },
-        "type": "Categorical"
       }
     ]
   }

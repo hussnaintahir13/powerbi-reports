@@ -2,12 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "93810fdd7fd28d1dff78",
   "position": {
-    "x": 77.5,
-    "y": 197.5,
+    "x": 0,
+    "y": 167.92405063291139,
     "z": 1,
-    "height": 397.5,
-    "width": 850,
-    "tabOrder": 1
+    "height": 398.50632911392404,
+    "width": 481.94640338504939
   },
   "visual": {
     "visualType": "barChart",
@@ -134,22 +133,9 @@
     },
     "drillFilterOtherVisuals": true
   },
+  "parentGroupName": "3d46bdaad0748f9f0afa",
   "filterConfig": {
     "filters": [
-      {
-        "name": "47c1616c045732d07514",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_Teams"
-              }
-            },
-            "Property": "Teams Involved"
-          }
-        },
-        "type": "Categorical"
-      },
       {
         "name": "a5a69be64a1e907a5e80",
         "field": {
@@ -177,6 +163,20 @@
           }
         },
         "type": "Advanced"
+      },
+      {
+        "name": "c303f21209202eb2c631",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_Teams"
+              }
+            },
+            "Property": "Teams Involved"
+          }
+        },
+        "type": "Categorical"
       }
     ]
   }

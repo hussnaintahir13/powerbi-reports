@@ -1,0 +1,103 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "a3e754f091d08a52625e",
+  "position": {
+    "x": 32.5,
+    "y": 197.5,
+    "z": 7,
+    "height": 840,
+    "width": 780,
+    "tabOrder": 2
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "1. Concentration of support",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "18pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Emotional Wellbeing accounts for 1,059 of the 1,146 workflow records. Management should explore whether this reflects actual demand, different recording practices or the extract's scope.",
+                    "textStyle": {
+                      "fontSize": "18pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "2. Attendance evidence needs strengthening",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "18pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "The case-note extract contains recorded missed appointments and cancellations, but there is no complete appointment denominator for a reliable attendance rate.",
+                    "textStyle": {
+                      "fontSize": "18pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "3. Geographic reporting completeness",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "18pt"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Earlier analysis indicated approximately 43% known-authority coverage. Improving authority recording would strengthen comparisons between regions.",
+                    "textStyle": {
+                      "fontSize": "18pt"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
