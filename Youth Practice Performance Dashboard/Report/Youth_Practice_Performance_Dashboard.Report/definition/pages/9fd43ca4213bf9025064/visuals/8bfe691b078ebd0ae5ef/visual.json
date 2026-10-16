@@ -117,5 +117,23 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "181658e389ca6662cd6e",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "Support Episodes Recorded"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "ed358290eca1c6f1e6d1",
   "position": {
-    "x": 59.861431870669747,
-    "y": 567.57505773672051,
+    "x": 59.71291866028708,
+    "y": 562.67942583732054,
     "z": 9000,
-    "height": 480,
-    "width": 672.5,
+    "height": 484.59330143540672,
+    "width": 686.6985645933014,
     "tabOrder": 9000
   },
   "visual": {
@@ -23,12 +23,48 @@
                       "Entity": "dim_People"
                     }
                   },
-                  "Property": "Authority"
+                  "Property": "Authority Map Location"
                 }
               },
-              "queryRef": "dim_People.Authority",
-              "nativeQueryRef": "Authority",
+              "queryRef": "dim_People.Authority Map Location",
+              "nativeQueryRef": "Authority Map Location",
               "active": true
+            }
+          ]
+        },
+        "Size": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "measure"
+                    }
+                  },
+                  "Property": "People with Dated Activity"
+                }
+              },
+              "queryRef": "measure.People with Dated Activity",
+              "nativeQueryRef": "People with Dated Activity"
+            }
+          ]
+        },
+        "Tooltips": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "measure"
+                    }
+                  },
+                  "Property": "Map Country"
+                }
+              },
+              "queryRef": "measure.Map Country",
+              "nativeQueryRef": "Map Country"
             }
           ]
         }
@@ -57,21 +93,21 @@
             "defaultStyle": {
               "expr": {
                 "Literal": {
-                  "Value": "'road'"
+                  "Value": "'grayscale_dark'"
                 }
               }
             },
             "showStylePicker": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
             "showNavigationControls": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             },
@@ -79,6 +115,34 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            },
+            "zoom": {
+              "expr": {
+                "Literal": {
+                  "Value": "4.95D"
+                }
+              }
+            },
+            "centerLatitude": {
+              "expr": {
+                "Literal": {
+                  "Value": "52.720447969301205D"
+                }
+              }
+            },
+            "centerLongitude": {
+              "expr": {
+                "Literal": {
+                  "Value": "-1.454469472169876D"
+                }
+              }
+            },
+            "pitch": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }
@@ -136,6 +200,80 @@
                   "Value": "''"
                 }
               }
+            },
+            "clusteringEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "iconId": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Location'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryLabels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "heatMapLayer": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "heatMapIntensity": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
+                }
+              }
+            },
+            "heatMapRadius": {
+              "expr": {
+                "Literal": {
+                  "Value": "13D"
+                }
+              }
+            },
+            "mapTransparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "39D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "barChart": [
+        {
+          "properties": {
+            "showModern": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
             }
           }
         }
@@ -148,7 +286,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'People Worked with by Authority'"
+                  "Value": "'Young People Reached by Local Authority'"
                 }
               }
             },
@@ -393,5 +531,109 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "e9aeaad0089865fb9e20",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "Map Country"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "daae6a2e8d4df73bc3f9",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_People"
+              }
+            },
+            "Property": "Authority Map Location"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "d",
+              "Entity": "dim_People",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "d"
+                              }
+                            },
+                            "Property": "Authority Map Location"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "null"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "8c65239d1412eb4d6c6b",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "People with Dated Activity"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

@@ -300,6 +300,21 @@ table dim_People
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Authority Map Location' =
+			
+			VAR AuthorityName =
+			    TRIM(dim_People[Authority] & "")
+			RETURN
+			    IF(
+			        AuthorityName = "",
+			        BLANK(),
+			        AuthorityName & ", England, United Kingdom"
+			    )
+		lineageTag: 6ec61674-c0b8-46bc-970f-d83a3eae9e2a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition dim_People = m
 		mode: import
 		queryGroup: Gold\Dims

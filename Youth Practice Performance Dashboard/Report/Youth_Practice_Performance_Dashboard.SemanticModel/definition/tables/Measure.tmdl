@@ -290,6 +290,64 @@ table measure
 		formatString: 0
 		lineageTag: 8281269c-34b9-4cc2-ae42-d326e4b17cb3
 
+	measure 'Map Country' = "United Kingdom"
+		lineageTag: 4da3d2c8-6d52-48e2-80f4-3b3fa6c948f4
+
+	measure 'Goals Recorded' =
+			
+			COUNTROWS(fact_GoalProgress)
+		formatString: 0
+		lineageTag: 24eb3653-9787-4a22-8b9f-c13a2640d486
+
+	measure 'Assessable Goals' =
+			
+			CALCULATE(
+			    [Goals Recorded],
+			    fact_GoalProgress[GoalChangeCategory]
+			        IN {"Improved", "No Change", "Declined"}
+			)
+		formatString: 0
+		lineageTag: af7dbfce-7426-4afc-847f-61e9caf3f690
+
+	measure 'Goals Improved' =
+			
+			CALCULATE(
+			    [Goals Recorded],
+			    fact_GoalProgress[GoalChangeCategory] = "Improved"
+			)
+		formatString: 0
+		lineageTag: d8c1c841-682c-440c-8081-e48d8e8e2ebb
+
+	measure 'Goal Improvement Rate %' =
+			
+			DIVIDE(
+			    [Goals Improved],
+			    [Assessable Goals]
+			)*100
+		lineageTag: edc7db7b-dae7-49d1-bca8-fb42764852ea
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Goals with Follow-up' =
+			
+			CALCULATE(
+			    [Goals Recorded],
+			    fact_GoalProgress[GoalChangeCategory]
+			        IN {"Improved", "No Change", "Declined"}
+			)
+		formatString: 0
+		lineageTag: 794963f4-ff54-4632-a35a-bb2b24e0d30e
+
+	measure 'Goal Follow-up Coverage %' =
+			
+			DIVIDE(
+			    [Goals with Follow-up],
+			    [Goals Recorded]
+			)
+		lineageTag: 7c2b0319-1cb4-4d98-bedc-6c7f8a840050
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column Column
 		formatString: 0
 		lineageTag: d6156735-dc7d-42a5-baed-97929a880c9e
