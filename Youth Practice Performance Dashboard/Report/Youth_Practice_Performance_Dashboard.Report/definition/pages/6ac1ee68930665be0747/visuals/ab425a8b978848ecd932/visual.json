@@ -1,0 +1,196 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "ab425a8b978848ecd932",
+  "position": {
+    "x": 962.5,
+    "y": 197.5,
+    "z": 2,
+    "height": 397.5,
+    "width": 887.5,
+    "tabOrder": 2
+  },
+  "visual": {
+    "visualType": "columnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_Workflow"
+                    }
+                  },
+                  "Property": "WorkflowType"
+                }
+              },
+              "queryRef": "fact_Workflow.WorkflowType",
+              "nativeQueryRef": "WorkflowType",
+              "active": true
+            }
+          ]
+        },
+        "Tooltips": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "measure"
+                    }
+                  },
+                  "Property": "Assessable Goals"
+                }
+              },
+              "queryRef": "measure.Assessable Goals",
+              "nativeQueryRef": "Assessable Goals"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "measure"
+                    }
+                  },
+                  "Property": "Average Support Episodes per Person"
+                }
+              },
+              "queryRef": "measure.Average Support Episodes per Person",
+              "nativeQueryRef": "Average Support Episodes per Person"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "measure"
+                  }
+                },
+                "Property": "Average Support Episodes per Person"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "labelPrecision": {
+              "expr": {
+                "Literal": {
+                  "Value": "2L"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Support Intensity by Service Type'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "3e317176763082ef643c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_Workflow"
+              }
+            },
+            "Property": "WorkflowType"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "15d90b34f2de81aaebec",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "Assessable Goals"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "b2f6edee7135ba0a46c2",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "Average Support Episodes per Person"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

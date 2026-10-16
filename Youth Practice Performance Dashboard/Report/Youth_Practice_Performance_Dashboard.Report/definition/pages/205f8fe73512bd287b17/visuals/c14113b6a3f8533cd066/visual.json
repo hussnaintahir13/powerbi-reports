@@ -4,10 +4,10 @@
   "position": {
     "x": 1065,
     "y": 260,
-    "z": 2,
+    "z": 2000,
     "height": 340,
     "width": 802.5,
-    "tabOrder": 2
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "lineChart",
@@ -178,42 +178,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "33c3a8be97f513c9ee38",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_GoalSession"
-              }
-            },
-            "Property": "SessionNumber"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "cb90a6f39b5db1fc73b7",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "fact_GoalSession"
-                  }
-                },
-                "Property": "ProgressScore"
-              }
-            },
-            "Function": 1
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

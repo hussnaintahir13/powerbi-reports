@@ -93,7 +93,7 @@
             "defaultStyle": {
               "expr": {
                 "Literal": {
-                  "Value": "'grayscale_dark'"
+                  "Value": "'night'"
                 }
               }
             },
@@ -535,20 +535,6 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "e9aeaad0089865fb9e20",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "measure"
-              }
-            },
-            "Property": "Map Country"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
         "name": "daae6a2e8d4df73bc3f9",
         "field": {
           "Column": {
@@ -621,7 +607,21 @@
         }
       },
       {
-        "name": "8c65239d1412eb4d6c6b",
+        "name": "2fd0efa890c44e1ef780",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "Map Country"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "8d355fddba1db0751335",
         "field": {
           "Measure": {
             "Expression": {

@@ -323,7 +323,7 @@ table measure
 			DIVIDE(
 			    [Goals Improved],
 			    [Assessable Goals]
-			)*100
+			)
 		lineageTag: edc7db7b-dae7-49d1-bca8-fb42764852ea
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -347,6 +347,19 @@ table measure
 		lineageTag: 7c2b0319-1cb4-4d98-bedc-6c7f8a840050
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Authorities Represented' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(dim_People[Authority]),
+			    FILTER(
+			        dim_People,
+			        NOT ISBLANK(dim_People[Authority])
+			            && TRIM(dim_People[Authority]) <> ""
+			    )
+			)
+		formatString: 0
+		lineageTag: bbbb7e41-193b-4dfc-b8b6-027045e039a2
 
 	column Column
 		formatString: 0

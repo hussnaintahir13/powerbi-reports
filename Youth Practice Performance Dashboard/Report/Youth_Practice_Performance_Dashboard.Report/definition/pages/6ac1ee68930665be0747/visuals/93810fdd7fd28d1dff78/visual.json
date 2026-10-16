@@ -1,0 +1,183 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "93810fdd7fd28d1dff78",
+  "position": {
+    "x": 77.5,
+    "y": 197.5,
+    "z": 1,
+    "height": 397.5,
+    "width": 850,
+    "tabOrder": 1
+  },
+  "visual": {
+    "visualType": "barChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_Teams"
+                    }
+                  },
+                  "Property": "Teams Involved"
+                }
+              },
+              "queryRef": "dim_Teams.Teams Involved",
+              "nativeQueryRef": "Teams Involved",
+              "active": true
+            }
+          ]
+        },
+        "Tooltips": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "measure"
+                    }
+                  },
+                  "Property": "Assessable Goals"
+                }
+              },
+              "queryRef": "measure.Assessable Goals",
+              "nativeQueryRef": "Assessable Goals"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "measure"
+                    }
+                  },
+                  "Property": "Goal Improvement Rate %"
+                }
+              },
+              "queryRef": "measure.Goal Improvement Rate %",
+              "nativeQueryRef": "Goal Improvement Rate %",
+              "format": "0.00%;-0.00%;0.00%"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "measure"
+                  }
+                },
+                "Property": "Goal Improvement Rate %"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Goal Improvement by Team'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "47c1616c045732d07514",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_Teams"
+              }
+            },
+            "Property": "Teams Involved"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "a5a69be64a1e907a5e80",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "Goal Improvement Rate %"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "cd79e0c3c017ad4572fb",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "Assessable Goals"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

@@ -1,0 +1,182 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "709dc6318d3e69d46595",
+  "position": {
+    "x": 962.5,
+    "y": 640,
+    "z": 4,
+    "height": 377.5,
+    "width": 887.5,
+    "tabOrder": 4
+  },
+  "visual": {
+    "visualType": "barChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_EventsAttended"
+                    }
+                  },
+                  "Property": "Events Attended"
+                }
+              },
+              "queryRef": "dim_EventsAttended.Events Attended",
+              "nativeQueryRef": "Events Attended",
+              "active": true
+            }
+          ]
+        },
+        "Tooltips": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "measure"
+                    }
+                  },
+                  "Property": "Assessable Goals"
+                }
+              },
+              "queryRef": "measure.Assessable Goals",
+              "nativeQueryRef": "Assessable Goals"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "measure"
+                    }
+                  },
+                  "Property": "People with Event Records"
+                }
+              },
+              "queryRef": "measure.People with Event Records",
+              "nativeQueryRef": "People with Event Records"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "measure"
+                  }
+                },
+                "Property": "People with Event Records"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Evidence of Programme Reach'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "cd0b644d10d8ca4c90bc",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "Assessable Goals"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "7768130f42e69bbcc4d0",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_EventsAttended"
+              }
+            },
+            "Property": "Events Attended"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "a1f89e482758859dd405",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "People with Event Records"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

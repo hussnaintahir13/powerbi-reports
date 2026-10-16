@@ -1,0 +1,183 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "9dfcb3af363bbee4a11d",
+  "position": {
+    "x": 77.5,
+    "y": 640,
+    "z": 3,
+    "height": 377.5,
+    "width": 850,
+    "tabOrder": 3
+  },
+  "visual": {
+    "visualType": "barChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_People"
+                    }
+                  },
+                  "Property": "Age Band At Refresh"
+                }
+              },
+              "queryRef": "dim_People.Age Band At Refresh",
+              "nativeQueryRef": "Age Band At Refresh",
+              "active": true
+            }
+          ]
+        },
+        "Tooltips": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "measure"
+                    }
+                  },
+                  "Property": "Assessable Goals"
+                }
+              },
+              "queryRef": "measure.Assessable Goals",
+              "nativeQueryRef": "Assessable Goals"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "measure"
+                    }
+                  },
+                  "Property": "Goal Improvement Rate %"
+                }
+              },
+              "queryRef": "measure.Goal Improvement Rate %",
+              "nativeQueryRef": "Goal Improvement Rate %",
+              "format": "0.00%;-0.00%;0.00%"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "measure"
+                  }
+                },
+                "Property": "Goal Improvement Rate %"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Goal Improvement by Team'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "7559d8bd2ffb17f59120",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "Goal Improvement Rate %"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "c3aa3d5f6621b1f13423",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "Assessable Goals"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "cc3eb9c5deddd2de4802",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "dim_People"
+              }
+            },
+            "Property": "Age Band At Refresh"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

@@ -4,10 +4,10 @@
   "position": {
     "x": 62.5,
     "y": 260,
-    "z": 1,
+    "z": 1000,
     "height": 340,
     "width": 960,
-    "tabOrder": 1
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "clusteredColumnChart",
@@ -118,42 +118,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "0b81c5ae3db04f628342",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_GoalProgress"
-              }
-            },
-            "Property": "GoalChangeCategory"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "b9b836c5c7b25ba7ed4c",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "fact_GoalProgress"
-                  }
-                },
-                "Property": "Person ID"
-              }
-            },
-            "Function": 5
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

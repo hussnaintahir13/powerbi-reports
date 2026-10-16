@@ -119,5 +119,23 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "0dfa2ddfdb826c655f7b",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "People with Dated Activity"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

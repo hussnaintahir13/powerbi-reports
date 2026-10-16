@@ -4,10 +4,10 @@
   "position": {
     "x": 62.5,
     "y": 640,
-    "z": 3,
+    "z": 3000,
     "height": 405,
     "width": 960,
-    "tabOrder": 3
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "barChart",
@@ -134,37 +134,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "7886d5ce595c3829880e",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_Teams"
-              }
-            },
-            "Property": "TeamName"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "adede738b3fd390c6230",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "measure"
-              }
-            },
-            "Property": "Goal Improvement Rate %"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }
