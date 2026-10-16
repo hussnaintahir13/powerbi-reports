@@ -109,6 +109,74 @@ table fact_CaseNote
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Contact Channel' =
+			
+			VAR NoteType =
+			    LOWER(TRIM(fact_CaseNote[NoteType] & ""))
+			RETURN
+			SWITCH(
+			    TRUE(),
+			
+			    NoteType = "", "Not Recorded",
+			
+			    CONTAINSSTRING(NoteType, "cancelled")
+			        || CONTAINSSTRING(NoteType, "missed"),
+			        "Missed / Cancelled",
+			
+			    CONTAINSSTRING(NoteType, "unsuccessful"),
+			        "Unsuccessful Contact",
+			
+			    CONTAINSSTRING(NoteType, "face to face"),
+			        "Face-to-Face",
+			
+			    CONTAINSSTRING(NoteType, "video"),
+			        "Video Calls",
+			
+			    CONTAINSSTRING(NoteType, "phone call")
+			        || CONTAINSSTRING(NoteType, "telephone"),
+			        "Phone Calls",
+			
+			    CONTAINSSTRING(NoteType, "text")
+			        || CONTAINSSTRING(NoteType, "whatsapp"),
+			        "Messaging",
+			
+			    CONTAINSSTRING(NoteType, "email")
+			        || CONTAINSSTRING(NoteType, "letter")
+			        || CONTAINSSTRING(NoteType, "fax"),
+			        "Email & Written",
+			
+			    CONTAINSSTRING(NoteType, "manager")
+			        || CONTAINSSTRING(NoteType, "case file review"),
+			        "Case Management",
+			
+			    "Other Case Activity"
+			)
+		lineageTag: abf2b02a-76e4-4447-aa8b-3576327b454d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Appointment Exception Type' =
+			
+			VAR Note =
+			    LOWER(TRIM(fact_CaseNote[NoteType] & ""))
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        CONTAINSSTRING(Note, "missed")
+			            || CONTAINSSTRING(Note, "did not attend")
+			            || CONTAINSSTRING(Note, "dna"),
+			            "Missed Appointment",
+			        CONTAINSSTRING(Note, "cancelled")
+			            || CONTAINSSTRING(Note, "canceled"),
+			            "Cancelled Activity",
+			        BLANK()
+			    )
+		lineageTag: 48612808-2f78-4834-a370-d9188139a85b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition fact_CaseNote = m
 		mode: import
 		queryGroup: Gold\Facts

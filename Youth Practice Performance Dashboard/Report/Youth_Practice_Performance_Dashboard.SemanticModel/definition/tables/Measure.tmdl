@@ -1,4 +1,4 @@
-table Measure
+table measure
 	lineageTag: ea10c613-7da5-4329-8c30-8b4cc5809be5
 
 	measure 'Total Workflows' =
@@ -25,6 +25,342 @@ table Measure
 		formatString: 0
 		lineageTag: a1bd27d2-c6ed-4483-ba3c-40edf86a8520
 
+	measure 'Workflow Records' =
+			
+			DISTINCTCOUNT(fact_Workflow[Active Workflow Key])
+		formatString: 0
+		lineageTag: 1170c5ac-61e2-493b-ae83-fc19dbf0e43e
+
+	measure 'People with Workflow Records' =
+			
+			DISTINCTCOUNT(fact_Workflow[Person ID])
+		formatString: 0
+		lineageTag: c1cb6db4-659b-4d33-8c41-d1ab601c0ce4
+
+	measure 'People with Dated Activity' =
+			
+			VAR WorkflowPeople =
+			    SELECTCOLUMNS(
+			        VALUES(fact_Workflow[Person ID]),
+			        "PersonKey", fact_Workflow[Person ID]
+			    )
+			
+			VAR CaseNotePeople =
+			    SELECTCOLUMNS(
+			        VALUES(fact_CaseNote[Person ID]),
+			        "PersonKey", fact_CaseNote[Person ID]
+			    )
+			
+			VAR GoalSessionPeople =
+			    SELECTCOLUMNS(
+			        VALUES(fact_GoalSession[Person ID]),
+			        "PersonKey", fact_GoalSession[Person ID]
+			    )
+			
+			VAR UniquePeople =
+			    DISTINCT(
+			        UNION(
+			            WorkflowPeople,
+			            CaseNotePeople,
+			            GoalSessionPeople
+			        )
+			    )
+			
+			RETURN
+			    COUNTROWS(
+			        FILTER(
+			            UniquePeople,
+			            NOT ISBLANK([PersonKey])
+			        )
+			    )
+		formatString: 0
+		lineageTag: 56348b86-bd2b-4b85-bbd3-926d64b54f2f
+
+	measure 'People with Known Authority' =
+			
+			CALCULATE(
+			    [People with Dated Activity],
+			    FILTER(
+			        dim_People,
+			        NOT ISBLANK(dim_People[Authority])
+			            && TRIM(dim_People[Authority]) <> ""
+			    )
+			)
+		formatString: 0
+		lineageTag: 9d09b67b-3a84-4aed-8f4e-36270d46bda5
+
+	measure 'Known Authority Coverage %' =
+			
+			DIVIDE(
+			    [People with Known Authority],
+			    [People with Dated Activity]
+			)
+		lineageTag: b608f05c-6707-4df1-9f13-81a87ac0ae98
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Workflow Type Share %' =
+			
+			DIVIDE(
+			    [Workflow Records],
+			    CALCULATE(
+			        [Workflow Records],
+			        ALLSELECTED(fact_Workflow[WorkflowType])
+			    )
+			)
+		lineageTag: ef100aaa-d19c-4055-80ae-127a71b35232
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total Active Workflow Events' = COUNTROWS(bridge_People_Workflow)
+		formatString: 0
+		lineageTag: a43943e8-abb1-4b81-892e-44fc6dc5f2af
+
+	measure 'Total People with active workflow' = DISTINCTCOUNT(bridge_People_Workflow[Person ID])
+		formatString: 0
+		lineageTag: 08f1590b-3fb2-4a00-9084-98b704d6fe5a
+
+	measure 'Under 18 Supported' =
+			
+			CALCULATE(
+			    [People with Dated Activity],
+			    FILTER(
+			        dim_People,
+			        NOT ISBLANK(dim_People[DOB])
+			            && dim_People[DOB] <= TODAY()
+			            && dim_People[DOB] > EDATE(TODAY(), -216)
+			    )
+			)
+		formatString: 0
+		lineageTag: 86a1c677-a923-4b73-9933-7aa8b18bcc69
+
+	measure 'Aged 18 to 25 Supported' =
+			
+			CALCULATE(
+			    [People with Dated Activity],
+			    FILTER(
+			        dim_People,
+			        NOT ISBLANK(dim_People[DOB])
+			            && dim_People[DOB] <= EDATE(TODAY(), -216)
+			            && dim_People[DOB] > EDATE(TODAY(), -312)
+			    )
+			)
+		formatString: 0
+		lineageTag: 9b1c2198-0d0c-4fbe-b994-a69d0cca396e
+
+	measure 'Support Episodes Recorded' =
+			
+			DISTINCTCOUNT(
+			    fact_Workflow[Active Workflow Key]
+			)
+		formatString: 0
+		lineageTag: f88d68cd-99f0-45b1-acc8-23c5ccc085df
+
+	measure 'Average Support Episodes per Person' =
+			
+			DIVIDE(
+			    [Support Episodes Recorded],
+			    [People in Workflow Records]
+			)
+		lineageTag: fc68ef88-b4a6-4d68-8ce2-0f7eeb7e784e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Recorded Service Interactions' =
+			
+			COUNTROWS(fact_CaseNote)
+		formatString: 0
+		lineageTag: 7c5e254d-1d92-40d0-a904-e1cf8774c7d8
+
+	measure 'People in Workflow Records' =
+			
+			DISTINCTCOUNT(fact_Workflow[Person ID])
+		formatString: 0
+		lineageTag: 581ffcfc-8d52-4b68-a82f-af0ba11774c4
+
+	measure 'Workflow Participation Coverage %' =
+			
+			VAR WorkflowPeople =
+			    VALUES(fact_Workflow[Person ID])
+			VAR ReachedPeople =
+			    CALCULATETABLE(
+			        VALUES(dim_People[Person ID])
+			    )
+			RETURN
+			    DIVIDE(
+			        COUNTROWS(INTERSECT(WorkflowPeople, ReachedPeople)),
+			        [People with Dated Activity]
+			    )
+		lineageTag: 908fb18c-a18e-429a-b849-e5c357f8c574
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Disability Status'
+		lineageTag: e5580812-b753-4395-a5b7-549e48e2ff4e
+
+	measure 'Event Associations' =
+			
+			COUNTROWS(Bridge_EventsAttended)
+		formatString: 0
+		lineageTag: 6c685c74-b5d3-4e28-a1aa-495f12d6bae4
+
+	measure 'Events per Participant' =
+			
+			DIVIDE(
+			    [Event Associations],
+			    [People with Event Records]
+			)
+		lineageTag: c5039b3c-abbf-4e94-95b6-f61fc4a9cb91
+
+	measure 'People with Event Records' =
+			
+			DISTINCTCOUNT(Bridge_EventsAttended[Person ID])
+		formatString: 0
+		lineageTag: 8f5e2481-4276-4afd-bbd5-8075be891679
+
+	measure 'People with Multiple Event Types' =
+			
+			COUNTROWS(
+			    FILTER(
+			        VALUES(Bridge_EventsAttended[Person ID]),
+			        CALCULATE(COUNTROWS(Bridge_EventsAttended)) > 1
+			    )
+			)
+		formatString: 0
+		lineageTag: fe721170-8486-4d63-95b9-b9d6bdda81cf
+
+	measure 'Avg Referral to Assessment Days' =
+			
+			AVERAGEX(
+			    FILTER(
+			        fact_Workflow,
+			        NOT ISBLANK(fact_Workflow[AssessmentWaitDays])
+			            && fact_Workflow[AssessmentWaitDays] > 0
+			    ),
+			    fact_Workflow[AssessmentWaitDays]
+			)
+		lineageTag: 529c94e3-3229-4207-97e7-03ee02cc233a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cancelled Visit Notes' =
+			
+			CALCULATE(
+			    [Recorded Case Activity],
+			    FILTER(
+			        fact_CaseNote,
+			        CONTAINSSTRING(
+			            LOWER(fact_CaseNote[NoteType] & ""),
+			            "cancelled"
+			        )
+			    )
+			)
+		formatString: 0
+		lineageTag: 0b06f979-5b7d-474c-b8f8-924b78b88fcc
+
+	measure 'Missed Appointment Notes' =
+			
+			COALESCE(
+			    CALCULATE(
+			        [Recorded Case Activity],
+			        FILTER(
+			            fact_CaseNote,
+			            CONTAINSSTRING(
+			                LOWER(fact_CaseNote[NoteType] & ""),
+			                "missed"
+			            )
+			            || CONTAINSSTRING(
+			                LOWER(fact_CaseNote[NoteType] & ""),
+			                "did not attend"
+			            )
+			            || CONTAINSSTRING(
+			                LOWER(fact_CaseNote[NoteType] & ""),
+			                "dna"
+			            )
+			        )
+			    ),
+			    0
+			)
+		formatString: 0
+		lineageTag: 85124211-90bd-4194-9349-f8d20b48c737
+
+	measure 'Recorded Case Activity' =
+			
+			COUNTROWS(fact_CaseNote)
+		formatString: 0
+		lineageTag: 8281269c-34b9-4cc2-ae42-d326e4b17cb3
+
+	measure 'Map Country' = "United Kingdom"
+		lineageTag: 4da3d2c8-6d52-48e2-80f4-3b3fa6c948f4
+
+	measure 'Goals Recorded' =
+			
+			COUNTROWS(fact_GoalProgress)
+		formatString: 0
+		lineageTag: 24eb3653-9787-4a22-8b9f-c13a2640d486
+
+	measure 'Assessable Goals' =
+			
+			CALCULATE(
+			    [Goals Recorded],
+			    fact_GoalProgress[GoalChangeCategory]
+			        IN {"Improved", "No Change", "Declined"}
+			)
+		formatString: 0
+		lineageTag: af7dbfce-7426-4afc-847f-61e9caf3f690
+
+	measure 'Goals Improved' =
+			
+			CALCULATE(
+			    [Goals Recorded],
+			    fact_GoalProgress[GoalChangeCategory] = "Improved"
+			)
+		formatString: 0
+		lineageTag: d8c1c841-682c-440c-8081-e48d8e8e2ebb
+
+	measure 'Goal Improvement Rate %' =
+			
+			DIVIDE(
+			    [Goals Improved],
+			    [Assessable Goals]
+			)
+		lineageTag: edc7db7b-dae7-49d1-bca8-fb42764852ea
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Goals with Follow-up' =
+			
+			CALCULATE(
+			    [Goals Recorded],
+			    fact_GoalProgress[GoalChangeCategory]
+			        IN {"Improved", "No Change", "Declined"}
+			)
+		formatString: 0
+		lineageTag: 794963f4-ff54-4632-a35a-bb2b24e0d30e
+
+	measure 'Goal Follow-up Coverage %' =
+			
+			DIVIDE(
+			    [Goals with Follow-up],
+			    [Goals Recorded]
+			)
+		lineageTag: 7c2b0319-1cb4-4d98-bedc-6c7f8a840050
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Authorities Represented' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(dim_People[Authority]),
+			    FILTER(
+			        dim_People,
+			        NOT ISBLANK(dim_People[Authority])
+			            && TRIM(dim_People[Authority]) <> ""
+			    )
+			)
+		formatString: 0
+		lineageTag: bbbb7e41-193b-4dfc-b8b6-027045e039a2
+
 	column Column
 		formatString: 0
 		lineageTag: d6156735-dc7d-42a5-baed-97929a880c9e
@@ -34,7 +370,7 @@ table Measure
 
 		annotation SummarizationSetBy = Automatic
 
-	partition Measure = calculated
+	partition measure = calculated
 		mode: import
 		source = Row("Column", BLANK())
 

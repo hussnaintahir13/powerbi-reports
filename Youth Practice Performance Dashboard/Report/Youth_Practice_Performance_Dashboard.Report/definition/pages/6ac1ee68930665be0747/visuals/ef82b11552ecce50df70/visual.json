@@ -1,0 +1,179 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "ef82b11552ecce50df70",
+  "position": {
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "height": 150.37974683544303,
+    "width": 1003.5825105782793
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "measure"
+                    }
+                  },
+                  "Property": "Goal Improvement Rate %"
+                }
+              },
+              "queryRef": "measure.Goal Improvement Rate %",
+              "nativeQueryRef": "Goal Improvement Rate %",
+              "format": "0.00%;-0.00%;0.00%"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "measure"
+                    }
+                  },
+                  "Property": "Goal Follow-up Coverage %"
+                }
+              },
+              "queryRef": "measure.Goal Follow-up Coverage %",
+              "nativeQueryRef": "Goal Follow-up Coverage %",
+              "format": "0.00%;-0.00%;0.00%"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "measure"
+                    }
+                  },
+                  "Property": "Average Support Episodes per Person"
+                }
+              },
+              "queryRef": "measure.Average Support Episodes per Person",
+              "nativeQueryRef": "Average Support Episodes per Person"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "measure"
+                  }
+                },
+                "Property": "Goal Improvement Rate %"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "parentGroupName": "3d46bdaad0748f9f0afa",
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a63338b206290569a0fc",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "Goal Improvement Rate %"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "57ca3f565e656e058264",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "Goal Follow-up Coverage %"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "39c4b5cd23c5c9beac94",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "measure"
+              }
+            },
+            "Property": "Average Support Episodes per Person"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

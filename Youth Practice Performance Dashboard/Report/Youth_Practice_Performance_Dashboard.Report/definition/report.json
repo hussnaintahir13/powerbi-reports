@@ -24,6 +24,19 @@
           }
         }
       }
+    ],
+    "outspacePane": [
+      {
+        "properties": {
+          "expanded": {
+            "expr": {
+              "Literal": {
+                "Value": "true"
+              }
+            }
+          }
+        }
+      }
     ]
   },
   "resourcePackages": [
@@ -43,7 +56,9 @@
     "useStylableVisualContainerHeader": true,
     "exportDataMode": "AllowSummarized",
     "defaultDrillFilterOtherVisuals": true,
+    "useCrossReportDrillthrough": true,
     "allowChangeFilterTypes": true,
+    "allowInlineExploration": true,
     "useEnhancedTooltips": true,
     "useDefaultAggregateDisplayName": true,
     "queryLimitOption": "None",

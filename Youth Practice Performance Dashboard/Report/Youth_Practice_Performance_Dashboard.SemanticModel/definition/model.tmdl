@@ -79,7 +79,7 @@ ref table LocalDateTable_d35c2517-1940-4e7c-bdd1-24b552251770
 ref table fact_GoalSession
 ref table dim_date
 ref table LocalDateTable_e7d109ee-fba4-4482-82a8-36974a79dc1b
-ref table Measure
+ref table measure
 
 ref cultureInfo en-GB
 

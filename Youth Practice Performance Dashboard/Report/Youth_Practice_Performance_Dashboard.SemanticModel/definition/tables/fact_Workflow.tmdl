@@ -193,6 +193,42 @@ table fact_Workflow
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Assessment Waiting Band' =
+			
+			VAR Days = fact_Workflow[AssessmentWaitDays]
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(Days), "Not Recorded",
+			        Days = 0, "0 Days / Unconfirmed",
+			        Days < 0, "Invalid",
+			        Days <= 7, "1–7 Days",
+			        Days <= 14, "8–14 Days",
+			        Days <= 30, "15–30 Days",
+			        "Over 30 Days"
+			    )
+		lineageTag: bc746e67-241e-44cb-8164-8a10ef18c361
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Avg Referral to Assessment Days' =
+			
+			AVERAGEX(
+			    FILTER(
+			        fact_Workflow,
+			        NOT ISBLANK(fact_Workflow[AssessmentWaitDays])
+			            && fact_Workflow[AssessmentWaitDays] > 0
+			    ),
+			    fact_Workflow[AssessmentWaitDays]
+			)
+		lineageTag: 3f60c93e-0873-4fe9-9dc3-a95cc2b5e8c9
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition fact_Workflow = m
 		mode: import
 		queryGroup: Gold\Facts

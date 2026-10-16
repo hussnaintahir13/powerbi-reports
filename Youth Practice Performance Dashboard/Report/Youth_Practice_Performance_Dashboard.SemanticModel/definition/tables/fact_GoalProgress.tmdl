@@ -135,6 +135,31 @@ table fact_GoalProgress
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Assessment Coverage Category' =
+			
+			VAR CurrentGoal = fact_GoalProgress[GoalKey]
+			
+			VAR AssessmentCount =
+			    COUNTROWS(
+			        FILTER(
+			            fact_GoalSession,
+			            fact_GoalSession[GoalKey] = CurrentGoal
+			                && NOT ISBLANK(fact_GoalSession[ProgressScore])
+			        )
+			    )
+			
+			RETURN
+			    SWITCH(
+			        TRUE(),
+			        AssessmentCount = 0, "No Assessment",
+			        AssessmentCount = 1, "One Assessment",
+			        "Two or More Assessments"
+			    )
+		lineageTag: 65691400-66e3-4729-a0e7-6c5fa4a54176
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition fact_GoalProgress = m
 		mode: import
 		queryGroup: Gold\Facts
